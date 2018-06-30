@@ -1,0 +1,30 @@
+image-picker {
+  ul.squared:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  ul.squared>li{
+    float: left;
+    width: 32%;
+    text-align: center;
+    padding-top: 31%;
+    margin-left: 1%;
+    margin-top: 1%;
+    position: relative;
+  }
+  ul.squared>li>div{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  ul.squared>li>div>span{
+    display: inline-block;
+    margin-top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+}

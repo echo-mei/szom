@@ -1,0 +1,59 @@
+<ion-header no-border>
+  <ion-navbar color="primary">
+    <ion-title text-center></ion-title>
+    <ion-buttons right>
+      <button ion-button>
+        <ion-icon name="md-shezhi" class="szom"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item no-lines class="my-info">
+    <ion-avatar item-start>
+      <img src="assets/imgs/user.jpg">
+    </ion-avatar>
+    <h2 class="name">{{getUserInfo('name')}}
+      <!-- <ion-note float-right (click)="goSignTags()">
+        <ion-badge color="dark">签到</ion-badge>
+      </ion-note>
+      <ion-note float-right (click)="goMeSign()">
+        <ion-badge color="dark">在岗</ion-badge>
+      </ion-note> -->
+      <div class="sign" (click)="goMeSign()">出差</div>
+    </h2>
+    <p class="desc">单位：{{getUserInfo('unitName')}}</p>
+    <p class="desc">职位：{{getUserInfo('dutyName')}}</p>
+  </ion-item>
+  <div class="gzt-main">
+    <div class="gzt-item gzrz" (click)="goDailyMe()">
+      <ion-icon name="md-gongzuorizhi" class="szom"></ion-icon>
+      <p>工作日志</p>
+    </div>
+    <div class="gzt-item gzzb" (click)="goWorkWeektable()">
+        <ion-icon name="md-gongzuozhoubiao" class="szom"></ion-icon>
+      <p>工作周表</p>
+    </div>
+    <div class="gzt-item grxx" (click)="goMeInfo()">
+        <ion-icon name="md-gerenxinxi" class="szom"></ion-icon>
+      <p>个人信息</p>
+    </div>
+    <div class="gzt-item mzyl" (click)="goDailyOnePage()">
+        <ion-icon name="md-meizhouyili" class="szom"></ion-icon>
+      <p>每周一励</p>
+    </div>
+    <div class="gzt-item mjsl" (click)="goDailyThreePage()">
+        <ion-icon name="md-meijisanli" class="szom"></ion-icon>
+      <p>每季三励</p>
+    </div>
+    <div class="gzt-item mnsl" (click)="goDailyTenPage()">
+        <ion-icon name="md-meiniansanli" class="szom"></ion-icon>
+      <p>每年三励</p>
+    </div>
+    <div class="gzt-item gbpj" tappable (click)="goEvalute()">
+        <ion-icon name="md-ganbupingjia" class="szom"></ion-icon>
+      <p>干部评价</p>
+    </div>
+  </div>
+</ion-content>

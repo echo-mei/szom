@@ -1,0 +1,24 @@
+page-daily-update {
+  ion-list.list {
+    > .item-block:first-child,
+    > .item-block:last-child {
+      border-top: 0;
+      border-bottom: 0;
+    }
+  }
+  .item-block {
+    border-top: 0;
+    border-bottom: 0;
+  }
+  ion-textarea {
+    font-size: 14px;
+  }
+  .btn-row {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+  }
+  .squared {
+    margin-bottom: 80px;
+  }
+}

@@ -1,0 +1,64 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>每年十励</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="dailyTenList"  no-lines>
+    <ion-item>
+      <div class="body-box">
+        <div class="date-box"></div>
+        <div class="context-box">
+          <div class="text-area" (click)="goDailyCreate()">本周完成最满意的一件事...</div>
+          <p float-left>2018.05.04 - 2018.05.10</p>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item  *ngFor="let log of dailyTenList;" (click)="goDailyShow()">
+      <div class="body-box">
+        <div class="date-box">{{log.dailyId}}</div>
+        <div class="context-box">
+          <h3>{{log.title}}</h3>
+          <p float-left><span>{{log.startTime}}</span><span style="margin:0 5px;">-</span><span>{{log.endTime}}</span></p>
+          <div class="action-box" float-right>
+            <div float-left>
+              <ion-icon name="md-thumbs-up" float-left></ion-icon>
+              <p float-left>{{log.likeCount}}</p>
+            </div>
+            <div float-left>
+              <ion-icon name="ios-chatboxes" float-left></ion-icon>
+              <p float-left>{{log.commentCount}}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <div class="body-box">
+        <div class="date-box">1</div>
+        <div class="context-box">
+          <h3>XX街道水源保护区最后5栋违建，本周全部成功拆除！</h3>
+          <p float-left>2018.05.04 - 2018.05.10</p>
+          <div class="action-box" float-right>
+            <div float-left>
+              <ion-icon name="md-thumbs-up" float-left></ion-icon>
+              <p float-left>99</p>
+            </div>
+            <div float-left>
+              <ion-icon name="ios-chatboxes" float-left></ion-icon>
+              <p float-left>13</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

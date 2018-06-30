@@ -1,0 +1,57 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>详细资料</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/imgs/user.jpg">
+      </ion-avatar>
+      <h2>张爱民</h2>
+      <p>单位：宣传科</p>
+      <p>职务：干部一处处长</p>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item>
+      <ion-label>年龄</ion-label>
+      <ion-label item-end>{{ personInfo.age }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-label item-end>{{ personInfo.sex }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>全日制学历学位</ion-label>
+      <ion-label item-end>{{ personInfo.allDayDegree }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>全日制毕业院校及专业</ion-label>
+      <ion-label item-end>{{ personInfo.graSchool }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>在职学历学位</ion-label>
+      <ion-label item-end>{{ personInfo.nowDegree }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>在职毕业院校及专业</ion-label>
+      <ion-label item-end>{{ personInfo.nowGraSchollAndMajor }}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <button ion-item (click)="goDailyMe()">
+      工作日志
+    </button>
+    <button ion-item>
+      印象标签
+    </button>
+  </ion-list>
+  <button ion-button block>同意</button>
+  <button ion-button block>拒绝</button>
+</ion-content>

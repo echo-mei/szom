@@ -1,0 +1,34 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>写日志</ion-title>
+    <ion-buttons right *ngIf ="single">
+      <button ion-button (click)="goDailyList()">
+        <ion-icon name="ios-git-branch"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form>
+    <ion-list no-lines>
+      <ion-item no-padding class="daily-title">
+        <ion-label>标题</ion-label>
+        <ion-input type="text" [(ngModel)]="title" name="title"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding class="daily-content">
+        <ion-textarea [(ngModel)]="content" name="content" placeholder="来说说今天都做了些什么..."></ion-textarea>
+      </ion-item>
+
+      <image-picker #imagePicker></image-picker>
+
+      <ion-item no-padding class="btn-release">
+        <button ion-button block (click)="postDailyCreate()">发布</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

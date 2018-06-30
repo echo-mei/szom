@@ -1,0 +1,19 @@
+page-leaderevaluate {
+    .item-ios p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+         white-space: normal;
+         
+         &.text{
+             color: #333;
+         }
+
+         &.subtext{
+             font-size: 0.35rem;
+         }
+    }
+    .item-block{
+        min-height:0rem;
+    }
+}

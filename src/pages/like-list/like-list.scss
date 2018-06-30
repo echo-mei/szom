@@ -1,0 +1,65 @@
+page-like-list {
+    ion-content{
+        .scroll-content{
+            padding: 0!important;
+        }
+    }
+    ion-item{
+        ion-label{
+            // display: flex;
+            // align-items: center;
+            // justify-content: space-between;
+        } 
+        h2{
+            margin: 0 !important;
+        }
+        
+    }
+    .item-ios p{
+        font-size: rem(13) !important;
+        margin-top: rem(5);
+        color: #999999 !important;
+    }
+    ion-item-group{
+        ion-item-divider{
+            height: 30px;
+            color: #999!important;
+        }
+    }
+    .back-button-icon-ios{
+        font-size: rem(18);
+        color: #545454;
+    }
+    ion-item-group .item-ios:last-child .item-inner{
+        border-bottom: 1px solid #f3f2f2;
+    }
+    .header-ios{
+        height: rem(48);
+    }
+    .toolbar-ios{
+        height: rem(48);
+    }
+    .fixed-content{
+        margin-top: rem(48);
+    }
+    .scroll-content{
+        margin-top: rem(48);
+    }
+    .toolbar-title{
+        font-size: rem(17);
+        color: #333333;
+    }
+    .item-divider{
+        font-size: rem(12);
+        color: #666666;
+    }
+    .item-block{
+        min-height: 0;
+        height: rem(74);
+    }
+    .item-ios h2{
+        font-size: rem(15);
+        color: #333333;
+        font-weight: bold;
+    }
+}

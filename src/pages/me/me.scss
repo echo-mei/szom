@@ -1,0 +1,14 @@
+page-me {
+  .item-block {
+    min-height: initial;
+    padding: 0;
+    h4 {
+      font-size: 16px;
+    }
+    .note {
+      p {
+        font-size: rem(12)
+      }
+    }
+  }
+}

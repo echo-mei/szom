@@ -1,0 +1,47 @@
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title>干部评价</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="goEvaluateCreate()">
+        <ion-icon name="ios-create-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-segment [(ngModel)]="pet">
+    <ion-segment-button value="zzbm" (click)="getZzbmInitDatas()">
+      组织部门评价
+    </ion-segment-button>
+    <ion-segment-button value="sjld" (click)="getSjldInitDatas()">
+      上级领导评价
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+      
+  <div [ngSwitch]="pet">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list *ngSwitchCase="'zzbm'" inset>
+      <ion-item  *ngFor="let evaluate of zzbmEvaluateLists">
+        <p class="text">{{evaluate.evaluationTitle}}</p>
+        <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
+        <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list *ngSwitchCase="'sjld'" inset>
+      <ion-item  *ngFor="let evaluate of sjldEvaluateLists">
+        <p class="text">{{evaluate.evaluationTitle}}</p>
+        <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
+        <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

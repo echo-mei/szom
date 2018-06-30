@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title text-center>我</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/imgs/user.jpg">
+      </ion-avatar>
+      <h4>{{getUserInfo('name')}}</h4>
+      <ion-note item-end>
+        <p>{{getUserInfo('unitName')}}</p>
+        <p>{{getUserInfo('dutyName')}}</p>
+      </ion-note>
+    </ion-item>
+    <button ion-item>我的二维码</button>
+    <button ion-item>帮助与反馈</button>
+    <button ion-item>账户安全</button>
+    <button ion-item>系统设置</button>
+  </ion-list>
+  <button ion-button block (click)="logout()">退出</button>
+</ion-content>

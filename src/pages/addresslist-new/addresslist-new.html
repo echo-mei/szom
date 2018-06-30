@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>新的关注</ion-title>
+    <ion-buttons right>
+      <button ion-button>
+        <ion-icon name="search"></ion-icon>
+      </button>
+      <button ion-button>
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider>今天</ion-item-divider>
+    <ion-item (click)="goUserInfo()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/user.jpg">
+      </ion-avatar>
+      <h2>张爱民</h2>
+      <p>宣传科干事</p>
+      <button ion-button item-end>待处理</button>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider>近三个月</ion-item-divider>
+    <ion-item (click)="goUserInfo()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/user.jpg">
+      </ion-avatar>
+      <h2>张爱民</h2>
+      <p>宣传科干事</p>
+      <button ion-button item-end clear disabled>已添加</button>
+    </ion-item>
+  </ion-item-group>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>工作日志</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="popover($event)">
+        <ion-icon class="szom" name="md-gengduo"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="daily" class="daily-detail-main">
+    <h2 class="title">《{{daily.title}}》</h2>
+    <pre class="content">{{daily.content}}</pre>
+    <div class="imgs">
+      <img src="assets/imgs/horizontal.png">
+    </div>
+    <ion-note class="pubTime">{{daily.publishTime}}</ion-note>
+    <ion-row class="like-wrap">
+      <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      <ion-note class="like-names">
+        <a (click)="goLikeList()" *ngFor="let user of daily.listStLike.slice(0, 9)" class="zanName">{{user.name}}、</a>
+        <span class="andSoOn">等{{daily.listStLike.length}}人觉得很赞</span>
+      </ion-note>
+    </ion-row>
+    <ion-list class="comment-list">
+      <p *ngFor="let comment of daily.listStComment" class="comment-item">
+        <a class="commentPeople">{{comment.operatorName}}: </a>
+        <ion-note class="commentCon">{{comment.content}}</ion-note>
+      </p>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-item class="publish-comment" no-lines>
+    <ion-textarea rows=1 autosize placeholder="鼓励一下，让团队更凝聚"></ion-textarea>
+    <ion-icon item-end name="md-dianzanmoren" class="szom" color="primary"></ion-icon>
+  </ion-item>
+</ion-footer>

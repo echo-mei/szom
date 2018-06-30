@@ -1,0 +1,29 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>登陆</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="header-image">
+      <div class="image"></div>
+    </div>
+    <ion-item>
+      <ion-input formControlName="userCode" placeholder="手机号/用户名"></ion-input>
+      <button type="button" ion-button clear item-end *ngIf="loginForm.controls['userCode'].value" (click)="loginForm.controls['userCode'].setValue('')">
+        <ion-icon name="guanbi"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="password" [type]="showPassword?'text':'password'" placeholder="密码"></ion-input>
+      <button type="button" ion-button clear item-end *ngIf="loginForm.controls['password'].value" (click)="showPassword=!showPassword">
+        <ion-icon [name]="showPassword?'yanjing':'icon-eye-close'"></ion-icon>
+      </button>
+    </ion-item>
+    <button ion-button block [disabled]="loginForm.invalid">登陆</button>
+  </form>
+  <div class="footer" text-center><button ion-button clear>登陆帮助</button></div>
+</ion-content>

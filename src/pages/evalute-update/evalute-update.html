@@ -1,0 +1,31 @@
+<ion-header>
+
+    <ion-navbar>
+      <ion-title>干部评价修改</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <form>
+      <ion-list>
+        <ion-item>
+          <ion-label>被评价人:</ion-label>
+          <ion-input type="text" [(ngModel)]="evaluationObject" name="evaluationObject" (click)="goEvaluteCreateSearch()"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>来源：</ion-label>
+          <ion-input type="text" [(ngModel)]="source" name="source"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>标题：</ion-label>
+          <ion-textarea [(ngModel)]="evaluationTitle" name="evaluationTitle"></ion-textarea>
+        </ion-item>
+  
+        <ion-item>
+          <button ion-button block (click)="postEvaluteCreate()">发布</button>
+        </ion-item>
+      </ion-list>
+    </form>
+  </ion-content>

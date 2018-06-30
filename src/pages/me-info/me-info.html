@@ -1,0 +1,128 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>个人信息</ion-title>
+  </ion-navbar>
+  <ion-item no-lines>
+    <ion-avatar item-start>
+      <img src="assets/imgs/user.jpg">
+    </ion-avatar>
+    <h2>{{getMyInfo('name')}}<ion-note float-right><ion-badge color="dark">在岗</ion-badge></ion-note></h2>
+    <p>单位：{{getMyInfo('unitName')}}</p>
+    <p>职位：{{getMyInfo('dutyName')}}</p>
+  </ion-item>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="personInfo">
+    <ion-segment-button value="baseInfo">
+      基本信息
+    </ion-segment-button>
+    <ion-segment-button value="selfInfo">
+      个人自述
+    </ion-segment-button>
+    <ion-segment-button value="tags">
+        印象标签
+      </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="personInfo">
+    <ion-list *ngSwitchCase="'baseInfo'" no-lines>
+      <ion-item>
+        <ion-label>出生年月</ion-label>
+        <ion-label item-end>{{getMyInfo('birthday')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>性别</ion-label>
+        <ion-label item-end>{{getMyInfo('sexCode')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>民族</ion-label>
+        <ion-label item-end>{{getMyInfo('nationality')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>籍贯</ion-label>
+        <ion-label item-end>{{getMyInfo('nativePlace')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>入党时间</ion-label>
+        <ion-label item-end>{{getMyInfo('partyTime')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>全日制学历学位</ion-label>
+        <ion-label item-end>{{getMyInfo('onJobDegree')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>全日制毕业院校及专业</ion-label>
+        <ion-label item-end>{{getMyInfo('onJobGraSchoolMajor')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>在职学历学位</ion-label>
+        <ion-label item-end>{{getMyInfo('onJobDegree')}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>在职毕业院校及专业</ion-label>
+        <ion-label item-end>{{getMyInfo('onJobGraSchoolMajor')}}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'selfInfo'">
+      <ion-list-header color="light">
+        座右铭
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('座右铭', 'motto')">
+        {{selfInfo.motto}}
+      </button>
+      <ion-list-header color="light">
+        工作特长
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('工作特长', 'jobSkills')">
+        {{selfInfo.jobSkills}}
+      </button>
+      <ion-list-header color="light">
+        兴趣爱好
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('兴趣爱好', 'interests')">
+        {{selfInfo.interests}}
+      </button>
+      <ion-list-header color="light">
+        人生感悟
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('人生感悟', 'lifeInspiration')">
+        {{selfInfo.lifeInspiration}}
+      </button>
+      <ion-list-header color="light">
+        做过什么
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('做过什么', 'mainJobs')">
+        {{selfInfo.mainJobs}}
+      </button>
+      <ion-list-header color="light">
+        做成过什么
+      </ion-list-header>
+      <button ion-item (click)="goMeUpdateZS('做成过什么', 'mainAchievements')">
+        {{selfInfo.mainAchievements}}
+      </button>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'tags'">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-1>
+            <ion-icon name="calendar"></ion-icon>
+          </ion-col>
+          <ion-col col-5>
+            <ion-datetime displayFormat="YYYY-MM" pickerFormat="YYYY MM" [(ngModel)]="startDate" (ngModelChange)="changeDate()"></ion-datetime>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon name="calendar"></ion-icon>
+          </ion-col>
+          <ion-col col-5>
+            <ion-datetime displayFormat="YYYY-MM" pickerFormat="YYYY MM" [(ngModel)]="endDate" (ngModelChange)="changeDate()"></ion-datetime>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4 *ngFor="let tag of tags">{{tag.tagName}} {{tag.counts}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  </div>
+</ion-content>

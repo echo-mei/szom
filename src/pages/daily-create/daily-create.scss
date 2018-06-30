@@ -1,0 +1,36 @@
+page-daily-create {
+    ion-content{
+        .daily-title{
+            border-bottom: 1px solid #F1F1F1!important;
+            ion-label{
+                font-size: 20px;
+                font-weight: bold;
+                color: #999;
+            }
+            ion-input{
+                font-size: 17px;
+                font-weight: 600;
+            }
+        }
+        .daily-content{
+            ion-textarea{
+                font-size: 17px;
+                height: 80px;
+                margin: 10px 0;
+                textarea{
+                    margin: 0;
+                    height: 100%;
+                }
+            }
+        }
+        .btn-release{
+            position: absolute;
+            bottom: 0;
+            button{
+                height: 50px!important;
+                width: calc(100% - 16px)
+            }
+        }
+    }
+    
+}

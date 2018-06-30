@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="save()">
+        完成
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form>
+    <ion-textarea autosize placeholder="请输入..." [(ngModel)]="value" [name]="attr"></ion-textarea>
+  </form>
+</ion-content>

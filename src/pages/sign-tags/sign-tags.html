@@ -1,0 +1,5 @@
+  <ion-row>
+    <ion-col col-4 *ngFor="let tag of tags">
+      <button ion-button (click)="sign(tag.signInType)">{{tag.signInType}} {{tag.counts}}</button>
+    </ion-col>
+  </ion-row>

@@ -1,0 +1,47 @@
+<!--
+  Generated template for the SearchConditionsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar>
+      <ion-searchbar placeholder="搜索服务、办事项目"></ion-searchbar>
+      <button ion-button (click)="goBack()" clear float-right>取消</button>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div class="conditions">
+    <div #btn class="select-btn" (click)="selectShow(btn)">
+        <div class="left">
+            <ion-icon class="szom" name="md-shaixuan" ></ion-icon>
+            <p>筛选</p>
+        </div>
+        <ion-icon class="szom" [name]="selectBtn"></ion-icon>
+    </div>
+    
+    <ion-list class="select-time" [@heroState]="animate">
+        <div class="date-select" >
+            <div class="title">起始时间：</div>
+            <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" (ngModelChange)="TimeStartChange()" [(ngModel)]="timeStarts"></ion-datetime>
+            <div #tip [class.tip]="isTimeStart" *ngIf="isTimeStart">请选择</div>
+            <ion-icon class="szom" name="md-you"></ion-icon>
+        </div>
+        <div class="date-select">
+            <div class="title">结束时间：</div>
+            <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" (ngModelChange)="TimeEndChange()" [(ngModel)]="timeEnd"></ion-datetime>
+            <div #tip [class.tip]="isTimeEnd" *ngIf="isTimeEnd">请选择</div>
+            <ion-icon class="szom" name="md-you"></ion-icon>
+        </div>
+        <div class="btn">
+            <button ion-button color="light" (click)="reset()">重置</button>
+            <button ion-button (click)="goSelcet()">确定</button>
+        </div>
+    </ion-list>
+  </div>
+  
+</ion-content>

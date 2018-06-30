@@ -1,0 +1,53 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>我的关注</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngFor="let group of groupList;let i=index;">
+    <button ion-item (click)="toggle(i)">
+      {{group.groupName}}
+      <ion-icon *ngIf="expandIndex!=i" item-right name="ios-arrow-forward"></ion-icon>
+      <ion-icon *ngIf="expandIndex==i" item-right name="ios-arrow-down"></ion-icon>
+    </button>
+    <ion-list no-margin *ngIf="expandIndex==i">
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="assets/imgs/user.jpg">
+        </ion-avatar>
+        <h2>张爱民</h2>
+        <p>宣传科干事</p>
+      </ion-item>
+    </ion-list>
+  </div>
+    <!-- <button ion-item>
+      默认分组
+      <ion-icon item-right name="ios-arrow-forward"></ion-icon>
+    </button>
+    <ion-list no-margin>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="assets/imgs/user.jpg">
+        </ion-avatar>
+        <h2>张爱民</h2>
+        <p>宣传科干事</p>
+      </ion-item>
+    </ion-list>
+    <button ion-item>
+      特别关注
+      <ion-icon item-right name="ios-arrow-forward"></ion-icon>
+    </button>
+    <ion-list no-margin>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="assets/imgs/user.jpg">
+        </ion-avatar>
+        <h2>张爱民</h2>
+        <p>宣传科干事</p>
+      </ion-item>
+    </ion-list> -->
+</ion-content>

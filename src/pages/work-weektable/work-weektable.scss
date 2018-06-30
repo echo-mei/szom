@@ -1,0 +1,70 @@
+page-work-weektable {
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul,li{
+        list-style-type: none;
+    }
+    .time-select{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .day-data{
+        height: 150px;
+        width: 100%;
+        border-bottom: 1px solid #999;
+    }
+    .day-data>div{
+        height: 100%;
+        width: 20%;
+        border: 1px solid #999;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .day-data>div p{
+        display: flex;
+        justify-content: center;
+    }
+    .work-data{
+        height: 100%;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .work-data li{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .work-data li>.Period{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 100%;
+        border: 1px solid #999;
+    }
+    .work-data li>.work{
+        width: calc(100% - 50px);
+        height: 100%;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #999;
+        padding: 0 10px;
+    }
+    .work-data li>.work button{
+        font-size: 10px;
+        height: 50%;
+        width: 70px;
+        border: 1px solid #10A0FC;
+        color: #10A0FC;
+    }
+}

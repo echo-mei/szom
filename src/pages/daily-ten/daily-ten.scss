@@ -1,0 +1,72 @@
+page-daily-ten {
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    li{
+        list-style-type: none;
+    }
+    .fl{
+        float: left;
+    }
+    .fr{
+        float: right;
+    }
+    .clearfix:after{  
+        display: block;  
+        content:'';  
+        clear: both;  
+        height:0;  
+    }
+    ion-label{
+        margin: 0!important;
+    }
+    .body-box{
+        position: relative;
+    }
+    .date-box{
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        background-color: #999;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        position: absolute;
+    }
+    .context-box{
+        margin-left: 15px;
+        padding: 5px;
+        padding-left: 25px;
+        padding-bottom: 50px;
+        border-left: 1px solid #999;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+    .text-area{
+        height: 60px;
+        width: 100%;
+        color: #A4A5A5;
+        box-sizing: border-box;
+        padding: 5px;
+        border: 1px dashed #A4A5A5;
+        margin-bottom: 10px;
+    }
+    .action-box div ion-icon{
+        padding: 0 10px;
+    }
+    .item-md p,.item-ios h3, .item-ios h4, .item-ios h5, .item-ios h6,.text-area{
+        font-size: 0.38rem;
+    }
+    .item-ios p{
+        font-size: 0.35rem
+    }
+    .item-block{
+        min-height:0;
+    }
+    [padding] h3:first-child{
+        margin-top:0rem;
+    }
+}

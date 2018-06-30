@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>工作日志</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="backCreateDaily()">完成</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <!-- (ionInput)="getItems($event)" -->
+  <ion-searchbar></ion-searchbar>
+  <ion-list radio-group *ngIf="logDataList">
+    <ion-item *ngFor="let log of logDataList;">
+      <ion-label>
+        <p>{{log.title}}</p>
+        <p>{{log.publishTime}}
+          <ion-note float-right>
+            <ion-icon name="star"></ion-icon>{{log.likeCount}}
+            <ion-icon name="star"></ion-icon>{{log.commentCount}}
+          </ion-note>
+        </p>
+      </ion-label>
+      <ion-radio value="cord{{log.dailyId}}" (click)="changeRadio(logDataList.indexOf(log))"></ion-radio>
+    </ion-item>
+  </ion-list>
+</ion-content>

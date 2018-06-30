@@ -1,0 +1,51 @@
+page-tabs {
+    .tabs{
+    
+        .tabbar{
+            height: rem(50);
+            background: #FFFFFF;
+            border-top: .5px solid #DDDDDD;
+            padding-top: rem(6);
+            padding-bottom: rem(4);
+
+            .has-icon{
+                .tab-button-icon {
+                    height: rem(26);
+                    line-height: rem(26);
+                    width: rem(26);
+                    font-size: rem(20);
+                    color: #bfbfbf;
+                }
+        
+                .tab-button-text{
+                    margin: rem(2) auto;
+                    height: rem(14);
+                    line-height: rem(14);
+                    color: #8c8c8c;
+                    font-size: rem(10);
+                }
+
+                .tab-badge{
+                    font-size: rem(10);
+                    color: #FFFFFF;
+                    letter-spacing: -0.35px;
+                    background: #F5222D;
+                    border: 1px solid #FFFFFF;
+                    border-radius: rem(100);
+                    top: -1px;
+                    right: calc(50% - 25px);
+                }
+            }
+    
+            .tab-button[aria-selected=true]{
+                .tab-button-icon,.tab-button-text {
+                    color: #4D74EB;
+                }
+            } 
+        }
+
+        
+    
+    }
+
+}
