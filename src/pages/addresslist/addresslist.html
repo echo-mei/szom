@@ -1,37 +1,48 @@
 <ion-header no-border>
 
-  <ion-navbar>
-    <ion-title>通讯录</ion-title>
+  <ion-navbar color="white">
+    <ion-title text-center>通讯录</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goSearch()"><ion-icon name="search"></ion-icon></button>
-      <button ion-button><ion-icon name="star"></ion-icon></button>
+      <button ion-button>
+        <ion-icon class="szom" name="md-jiahaoyou"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content>
+  <ion-searchbar placeholder="搜索服务、办事项目"></ion-searchbar>
   <ion-list>
-    <button ion-item (click)="goAddresslistNew()">
-      新的关注
-      <ion-badge item-end>5</ion-badge>
-    </button>
-    <button ion-item (click)="goTeamlistUnit()">
-      本单位
-    </button>
-    <button ion-item (click)="goAddresslistOther()">
-      其他组织
-    </button>
+    <ion-item (click)="goAddresslistNew()">
+      <ion-avatar item-start class="new">
+        <ion-icon class="szom" name="md-yanjing"></ion-icon>
+      </ion-avatar>
+      <h2>新的关注</h2>
+      <ion-note>我是高豪仁</ion-note>
+      <ion-badge item-end> </ion-badge>
+    </ion-item>
+    <ion-item (click)="goTeamlistUnit()">
+      <ion-avatar item-start class="unit">
+        <ion-icon class="szom" name="md-yanjing"></ion-icon>
+      </ion-avatar>
+      <h2>本单位</h2>
+    </ion-item>
+    <ion-item (click)="goAddresslistOther()">
+      <ion-avatar item-start class="other">
+        <ion-icon class="szom" name="md-yanjing"></ion-icon>
+      </ion-avatar>
+      <h2>其他组织</h2>
+    </ion-item>
+  </ion-list>
 
-    <ion-list no-margin>
+  <ion-list class="friendList">
       <ion-item *ngFor="let item of friendList">
         <ion-avatar item-start>
           <img src="assets/imgs/user.jpg">
         </ion-avatar>
         <h2>{{ item.name }}</h2>
-        <p>{{ item.group }}</p>
+        <ion-note>{{ item.group }}</ion-note>
       </ion-item>
     </ion-list>
-
-  </ion-list>
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController, AlertController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController, AlertController, ViewController, Events } from 'ionic-angular';
 import { PopSelectComponent } from '../../components/pop-select/pop-select';
 import { DailyProvider } from '../../providers/daily/daily';
 
@@ -13,16 +13,20 @@ export class DailyShowPage {
 
   daily:any;
 
+  comment: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController,
     public dailyProvider: DailyProvider,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    public events: Events
   ) {
+    this.daily = this.navParams.get('daily');
+    console.log(this.daily);
     this.single = this.navParams.get('single');
-    this.getDaily();
   }
 
   popover(event) {
@@ -31,7 +35,10 @@ export class DailyShowPage {
         {
           text: '修改',
           handler: () => {
-            this.navCtrl.push('DailyUpdatePage',{ 'single': this.single, 'title': this.daily.title, 'content':this.daily.content});
+            this.navCtrl.push('DailyUpdatePage',{
+              'single': this.single,
+              'daily': this.daily
+            });
             popover.dismiss();
           }
         },
@@ -43,9 +50,11 @@ export class DailyShowPage {
               buttons: [
                 {text: '取消', role: 'cancel'},
                 {text: '确认', handler: () => {
-                  this.dailyProvider.deleteDaily(1).subscribe(
+                  let dailyId = this.daily.dailyId;
+                  this.dailyProvider.deleteDaily(dailyId).subscribe(
                     () => {
                       this.viewCtrl.dismiss();
+                      this.events.publish('daily:delete');
                     }
                   );
                 }}
@@ -64,17 +73,28 @@ export class DailyShowPage {
     });
   }
 
-  getDaily() {
-    let dailyId = 1;
-    this.dailyProvider.getDaily(dailyId).subscribe(
-      (data) => {
-        this.daily = data;
-      }
-    );
-  }
-
   goLikeList(){
     this.navCtrl.push("LikeListPage",{liker:this.daily.listStLike});
+  }
+
+  sendComment() {
+    if(this.comment) {
+      this.dailyProvider.commentDaily(this.daily.dynamicId, {
+        content: this.comment
+      }).subscribe(
+        () => {
+          this.comment = '';
+        }
+      );
+    }
+  }
+
+  sendLike() {
+    this.dailyProvider.likeDaily(this.daily.dynamicId).subscribe(
+      () => {
+
+      }
+    );
   }
 
 }

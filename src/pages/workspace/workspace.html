@@ -14,7 +14,7 @@
     <ion-avatar item-start>
       <img src="assets/imgs/user.jpg">
     </ion-avatar>
-    <h2 class="name">{{getUserInfo('name')}}
+    <h2 class="name">{{me.name}}
       <!-- <ion-note float-right (click)="goSignTags()">
         <ion-badge color="dark">签到</ion-badge>
       </ion-note>
@@ -23,8 +23,8 @@
       </ion-note> -->
       <div class="sign" (click)="goMeSign()">出差</div>
     </h2>
-    <p class="desc">单位：{{getUserInfo('unitName')}}</p>
-    <p class="desc">职位：{{getUserInfo('dutyName')}}</p>
+    <p class="desc">单位：{{me.unitName}}</p>
+    <p class="desc">职位：{{me.dutyName}}</p>
   </ion-item>
   <div class="gzt-main">
     <div class="gzt-item gzrz" (click)="goDailyMe()">

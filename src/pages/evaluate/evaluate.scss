@@ -1,19 +1,114 @@
 page-leaderevaluate {
-    .item-ios p {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-         white-space: normal;
+    .label {
+        p{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+             white-space: normal;
+        }
+        
          
-         &.text{
+        .text{
              color: #333;
-         }
+        }
 
-         &.subtext{
-             font-size: 0.35rem;
-         }
+        .subtext{
+            font-size: rem(13);
+            color: #AFAFAF;
+            letter-spacing: -0.08px;
+            text-align: right;
+            line-height: rem(15);
+        }
     }
     .item-block{
         min-height:0rem;
     }
+    .list {
+        margin: 0;
+        background: color($colors, light);
+    
+        .item{
+          min-height: auto;
+    
+          .item-inner{
+            min-height: auto;
+            padding: rem(16) rem(15);
+            border-bottom: .5px solid #f9f9f9;
+          }
+          .label{
+            margin: 0;
+            p{
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                 white-space: normal;
+                }
+            .text{
+                 color: #333;
+                }
+    
+            .subtext{
+                font-size: rem(13);
+                color: #AFAFAF;
+                letter-spacing: -0.08px;
+                text-align: right;
+                line-height: rem(15);
+                }
+            }
+          ion-thumbnail{
+            margin: 0 0 0 rem(22);
+            width: rem(68);
+            height: rem(68);
+            min-width: auto;
+            min-height: auto;
+    
+            img{
+              width: rem(68);
+              height: rem(68);
+            }
+          }
+    
+          h4{
+            font-family: PingFangSC-Medium;
+            font-size: rem(15);
+            color: #333;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            margin: 0 0 rem(15) 0;
+          }
+          .other{
+            color: #AFAFAF;
+            font-size: 0;
+    
+            ion-note{
+              height: rem(15);
+              font-size: rem(13);
+              color: #AFAFAF;
+              letter-spacing: -0.08px;
+              text-align: right;
+              line-height: rem(15);
+    
+              &:first-child{
+                margin-right: rem(16);
+              }
+              &:nth-child(2){
+                margin-right: rem(12);
+              }
+    
+              ion-icon{
+                width: rem(12);
+                height: rem(12);
+                line-height: rem(12);
+                color: #AFAFAF;
+                font-size: rem(12);
+              }
+            }
+          }
+        }
+      }
+
 }

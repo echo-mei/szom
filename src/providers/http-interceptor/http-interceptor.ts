@@ -18,7 +18,7 @@ export class HttpInterceptorProvider implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     let headers: HttpHeaders;
     if(this.storage.get('token')) {
-      headers = req.headers.set('Authorization', 'Bearer:'+this.storage.get('token'));
+      headers = req.headers.set('Authorization', this.storage.get('token'));
     }
     const appReq = req.clone({
       headers: headers
@@ -32,7 +32,7 @@ export class HttpInterceptorProvider implements HttpInterceptor {
       .mergeMap((event: any, index: any) => {
         if (event instanceof HttpResponse) { //只有当请求成功时，才会返回HttpResponse
           loading.dismiss();
-          if(event.body.errorCode) {
+          if(!event.body.success) {
             return Observable.create(observer => observer.error(event));//主动抛出状态码为200的业务逻辑异常
           }
         }
@@ -58,6 +58,11 @@ export class HttpInterceptorProvider implements HttpInterceptor {
             case 500:
                 // TODO: 500 处理
                 message = '服务器异常';
+                loading.dismiss();
+                break;
+            default:
+                // 其他错误
+                message = '异常';
                 loading.dismiss();
                 break;
         }

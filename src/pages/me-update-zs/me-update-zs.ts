@@ -9,10 +9,11 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class MeUpdateZsPage {
 
-  title:any;
-  attr:any;
-  value:any;
-  onSaveSuccess:any;
+  title: any;
+  attr: any;
+  user: any;
+
+  value: any;
 
   constructor(
     public navCtrl: NavController,
@@ -22,17 +23,19 @@ export class MeUpdateZsPage {
   ) {
     this.title = navParams.get('title');
     this.attr = navParams.get('attr');
-    this.value = navParams.get('value');
-    this.onSaveSuccess = navParams.get('onSaveSuccess');
+    this.user = navParams.get('user');
+    this.value = this.user[this.attr];
   }
 
   save() {
-    let selfInfo = {};
+    let selfInfo = {
+      ...this.user,
+    };
     selfInfo[this.attr] = this.value;
     this.userProvider.saveMySelfInfo(selfInfo).subscribe(
       (data) => {
-        this.onSaveSuccess();
         this.navCtrl.pop();
+        this.user[this.attr] = this.value;
       }
     );
   }

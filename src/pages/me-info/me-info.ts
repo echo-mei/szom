@@ -12,13 +12,14 @@ import { ImpressionProvider } from '../../providers/impression/impression';
 })
 export class MeInfoPage {
 
-  personInfo:any = 'baseInfo';
-
-  selfInfo:any;
-
   startDate: any;
   endDate: any;
-  tags:any[];
+
+  personInfo = 'selfInfo';
+
+  me: any = {};
+
+  selfInfo = {};
 
   constructor(
     public navCtrl: NavController,
@@ -29,43 +30,33 @@ export class MeInfoPage {
     public impressionProvider: ImpressionProvider
   ) {
     let date = new Date();
-    this.startDate = this.dateUtil.format(date, 'yyyy-MM');
-    this.endDate = this.dateUtil.format(new Date(date.getFullYear(), date.getMonth()+1, date.getDate()), 'yyyy-MM');
-    this.getMySelfInfo();
+    this.startDate = date.toISOString();
+    this.endDate = date.toISOString();
+    this.getMe();
+    this.getSelfInfo();
   }
 
-  changeDate() {
-    let params = {
-      startDate: this.startDate,
-      endDate: this.endDate
-    };
-    this.impressionProvider.listCount(params).subscribe(
-      (data) => {
-        this.tags = data;
+  getMe() {
+    this.userProvider.getMe().subscribe(
+      me => {
+        this.me = me;
       }
     );
   }
 
-  getMyInfo(attr) {
-    return this.storage.get('user') ? JSON.parse(this.storage.get('user'))[attr] : null;
-  }
-
-  getMySelfInfo() {
+  getSelfInfo() {
     this.userProvider.getMySelfInfo().subscribe(
-      info => {
-        this.selfInfo = info;
+      selfInfo => {
+        this.selfInfo = selfInfo;
       }
     );
   }
 
-  goMeUpdateZS(title, attr){
+  goMeUpdateZS(title, attr, user) {
     this.navCtrl.push('MeUpdateZsPage', {
       title: title,
       attr: attr,
-      value: this.selfInfo[attr],
-      onSaveSuccess: () => {
-        this.getMySelfInfo();
-      }
+      user: this.selfInfo
     });
   }
 

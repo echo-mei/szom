@@ -38,7 +38,12 @@
 
 <ion-footer no-border>
   <ion-item class="publish-comment" no-lines>
-    <ion-textarea rows=1 autosize placeholder="鼓励一下，让团队更凝聚"></ion-textarea>
-    <ion-icon item-end name="md-dianzanmoren" class="szom" color="primary"></ion-icon>
+    <ion-textarea rows=1 autosize placeholder="鼓励一下，让团队更凝聚" [(ngModel)]="comment"></ion-textarea>
+    <div item-end>
+      <button ion-button (click)="sendComment()">发送</button>
+      <button ion-button clear (click)="sendLike()">
+        <ion-icon name="md-dianzanmoren" class="szom" color="primary"></ion-icon>
+      </button>
+    </div>
   </ion-item>
 </ion-footer>

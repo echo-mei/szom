@@ -29,8 +29,6 @@ export class MyApp {
         this.splashScreen.hide();
       }
     );
-    this.getMe();
-    this.events.subscribe('user:login', this.getMe.bind(this));
     this.platform.registerBackButtonAction(() => {
       let activeNav: NavController = this.app.getActiveNavs()[0];
       if(activeNav.canGoBack()) {
@@ -56,18 +54,6 @@ export class MyApp {
 
   hasLogin() {
     return this.storage.get('token') ? true : false;
-  }
-
-  getMe() {
-    if(this.hasLogin()) {
-      this.userProvider.getMe().subscribe(
-        me => {
-          this.storage.set('user', JSON.stringify(me));
-        }
-      );
-    }else {
-      this.storage.remove('user');
-    }
   }
 }
 

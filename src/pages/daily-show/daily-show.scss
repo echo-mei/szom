@@ -38,7 +38,6 @@ page-daily-show {
         color: #4D74EB;
         font-size: rem(12);
         line-height: rem(20);
-        z-index: 3;
       }
       .like-names{
         flex: 1;
@@ -74,12 +73,15 @@ page-daily-show {
 
   .publish-comment{
     padding: rem(8) rem(15);
+    [item-end] {
+      height: rem(37);
+      margin: 0;
+    }
     ion-icon.szom {
       height: rem(37);
       line-height: rem(37);
       font-size: rem(24);
       color: #999999;
-      margin: 0  0 0 rem(22);
     }
     ion-textarea{
       line-height: rem(16);

@@ -3,16 +3,19 @@ import { BASE_URL } from '../config';
 
 let Random = Mock.Random;
 
-let login = `${BASE_URL}/login`;
+let login = new RegExp(`${BASE_URL}/users/login`);
 Mock.mock(login, 'post', {
+  success: true,
   msg: 'success',
   obj: {
-    tokenId: Math.random().toString(22).substr(2)
+    authorization: Math.random().toString(22).substr(2),
+    userCode: 1
   }
 });
 
-let getMe = `${BASE_URL}/personInfo`;
+let getMe = new RegExp(`${BASE_URL}/personInfo`);
 Mock.mock(getMe, 'get', {
+  success: true,
   msg: 'success',
   obj: {
     'personId': 1,
@@ -42,6 +45,7 @@ let selefInfo = {
 let personInfoStatement = new RegExp(`${BASE_URL}/personInfo/statement`);
 Mock.mock(personInfoStatement, 'get', function() {
   return {
+    success: true,
     msg: 'success',
     obj: selefInfo
   }
@@ -52,6 +56,7 @@ Mock.mock(personInfoStatement, 'post', function(req) {
     selefInfo[key] = body[key];
   }
   return {
+    success: true,
     msg: 'success',
     obj: selefInfo
   }
@@ -59,6 +64,7 @@ Mock.mock(personInfoStatement, 'post', function(req) {
 
 let signInCount = new RegExp(`${BASE_URL}/signIn/count`);
 Mock.mock(signInCount, 'get', {
+  success: true,
   'msg': 'success',
   'obj|1-10': [{
     'signInType': function() {
@@ -71,10 +77,12 @@ Mock.mock(signInCount, 'get', {
 });
 let signIn = new RegExp(`${BASE_URL}/signIn`);
 Mock.mock(signIn, 'post', {
+  success: true,
   msg: 'success',
   obj: {}
 });
 Mock.mock(signIn, 'get', {
+  success: true,
   msg: 'success',
   'obj|1-30': [
     {
@@ -92,6 +100,7 @@ Mock.mock(signIn, 'get', {
 
 let impressionCount = new RegExp(`${BASE_URL}/impressionTag/count`);
 Mock.mock(impressionCount, 'get', {
+  success: true,
   msg: 'success',
   'obj|1-10': [{
     'tagName': function() {
@@ -105,6 +114,7 @@ Mock.mock(impressionCount, 'get', {
 
 let daily = new RegExp(`${BASE_URL}/logDaily/[1-9]+`);
 Mock.mock(daily, 'get', {
+  success: true,
   msg: 'success',
   obj: {
     dailyId: 1,
@@ -147,6 +157,7 @@ Mock.mock(daily, 'get', {
   }
 });
 Mock.mock(daily, 'delete', {
+  success: true,
   msg: 'success',
   obj: {}
 });
@@ -154,10 +165,12 @@ Mock.mock(daily, 'delete', {
 // 我的工作日志列表
 let logDailyList = new RegExp(`${BASE_URL}/logDaily[?]?`);
 Mock.mock(logDailyList, 'get', {
+    success: true,
     msg: 'success',
     'obj|1-10': [{
         // 属性 id 是一个自增数，起始值为 1，每次增 1
         'dailyId|+1': 1,
+        'dynamicId|+1': 1,
         'title':function () {
           return Random.cparagraph();
         },
@@ -170,16 +183,34 @@ Mock.mock(logDailyList, 'get', {
         'likeCount':function(){
           return Random.natural(1,20);
         },
+        'listStLike|0-20': [
+          {
+            'name': function() {
+              return Random.string('李三张无季白银银小子', 3);
+            }
+          }
+        ],
         'commentCount':function(){
           return Random.natural(1,20);
-        }
+        },
+        'listStComment': [
+          {
+            'operatorName': function() {
+              return Random.string('李三张无季白银银小子', 3);
+            },
+            'content': function() {
+              return Random.cparagraph(1);
+            }
+          }
+        ]
       }]
   }
 );
 // 我的工作日志点赞数分类列表
-let findSTLike = new RegExp(`${BASE_URL}/stLike/findStLikeCashByAccountCodeAndType`);
+let findSTLike = new RegExp(`${BASE_URL}/logDaily/findLikeCount`);
 const jobLevel = ['市领导','局级领导','处级领导','科级领导','科级以下干部']
 Mock.mock(findSTLike, 'get', {
+    success: true,
     msg: 'success',
     'obj|1-5':[{
       'jobLevel|+1': jobLevel,
@@ -193,6 +224,7 @@ Mock.mock(findSTLike, 'get', {
 // 获取干部评价列表
 let evaluate = new RegExp(`${BASE_URL}/personalEvaluation`);
 Mock.mock(evaluate, 'get', {
+  success: true,
   msg: 'success',
   'obj|5-10': [{
       // 属性 id 是一个自增数，起始值为 1，每次增 1
@@ -212,18 +244,21 @@ Mock.mock(evaluate, 'get', {
 //创建干部评价
 let evaluateCreate = new RegExp(`${BASE_URL}/personalEvaluation`);
 Mock.mock(evaluateCreate, 'post', {
+  success: true,
   msg: 'success',
   obj: {}
 });
 //修改干部评价
 let evaluateUpdate = new RegExp(`${BASE_URL}/personalEvaluation`);
 Mock.mock(evaluateUpdate, 'put', {
+  success: true,
   msg: 'success',
   obj: {}
 });
 //修改干部评价
 let evaluateDelete = new RegExp(`${BASE_URL}/personalEvaluation/[1-9]+`);
 Mock.mock(evaluateDelete, 'delete', {
+  success: true,
   msg: 'success',
   obj: {}
 });
@@ -238,6 +273,7 @@ Mock.mock(logDaily, 'post', function(req) {
     createDailyInfo[key] = body[key];
   }
   return {
+    success: true,
     msg: 'success',
     obj: {createDailyInfo}
   }
@@ -246,6 +282,7 @@ Mock.mock(logDaily, 'post', function(req) {
 // 每周一励
 let dailyOneList = new RegExp(`${BASE_URL}/logWeekly[?]?`);
 Mock.mock(dailyOneList, 'get', {
+    success: true,
     msg: 'success',
     'obj|1-10': [{
       // 属性 id 是一个自增数，起始值为 1，每次增 1
@@ -275,6 +312,7 @@ Mock.mock(dailyOneList, 'get', {
 // 每季三励
 let dailyThreeList = new RegExp(`${BASE_URL}/logQuarterly[?]?`);
 Mock.mock(dailyThreeList, 'get', {
+    success: true,
     msg: 'success',
     'obj|1-10': [{
       // 属性 id 是一个自增数，起始值为 1，每次增 1
@@ -304,6 +342,7 @@ Mock.mock(dailyThreeList, 'get', {
 // 每年十励
 let dailyTenList = new RegExp(`${BASE_URL}/logYearly[?]?`);
 Mock.mock(dailyTenList, 'get', {
+    success: true,
     msg: 'success',
     'obj|1-10': [{
       // 属性 id 是一个自增数，起始值为 1，每次增 1
@@ -333,6 +372,7 @@ Mock.mock(dailyTenList, 'get', {
 
 let addressListOfFriend = new RegExp(`${BASE_URL}/getFriendsList/[1-9]+`);
 Mock.mock(addressListOfFriend, 'get', {
+  success: true,
   msg: 'success',
   'obj|1-10': [{
       'name': function() {
@@ -349,6 +389,7 @@ Mock.mock(addressListOfFriend, 'get', {
 
 let getTeamList = new RegExp(`${BASE_URL}/teamlist/[1-9]+`);
 Mock.mock(getTeamList, 'get', {
+  success: true,
   msg: 'success',
   obj: [
     {'text': '领导班子12', 'uid': '1'},
@@ -364,6 +405,7 @@ Mock.mock(getTeamList, 'get', {
 let getPersonList = new RegExp(`${BASE_URL}/getPersonList/[1-9]+`);
 Mock.mock(getPersonList, 'get', function(req){
   return {
+    success: true,
     msg: 'success',
     obj: [
       {img:'',name:'张爱民1',unit:'宣传科干事', pid: 1},
@@ -383,6 +425,7 @@ Mock.mock(getPersonList, 'get', function(req){
 let getPersonInfo = new RegExp(`${BASE_URL}/getPersonInfo/[0-9]+`);
 Mock.mock(getPersonInfo, 'get', function(req){
   return {
+    success: true,
     msg: 'success',
     obj: {
       'age': 20,
@@ -394,4 +437,23 @@ Mock.mock(getPersonInfo, 'get', function(req){
     }
   }
 })
+
+let createStComment = new RegExp(`${BASE_URL}/dynamicbiz/createStComment/[0-9]+`);
+Mock.mock(createStComment, 'post', function(req){
+  return {
+    success: true,
+    msg: 'success',
+    obj: {}
+  }
+});
+
+let createStLike = new RegExp(`${BASE_URL}/dynamicbiz/createStLike/[0-9]+`);
+Mock.mock(createStLike, 'post', function(req){
+  return {
+    success: true,
+    msg: 'success',
+    obj: {}
+  }
+});
+
 export {};

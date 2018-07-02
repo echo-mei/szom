@@ -12,15 +12,24 @@
       <div class="image"></div>
     </div>
     <ion-item>
-      <ion-input formControlName="userCode" placeholder="手机号/用户名"></ion-input>
+      <ion-input formControlName="userCode" placeholder="账号/手机号"></ion-input>
       <button type="button" ion-button clear item-end *ngIf="loginForm.controls['userCode'].value" (click)="loginForm.controls['userCode'].setValue('')">
-        <ion-icon name="guanbi"></ion-icon>
+        <ion-icon class="szom" name="guanbi"></ion-icon>
       </button>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="!isPhone()">
       <ion-input formControlName="password" [type]="showPassword?'text':'password'" placeholder="密码"></ion-input>
       <button type="button" ion-button clear item-end *ngIf="loginForm.controls['password'].value" (click)="showPassword=!showPassword">
-        <ion-icon [name]="showPassword?'yanjing':'icon-eye-close'"></ion-icon>
+        <ion-icon class="szom" [name]="showPassword?'yanjing':'icon-eye-close'"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item *ngIf="isPhone()">
+      <ion-input formControlName="msgCode" placeholder="短信验证码"></ion-input>
+      <button *ngIf="!second" type="button" ion-button clear item-end (click)="getSMSCode()">
+        获取验证码
+      </button>
+      <button *ngIf="second" type="button" ion-button clear item-end>
+        {{second}} 秒
       </button>
     </ion-item>
     <button ion-button block [disabled]="loginForm.invalid">登陆</button>

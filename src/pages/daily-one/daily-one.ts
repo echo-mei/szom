@@ -12,6 +12,8 @@ export class DailyOnePage {
   //每周一励
   dailyOneList: Array<object>;
   single:boolean = true;
+  public nowTime='2018.06.29 - 2018.06.30';
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -45,5 +47,8 @@ export class DailyOnePage {
     this.navCtrl.push('DailyShowPage', { 'single': this.single });
   }
 
+  goDailySearch(){
+    this.navCtrl.push('SearchConditionsPage');
+  }
 
 }

@@ -13,6 +13,7 @@ page-daily-me {
       position: relative;
       height: rem(67);
       line-height: rem(67);
+      font-family: PingFangSC-Semibold;
       font-size: rem(48);
       margin-bottom: rem(32);
       text-align: center;
@@ -22,6 +23,8 @@ page-daily-me {
         margin:rem(-9) 0 0 0;
         height: rem(18);
         line-height: rem(18);
+        opacity: 0.68;
+        font-family: DINCondensed-Bold;
         font-size: rem(12);
       }
     }
@@ -40,11 +43,13 @@ page-daily-me {
           &.num{
             height: rem(25);
             line-height: rem(25);
+            font-family: PingFangSC-Medium;
             font-size: rem(18);
           }
           &.des{
             height: rem(14);
             line-height: rem(14);
+            font-family: PingFangSC-Regular;
             font-size: rem(10);
           }
         }
@@ -55,25 +60,25 @@ page-daily-me {
     height: rem(48);
   }
   .toolbar-ios{
-      height: rem(48);
+    height: rem(48);
   }
   .fixed-content{
-      margin-top: rem(48);
+    margin-top: rem(48);
   }
   .scroll-content{
       margin-top: rem(48);
   }
-  .daily-list {
+  .list {
     margin: 0;
     background: color($colors, light);
 
     .item{
-      padding: rem(16) rem(15);
       min-height: auto;
 
       .item-inner{
         min-height: auto;
-        padding: 0;
+        padding: rem(16) rem(15);
+        border-bottom: .5px solid #f9f9f9;
       }
       .label{margin: 0;}
       ion-thumbnail{
@@ -90,8 +95,8 @@ page-daily-me {
       }
 
       h4{
+        font-family: PingFangSC-Medium;
         font-size: rem(15);
-        font-weight: 700;
         color: #333;
         display: -webkit-box;
         -webkit-line-clamp: 2;

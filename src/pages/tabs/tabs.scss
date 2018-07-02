@@ -30,10 +30,10 @@ page-tabs {
                     color: #FFFFFF;
                     letter-spacing: -0.35px;
                     background: #F5222D;
-                    border: 1px solid #FFFFFF;
                     border-radius: rem(100);
-                    top: -1px;
-                    right: calc(50% - 25px);
+                    right: calc(50% - 16px);
+                    padding: rem(4);
+                    min-width: auto;
                 }
             }
     

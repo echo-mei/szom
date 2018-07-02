@@ -1,6 +1,6 @@
 <ion-header no-border>
 
-  <ion-navbar color="primary" text-center>
+  <ion-navbar color="primary">
     <ion-title text-center>工作日志</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goDailySearch()">
@@ -29,8 +29,8 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-list *ngIf="logDataList" class="daily-list" no-lines>
-    <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow()">
+  <ion-list *ngIf="logDataList" class="daily-list">
+    <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
       <h4>{{log.title}}</h4>
       <div class="other">
         <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
@@ -39,10 +39,13 @@
         <ion-note>
           <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.commentCount}}</ion-note>
       </div>
-      <ion-thumbnail item-end *ngIf="i%2==0">
+      <!-- <ion-thumbnail item-end *ngIf="i%2==0">
         <img src="img/thumbnail-totoro.png">
-        <!-- <img-loader src="img/thumbnail-totoro.png" useImg fallback="assets/imgs/fail.jpg"></img-loader> -->
-      </ion-thumbnail>
+        <img-loader src="img/thumbnail-totoro.png" useImg fallback="assets/imgs/fail.jpg"></img-loader>
+      </ion-thumbnail> -->
     </ion-item>
   </ion-list>
+  <ion-infinite-scroll (ionInfinite)="more($event)">
+    <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

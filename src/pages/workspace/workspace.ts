@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, PopoverController
 import { StorageProvider } from '../../providers/storage/storage';
 import { SignDatePage } from '../sign-date/sign-date';
 import { SignTagsPage } from '../sign-tags/sign-tags';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -11,17 +12,25 @@ import { SignTagsPage } from '../sign-tags/sign-tags';
 })
 export class WorkspacePage {
 
+  me: any = {};
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public storage: StorageProvider,
     public alertCtrl: AlertController,
-    public popoverCtrl: PopoverController
+    public popoverCtrl: PopoverController,
+    public userProvider: UserProvider
   ) {
+    this.getMe();
   }
 
-  getUserInfo(attr) {
-    return this.storage.get('user') ? JSON.parse(this.storage.get('user'))[attr] : null;
+  getMe() {
+    this.userProvider.getMe().subscribe(
+      me => {
+        this.me = me;
+      }
+    );
   }
 
   goSignTags() {

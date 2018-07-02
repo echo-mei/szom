@@ -35,6 +35,9 @@ export class EvaluatePage {
   goEvaluateCreate(){
     this.navCtrl.push('EvaluteCreatePage');
   }
+  goEvaluatSearch(){
+    this.navCtrl.push('SearchConditionsPage');
+  }
 
   getZzbmInitDatas(){
     this.flag = 1;

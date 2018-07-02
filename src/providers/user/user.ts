@@ -2,36 +2,48 @@ import { Injectable } from '@angular/core';
 import { HttpProvider } from '../http/http';
 import { BASE_URL } from '../../config';
 import { Observable } from 'rxjs';
+import { StorageProvider } from '../storage/storage';
 
 @Injectable()
 export class UserProvider {
 
   constructor(
-    public http: HttpProvider
+    public http: HttpProvider,
+    public storage: StorageProvider
   ) {
   }
 
   // 登陆
-  login(userName, password): Observable<any> {
-    return this.http.post(`${BASE_URL}/login`, {
-      userName: userName,
-      password: password
+  login(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/base/login`, params);
+  }
+
+  // 短信验证码登陆
+  sendSMSCode(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/base/sendSMSCode`, params);
+  }
+
+  // 获取验证码
+  getSMSCode(userCode): Observable<any> {
+    return this.http.get(`${BASE_URL}/base/getSMSCode`, {
+      userCode: userCode
     });
   }
 
   // 获取我的个人信息
   getMe(): Observable<any> {
-    return this.http.get(`${BASE_URL}/personInfo`);
-  }
-
-  // 获取我的基本信息
-  getMySelfInfo(): Observable<any> {
-    return this.http.get(`${BASE_URL}/personInfo/statement`);
+    return this.http.get(`${BASE_URL}/personInfo`, {userCode: JSON.parse(this.storage.get('user')).userCode});
   }
 
   // 获取我的自述信息
+  getMySelfInfo(): Observable<any> {
+    let personId = JSON.parse(this.storage.get('user')).personId;
+    return this.http.get(`${BASE_URL}/personalStatement/${personId}`);
+  }
+
+  // 修改我的自述信息
   saveMySelfInfo(selfInfo): Observable<any> {
-    return this.http.post(`${BASE_URL}/personInfo/statement`, selfInfo);
+    return this.http.post(`${BASE_URL}/personalStatement`, selfInfo);
   }
 
   // 获取我的印象标签列表

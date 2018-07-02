@@ -36,7 +36,7 @@ page-daily-one {
     }
     .context-box{
         margin-left: 15px;
-        padding: 5px;
+        padding: 0 rem(15) rem(16) rem(15);
         padding-left: 25px;
         padding-bottom: 30px;
         border-left: 1px solid #999;
@@ -44,6 +44,29 @@ page-daily-one {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: normal;
+        h3{
+            font-family: PingFangSC-Medium;
+            font-size: rem(15)!important;
+            color: #333;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            margin: 0 0 rem(15) 0;
+        }
+        .action-box{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 1.5rem;
+            font-size: 1.3rem;
+            color: #AFAFAF;
+            letter-spacing: -0.08px;
+            text-align: right;
+            line-height: 1.5rem;
+        }
     }
     .text-area{
         height: 60px;

@@ -12,23 +12,21 @@
 </ion-header>
 
 
-<ion-content padding>
-  <form>
+<ion-content>
+  <form [formGroup]="dailyForm">
     <ion-list no-lines>
-      <ion-item no-padding class="daily-title">
-        <ion-label>标题</ion-label>
-        <ion-input type="text" [(ngModel)]="title" name="title"></ion-input>
+      <ion-item>
+        <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
       </ion-item>
-
-      <ion-item no-padding class="daily-content">
-        <ion-textarea [(ngModel)]="content" name="content" placeholder="来说说今天都做了些什么..."></ion-textarea>
-      </ion-item>
-
-      <image-picker #imagePicker></image-picker>
-
-      <ion-item no-padding class="btn-release">
-        <button ion-button block (click)="postDailyCreate()">发布</button>
+      <ion-item>
+        <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
       </ion-item>
     </ion-list>
+    <image-picker #imagePicker></image-picker>
+    <ion-row padding-horizontal class="btn-row">
+      <ion-col>
+        <button ion-button block (click)="postDailyCreate()" [disabled]="dailyForm.invalid">发布</button>
+      </ion-col>
+    </ion-row>
   </form>
 </ion-content>

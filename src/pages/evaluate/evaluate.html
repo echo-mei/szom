@@ -1,10 +1,13 @@
 <ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title>干部评价</ion-title>
     <ion-buttons right>
+      <button ion-button (click)="goEvaluatSearch()">
+        <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      </button>
       <button ion-button (click)="goEvaluateCreate()">
-        <ion-icon name="ios-create-outline"></ion-icon>
+        <ion-icon class="szom" name="md-xierizhi"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -24,17 +27,17 @@
     <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-list *ngSwitchCase="'zzbm'" inset>
+    <ion-list *ngSwitchCase="'zzbm'">
       <ion-item  *ngFor="let evaluate of zzbmEvaluateLists">
-        <p class="text">{{evaluate.evaluationTitle}}</p>
+        <h4 class="text">{{evaluate.evaluationTitle}}</h4>
         <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
         <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
       </ion-item>
     </ion-list>
   
-    <ion-list *ngSwitchCase="'sjld'" inset>
+    <ion-list *ngSwitchCase="'sjld'">
       <ion-item  *ngFor="let evaluate of sjldEvaluateLists">
-        <p class="text">{{evaluate.evaluationTitle}}</p>
+        <h4 class="text">{{evaluate.evaluationTitle}}</h4>
         <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
         <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
       </ion-item>

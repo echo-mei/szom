@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { IonicPage, Events, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { UserProvider } from '../../providers/user/user';
@@ -12,6 +12,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class LoginPage {
 
+  second:number;
   loginForm: FormGroup;
   showPassword: false;
 
@@ -31,19 +32,56 @@ export class LoginPage {
     );
     this.loginForm = formBuilder.group({
       userCode: ['', Validators.compose([Validators.required])],
-      password: ['', Validators.compose([Validators.required])]
+      password: [''],
+      msgCode: ['']
     });
   }
 
-  login() {
-    if ( this.loginForm.controls['userCode'].hasError('required')
-    || this.loginForm.controls['password'].hasError('required') ) {
-      return;
+  isPhone() {
+    let flag = this.loginForm.controls['userCode'].value
+      &&/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/.test(this.loginForm.controls['userCode'].value);
+    if(flag) {
+      this.loginForm.controls['password'].clearValidators();
+      this.loginForm.controls['password'].updateValueAndValidity();
+      this.loginForm.controls['msgCode'].setValidators([Validators.required]);
+    }else {
+      this.loginForm.controls['msgCode'].clearValidators();
+      this.loginForm.controls['msgCode'].updateValueAndValidity();
+      this.loginForm.controls['password'].setValidators([Validators.required]);
     }
-    this.userProvider.login(this.loginForm.value.userCode, this.loginForm.value.password).subscribe(
+    return flag;
+  }
+
+  getSMSCode() {
+    this.userProvider.getSMSCode(this.loginForm.value.userCode).subscribe(
+      () => {
+        this.second = 60;
+        let interval = setInterval(() => {
+          this.second = this.second - 1;
+          if(this.second==0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      }
+    );
+  }
+
+  login() {
+    let params = {
+      userCode: this.loginForm.value.userCode,
+      channel: /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 'MOBILE' : 'PC'
+    };
+    let fn = 'login';
+    if(this.isPhone()) {
+      params['msgCode'] = this.loginForm.value.msgCode;
+      fn = 'sendSMSCode';
+    }else {
+      params['password'] = this.loginForm.value.password;
+    }
+    this.userProvider[fn](params).subscribe(
       (data) => {
-        this.storage.set('token', data.tokenId);
-        this.events.publish('user:login');
+        this.storage.set('token', data.authorization);
+        this.storage.set('user', JSON.stringify(data));
       }
     );
   }

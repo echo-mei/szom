@@ -16,8 +16,8 @@ export class DailyProvider {
   }
 
   // 获取获赞情况
-  getfindSTLike(params): Observable<any> {
-    return this.http.get(`${BASE_URL}/stLike/findStLikeCashByAccountCodeAndType`,params);
+  getfindSTLike(accountType): Observable<any> {
+    return this.http.get(`${BASE_URL}/logDaily/findLikeCount/${accountType}`);
   }
 
   // 创建日志
@@ -31,13 +31,8 @@ export class DailyProvider {
   }
 
   // 修改日志
-  sendDailyList(title,content,publisher,dailyId): Observable<any> {
-    return this.http.post(`${BASE_URL}/logDaily`,{
-      title: title,
-      content: content,
-      publisher:publisher,
-      dailyId:dailyId,
-    });
+  updateDaily(dailyId, params): Observable<any> {
+    return this.http.put(`${BASE_URL}/logDaily/${dailyId}`, params);
   }
 
   // 删除日志
@@ -57,14 +52,14 @@ export class DailyProvider {
     return null;
   }
 
-  commentDaily(params): Observable<any> {
+  commentDaily(dynamicId, params): Observable<any> {
     // TODO: 评论日志
-    return null;
+    return this.http.post(`${BASE_URL}/dynamicbiz/createStComment/${dynamicId}`, params);
   }
 
-  likeDaily(params): Observable<any> {
+  likeDaily(dynamicId): Observable<any> {
     // TODO: 点赞日志
-    return null;
+    return this.http.post(`${BASE_URL}/dynamicbiz/createStLike/${dynamicId}`);
   }
 
   cancelLikeDaily(params): Observable<any> {

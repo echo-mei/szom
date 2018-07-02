@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,AlertController, Events } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { ImagePickerComponent } from '../../components/image-picker/image-picker';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -12,49 +13,42 @@ export class DailyUpdatePage {
 
   @ViewChild('imagePicker') imagePicker: ImagePickerComponent;
 
-  sendDataList: Array<object>;
-
-  titleName: string;
-  textName: string;
-
   single:boolean = false;
+
+  daily: any;
+
+  dailyForm: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public alertController: AlertController,
-    ) {
+    public formBuilder: FormBuilder,
+    public events: Events
+  ) {
+    this.daily = this.navParams.get('daily');
     this.single = this.navParams.get('single');
-    this.titleName = this.navParams.get('title');
-    this.textName = this.navParams.get('content');
-  }
-  //修改工作日志
-  sendDailyList(){
-    this.dailyProvider.sendDailyList(this.titleName,this.textName,null,null).subscribe(
-      (data) => {
-        this.sendDataList = data;
-        this.navCtrl.pop();
-      }
-    )
+    this.dailyForm = this.formBuilder.group({
+      title: [this.daily.title, Validators.compose([Validators.required])],
+      content: [this.daily.content, Validators.compose([Validators.required])]
+    });
   }
 
-  goDailyList() {
-    let that = this;
-    let getcontent =function(data){
-      return new Promise (
-        resolve=>{
-          if(data){
-            that.titleName = data.title;
-            that.textName = data.content;
-          }else{
-            console.log(data);
+  //修改工作日志
+  sendDailyList(){
+    this.dailyProvider.updateDaily(this.daily.dailyId, this.dailyForm.value).subscribe(
+      () => {
+        this.navCtrl.pop();
+        this.dailyProvider.getDaily(this.daily.dailyId).subscribe(
+          daily => {
+            for(let key in daily) {
+              this.daily[key] = daily[key];
+            }
           }
-          resolve();
-        }
-      ) 
-    }
-    this.navCtrl.push('DailyListRadioPage', {callback:getcontent});
+        );
+      }
+    );
   }
 
 }

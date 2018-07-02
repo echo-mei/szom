@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, AlertController} from 'ionic-angular';
 import { StorageProvider } from '../../providers/storage/storage';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -9,10 +10,14 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class MePage {
 
+  me: any = {};
+
   constructor(
     public storage: StorageProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public userProvider: UserProvider
   ) {
+    this.getMe();
   }
 
   logout() {
@@ -35,8 +40,12 @@ export class MePage {
     alert.present();
   }
 
-  getUserInfo(attr) {
-    return this.storage.get('user') ? JSON.parse(this.storage.get('user'))[attr] : null;
+  getMe() {
+    this.userProvider.getMe().subscribe(
+      me => {
+        this.me = me;
+      }
+    );
   }
 
 }
