@@ -60,12 +60,12 @@ page-daily-ten {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 1.5rem;
-            font-size: 1.3rem;
+            height: rem(15);
+            font-size: rem(13);
             color: #AFAFAF;
             letter-spacing: -0.08px;
             text-align: right;
-            line-height: 1.5rem;
+            line-height: rem(15);
         }
     }
     .text-area{

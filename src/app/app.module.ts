@@ -39,10 +39,10 @@ import { ImageUtilProvider } from '../providers/image-util/image-util';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// import * as Test from '../test/mock';
-// Test;
-// import * as VConsole from 'vconsole';
-// new VConsole();
+import * as Test from '../test/mock';
+Test;
+import * as VConsole from 'vconsole';
+new VConsole();
 
 @NgModule({
   declarations: [

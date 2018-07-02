@@ -1,3 +1,16 @@
 page-me-info {
-
+  // 头部
+  .toolbar{
+    padding: 2rem 0;
+  }
+  .scroll-content{
+    margin-top: 50px;
+    padding:0px!important;
+  }
+  .toolbar-background-ios{
+    border-color: transparent!important;
+  }
+  .toolbar .back-button{
+    top: 0.5rem;
+  }
 }

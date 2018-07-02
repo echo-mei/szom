@@ -32,6 +32,6 @@ export class AddresslistOtherPage {
   }
 
   getTeamList() {
-    this.navCtrl.push('TeamListPage');
+    this.navCtrl.push('TeamListUnitPage');
   }
 }

@@ -11,8 +11,8 @@
   <ion-searchbar placeholder="搜索服务、办事项目"></ion-searchbar>
   <ion-list no-lines>
     <ion-item-group *ngFor="let item of teamlist">
-      <ion-item-divider> {{ item.text }}<ion-icon class="szom" name="md-shang"></ion-icon></ion-item-divider>
-      <ion-list class="peoples">
+      <ion-item-divider (click)="showDetail = !showDetail"> {{ item.text }}<ion-icon class="szom" name="md-shang"></ion-icon></ion-item-divider>
+      <ion-list class="peoples" *ngIf="showDetail">
         <ion-item *ngFor="let item of teamlist">
           <ion-avatar item-start>
             <img src="assets/imgs/user.jpg">

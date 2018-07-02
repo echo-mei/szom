@@ -1,3 +1,75 @@
 page-dynamic {
-
+    .item ion-avatar{
+        margin-right: rem(10) !important;
+    }
+    .list .item-block .item-inner{
+        border-bottom: 0 !important;
+        margin-bottom: rem(3);
+    }
+    h2{
+        margin-top: 0;
+        font-size: rem(17);
+        margin-bottom: rem(10);
+        color: #262626;
+    }
+    .card-header{
+        padding-bottom: rem(8);
+    }
+    .content{
+        font-size: rem(15);
+        color: #595959;
+    }
+    img{
+        width: 100%;
+    }
+    .zan{
+        float: right;
+    }
+    // .com{
+    //     float: right;
+    // }
+    .zanNum{
+        margin-right: rem(20);
+        padding-left: rem(3);
+        font-size: rem(13);
+    }
+    .com{
+        margin-right: 0px !important;
+        
+    }
+    .comNum{
+        padding-left: rem(3);
+        font-size: rem(13);
+    }
+    .pubTime{
+        font-size: rem(13);
+    }
+    .card-content{
+        padding-bottom: 0 !important;
+    }
+    .item-block{
+        padding-top: 0px !important;
+        padding-bottom: 0 !important;
+    }
+    .zanList{
+        color: #4D74EB;
+    }
+    .zanName{
+        color: #4D74EB;
+        font-size: rem(14);
+    }
+    .row{
+        padding-bottom: 0 !important;
+    }
+    .comList a{
+        font-size: rem(14);
+        color: #4D74EB;
+    }
+    .comList span{
+        font-size: rem(14);
+        color: #595959;
+    }
+    .comList p{
+        margin: rem(10) 0 !important;
+    }
 }

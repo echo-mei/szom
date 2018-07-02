@@ -67,4 +67,48 @@ page-work-weektable {
         border: 1px solid #10A0FC;
         color: #10A0FC;
     }
+    // 头部
+ .toolbar{
+    padding: 2rem 0;
+  }
+  .scroll-content{
+    margin-top: 50px;
+    padding:0px!important;
+  }
+  .toolbar-background-ios{
+    border-color: transparent!important;
+  }
+  .toolbar .back-button{
+    top: 0.5rem;
+  }
+  .toolbar .bar-buttons .bar-button:not(first-child){
+      font-size: 1.5rem;
+  }
+// 内容
+.content-ios{
+    background-color: #efeff4;
+    padding:0px;
+}
+.time-select{
+    background-color: #ffff;
+    margin-bottom:15px;
+}
+ul{
+    background-color: #ffff;
+}
+.day-data{
+    border-bottom: none;
+}
+.day-data > div,.Period,.work{
+    border: 1px solid #e5e5e5!important;
+}
+.work-data li > .work button{
+    background: #fff;
+}
+.button-round-ios{
+    padding: 0 3rem;
+}
+ .day-data > div,.Period{
+     color:#888888;
+ }
 }

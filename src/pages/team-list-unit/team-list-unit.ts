@@ -18,6 +18,7 @@ export class TeamListUnitPage {
   // teamlist=[];
   public teamlist: any;
   public personList: any;
+  showDetail:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public addresslistProvider: AddresslistProvider) {
   }

@@ -29,36 +29,34 @@
   </ion-segment>
   <div [ngSwitch]="type">
     <ion-list *ngSwitchCase="'1'">
-      <ion-card>
+      <!-- <ion-card> -->
         <ion-card-header>
           <ion-item no-padding>
             <ion-avatar item-start>
               <img src="assets/imgs/user.jpg">
             </ion-avatar>
-            <h2>周爱国</h2>
+            <h3>周爱国</h3>
           </ion-item>
         </ion-card-header>
         <ion-card-content>
           <h2>《习近平在中国共产党第十九大全国代表大会上的报告》学习心得</h2>
-          <p>大会的主题是：不忘初心，牢记使命，高举中国特色社会主义伟大旗帜，决胜全面建设小康社会，夺取新时代中国特色社会主义伟大胜利，为实现中华名族伟大复兴...</p>
+          <p class="content">大会的主题是：不忘初心，牢记使命，高举中国特色社会主义伟大旗帜，决胜全面建设小康社会，夺取新时代中国特色社会主义伟大胜利，为实现中华名族伟大复兴...</p>
           <img src="assets/imgs/horizontal.png">
+          
         </ion-card-content>
-        <ion-item>
-          <p>2018-06-08 12:30</p>
-          <ion-buttons item-end>
-            <button ion-button clear>
-              <ion-icon name="star"></ion-icon>
-            </button>
-            <button ion-button clear>
-              <ion-icon name="star"></ion-icon>
-            </button>
-          </ion-buttons>
+        <ion-item padding>
+          <ion-note class="pubTime">2018-07-02</ion-note>
+          
+          <ion-note>
+              <ion-note class="zan comNum ">20</ion-note><ion-icon class="szom zan com" name="md-xiaoxi"></ion-icon> </ion-note>
+          <ion-note>
+              <ion-note class="zan zanNum">15</ion-note><ion-icon class="szom zan" name="md-dianzanmoren"></ion-icon></ion-note>
         </ion-item>
-        <ion-row align-items-center>
+        <ion-row align-items-top padding>
           <ion-col col-1>
-            <ion-icon name="star"></ion-icon>
+            <ion-icon class="szom zanList" name="md-dianzandianji"></ion-icon>
           </ion-col>
-          <ion-col>
+          <ion-col class="zanName">
             <a>李爱国</a>、
             <a>李爱国</a>、
             <a>李爱国</a>、
@@ -72,13 +70,13 @@
             <a>李爱国</a>、
           </ion-col>
         </ion-row>
-        <ion-list padding-horizontal>
-          <p><a>李爱国：</a>厉害了，我的国！挥洒热血！兴邦立业！打倒腐败资本社会！</p>
-          <p><a>李爱国：</a>厉害了，我的国！</p>
-          <p><a>李爱国：</a>厉害了，我的国！</p>
-          <p><a>李爱国：</a>厉害了，我的国！</p>
+        <ion-list padding-horizontal class="comList">
+          <p><a>李爱国：</a><span>厉害了，我的国！挥洒热血！兴邦立业！打倒腐败资本社会！</span></p>
+          <p><a>李爱国：</a><span>厉害了，我的国！</span></p>
+          <p><a>李爱国：</a><span>厉害了，我的国！</span></p>
+          <p><a>李爱国：</a><span>厉害了，我的国！</span></p>
         </ion-list>
-      </ion-card>
+      <!-- </ion-card> -->
     </ion-list>
     <ion-list *ngSwitchCase="'2'">
       2
