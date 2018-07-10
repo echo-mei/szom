@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar>
     <ion-title>详细资料</ion-title>
@@ -8,50 +8,58 @@
 
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-avatar>
-      <h2>张爱民</h2>
-      <p>单位：宣传科</p>
-      <p>职务：干部一处处长</p>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <ion-item>
-      <ion-label>年龄</ion-label>
-      <ion-label item-end>{{ personInfo.age }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>性别</ion-label>
-      <ion-label item-end>{{ personInfo.sex }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>全日制学历学位</ion-label>
-      <ion-label item-end>{{ personInfo.allDayDegree }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>全日制毕业院校及专业</ion-label>
-      <ion-label item-end>{{ personInfo.graSchool }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>在职学历学位</ion-label>
-      <ion-label item-end>{{ personInfo.nowDegree }}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>在职毕业院校及专业</ion-label>
-      <ion-label item-end>{{ personInfo.nowGraSchollAndMajor }}</ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <button ion-item (click)="goDailyMe()">
-      工作日志
+  <ion-item class="user-info">
+    <img src="assets/imgs/user.jpg">
+    <h2>{{user.name}}<ion-badge>出差</ion-badge></h2>
+    <ion-note>{{user.orgName}} | {{user.dutyName}}</ion-note>
+  </ion-item>
+  <ion-list no-lines class="type-list" *ngIf="showSelfInfo">
+    <button ion-item (click)="goUserSelfInfo()">
+      <h2>个人自述</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
     </button>
+    <ion-item>
+      <ion-note>座右铭</ion-note>
+      <h4>{{userSelfInfo.motto}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>工作特长</ion-note>
+      <h4>{{userSelfInfo.jobSkills}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>兴趣爱好</ion-note>
+      <h4>{{userSelfInfo.interests}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>人生感悟</ion-note>
+      <h4>{{userSelfInfo.lifeInspiration}}</h4>
+    </ion-item>
+  </ion-list>
+  <ion-list class="type-list" no-lines *ngIf="showDaily">
     <button ion-item>
-      印象标签
+      <h2>工作日志</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
     </button>
+    <ion-item>
+      <!-- <h4>率能理解哦里面了fasdfadsewrew发的说法的发大水发大水法撒旦发射点发</h4> -->
+      <!-- <img-loader item-end useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader> -->
+    </ion-item>
   </ion-list>
-  <button ion-button block>同意</button>
-  <button ion-button block>拒绝</button>
+  <ion-list class="type-list" no-lines *ngIf="showTags" style="margin-bottom: 80px;">
+    <button ion-item (click)="goUserImpression()">
+      <h2>映像标签</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
+    </button>
+    <div class="impression">
+      <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count}}</ion-badge>
+    </div>
+  </ion-list>
+  <div class="footer-buttons" *ngIf="agreeOrRefuse">
+    <button ion-button block (click)="agree()">同意</button>
+    <button ion-button block (click)="refuse()">拒绝</button>
+  </div>
+  <div class="footer-buttons" *ngIf="followOrCancel">
+    <button ion-button block *ngIf="!user.isAttention" (click)="follow()">关注</button>
+    <button ion-button block *ngIf="user.isAttention" (click)="cancelFollow()">取消关注</button>
+  </div>
 </ion-content>

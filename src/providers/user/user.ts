@@ -18,27 +18,38 @@ export class UserProvider {
     return this.http.post(`${BASE_URL}/base/login`, params);
   }
 
+  // 获取我的信息
+  getMe(): Observable<any> {
+    return this.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode});
+  }
+
   // 短信验证码登陆
   sendSMSCode(params): Observable<any> {
     return this.http.post(`${BASE_URL}/base/sendSMSCode`, params);
   }
 
   // 获取验证码
-  getSMSCode(userCode): Observable<any> {
-    return this.http.get(`${BASE_URL}/base/getSMSCode`, {
-      userCode: userCode
-    });
+  getSMSCode(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/base/getSMSCode`, params);
   }
 
-  // 获取我的个人信息
-  getMe(): Observable<any> {
-    return this.http.get(`${BASE_URL}/personInfo`, {userCode: JSON.parse(this.storage.get('user')).userCode});
+  // 获取用户个人信息
+  getUserInfo(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/personInfo`, params);
   }
 
-  // 获取我的自述信息
-  getMySelfInfo(): Observable<any> {
-    let personId = JSON.parse(this.storage.get('user')).personId;
-    return this.http.get(`${BASE_URL}/personalStatement/${personId}`);
+  getUserInfoByPersonId(personId): Observable<any> {
+    return this.http.get(`${BASE_URL}/personInfo/${personId}`);
+  }
+
+  // 获取用户列表
+  getPersonList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/personInfo/findPersonByCondition`, params);
+  }
+
+  // 获取用户自述信息
+  getUserSelfInfo(personId, params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/personalStatement/${personId}`, params);
   }
 
   // 修改我的自述信息
@@ -113,9 +124,8 @@ export class UserProvider {
   }
 
   // 申请关注
-  postFollow(): Observable<any> {
-    // TODO: 申请关注
-    return null;
+  postFollow(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/contactList/stAttentionRelation`, params);
   }
 
   // 接受关注

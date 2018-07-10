@@ -1,0 +1,30 @@
+page-daily-ten-create {
+  ion-navbar {
+    .toolbar-background {
+      background: #fff;
+    }
+    .toolbar-title {
+      font-size: rem(17);
+      color: #333333;
+      font-weight: bold;
+      letter-spacing: 0;
+      text-align: center;
+    }
+  }
+
+  ion-item {
+    border-bottom: rem(0.5) solid #F1F1F1;
+  }
+
+  button.post-button {
+    position: fixed;
+    bottom: rem(12);
+    width: rem(330);
+    left: rem(15);
+    height: rem(50);
+    line-height: rem(50);
+    font-size: rem(18);
+    color: #FFFFFF;
+    letter-spacing: -0.43px;
+  }
+}

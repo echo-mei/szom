@@ -1,13 +1,10 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title>新的关注</ion-title>
     <ion-buttons right>
       <button ion-button>
-        <ion-icon name="search"></ion-icon>
-      </button>
-      <button ion-button>
-        <ion-icon name="star"></ion-icon>
+        <ion-icon class="szom" name="md-jiahaoyou"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,26 +13,34 @@
 
 
 <ion-content>
-  <ion-item-group>
-    <ion-item-divider>今天</ion-item-divider>
-    <ion-item (click)="goUserInfo()">
-      <ion-avatar item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-avatar>
-      <h2>张爱民</h2>
-      <p>宣传科干事</p>
-      <button ion-button item-end>待处理</button>
+  <!-- <div class="searcher">
+    <ion-icon class="szom" name="sousuo"></ion-icon>
+    <ion-searchbar (click)="goAddresslistSearch()" placeholder="搜索"></ion-searchbar>
+  </div> -->
+
+  <div class="divider">今天</div>
+  <ion-list class="type-list" no-lines>
+    <ion-item *ngFor="let user of todayUserList" (click)="goUserInfo(user)">
+      <img src="assets.jpg" onerror="this.src='assets/imgs/user.jpg'">
+      <h2>{{user.name}}</h2>
+      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+      <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end>等待对方确认</button>
+      <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end>待确认</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear>已关注</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
     </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider>近三个月</ion-item-divider>
-    <ion-item (click)="goUserInfo()">
-      <ion-avatar item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-avatar>
-      <h2>张爱民</h2>
-      <p>宣传科干事</p>
-      <button ion-button item-end clear disabled>已添加</button>
+  </ion-list>
+  <div class="divider">近三个月</div>
+  <ion-list class="type-list" no-lines>
+    <ion-item *ngFor="let user of monthUserList" (click)="goUserInfo(user)">
+      <img-loader useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader>
+      <h2>{{user.name}}</h2>
+      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+      <button *ngIf="user.status=='01'" ion-button item-end>待确定</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
     </ion-item>
-  </ion-item-group>
+  </ion-list>
 </ion-content>

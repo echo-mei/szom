@@ -1,25 +1,28 @@
-// import { HttpClient } from '@angular/common/http';
-//关闭默认的http请求。使用自定义http请求返回的数据格式。
 import { Injectable } from '@angular/core';
 import { HttpProvider } from '../http/http';
 
 import { Observable } from 'rxjs';
 import { BASE_URL,REAL_URL} from '../../config';
 
-/*
-  Generated class for the AddresslistProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AddresslistProvider {
 
   constructor(public http: HttpProvider) {
   }
 
-  getFriendsList(userId): Observable<any> {
-    return this.http.get(`${BASE_URL}/getFriendsList/${userId}`);
+  // 查询当前用户的关注列表
+  getMyFriendsList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/sbAttentionRelation`, params);
+  }
+
+  // 获取新的关注列表
+  getNewFollowUserList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/stAttentionRelation/userList`, params);
+  }
+
+  // 更新用户关注关系业务关注状态
+  changeStatus(params?): Observable<any> {
+    return this.http.put(`${BASE_URL}/contactList/stAttentionRelation`, params);
   }
 
   getTeamList(pid):Observable<any> {

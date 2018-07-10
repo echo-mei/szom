@@ -1,6 +1,7 @@
-import { Component,OnInit ,Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
+import { REAL_URL, BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
 
 @IonicPage()
@@ -10,52 +11,80 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class DailyMePage {
 
-  page = 0;
+  REAL_URL = REAL_URL;
+
+  @ViewChild('infinite') infinite: InfiniteScroll;
+
+  user: any;
+
   size = 10;
-  logDataList: Array<object> = [];
-  stlikeList: Array<object> = [];
-  stlikeSum:number = 0;
+  logDataList: Array<object> = [];  // 日志列表
+  stlikeList: Array<object> = []; // 点赞列表
+  stlikeSum: number = 0;  // 总点赞
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public events: Events,
-    private storage:StorageProvider
+    public storage: StorageProvider
   ) {
-    this.events.subscribe('daily:create', this.initLogDailyList.bind(this));
-    this.events.subscribe('daily:delete', this.initLogDailyList.bind(this));
+    this.user = this.navParams.get('user');
     this.getfindSTLike();
     this.initLogDailyList();
   }
 
   initLogDailyList() {
-    this.page = 0;
-    this.size = 10;
     this.logDataList = [];
     this.more();
   }
 
-  more(infinite?: InfiniteScroll) {
-    this.dailyProvider.getLogDailyList({
+  load() {
+    let params = {
       size: this.size,
-      page: this.page
-    }).subscribe(
+      userCode: this.user.userCode
+    };
+    if (this.logDataList.length) {
+      params['startTime'] = this.logDataList[0]['publishTime'];
+    }
+    this.dailyProvider.getLogDailyList(params).subscribe(
       (data) => {
-        infinite&&infinite.complete();
-        if(data.length) {
-          infinite && infinite.enable(true);
-          this.page = this.page+1;
-          this.logDataList = this.logDataList.concat(data);
-        }else {
-          infinite && infinite.enable(false);
+        if (data.length) {
+          for (let i = data.length - 1; i >= 0; i--) {
+            this.logDataList.unshift(data[i]);
+          }
         }
-        this.logDataList = this.logDataList.concat(data);
       }
     );
   }
 
-  getfindSTLike(){
+  more(infinite?: InfiniteScroll) {
+    this.infinite && this.infinite.enable(true);
+    let params = {
+      size: this.size,
+      userCode: this.user.userCode
+    };
+    if (this.logDataList.length) {
+      params['endTime'] = this.logDataList[this.logDataList.length - 1]['publishTime'];
+    }
+    this.dailyProvider.getLogDailyList(params).subscribe(
+      (data) => {
+        infinite && infinite.complete();
+        if (data.length) {
+          infinite && infinite.enable(true);
+          this.logDataList = this.logDataList.concat(data);
+        } else {
+          infinite && infinite.enable(false);
+        }
+      }
+    );
+  }
+
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+  }
+
+  getfindSTLike() {
     this.dailyProvider.getfindSTLike(1).subscribe(
       (data) => {
         let that = this;
@@ -67,18 +96,44 @@ export class DailyMePage {
     )
   }
 
+  updateDaily(daily) {
+    for (let i = 0; i < this.logDataList.length; i++) {
+      if (this.logDataList[i]['dailyId'] === daily.dailyId) {
+        this.logDataList[i] = daily;
+        return;
+      }
+    }
+  }
+
+  deleteDaily(dailyId) {
+    for (let i = 0; i < this.logDataList.length; i++) {
+      if (this.logDataList[i]['dailyId'] === dailyId) {
+        this.logDataList.splice(i,1);
+        return;
+      }
+    }
+  }
+
   goDailyShow(daily) {
-    this.navCtrl.push('DailyShowPage', {
-      daily: daily
+    this.navCtrl.push('DailyMeShowPage', {
+      daily: daily,
+      onUpdate: this.updateDaily.bind(this),
+      onDelete: this.deleteDaily.bind(this)
     });
   }
 
   goDailyCreate() {
-    this.navCtrl.push('DailyCreatePage');
+    this.navCtrl.push('DailyMeCreatePage', {
+      onCreate: this.load.bind(this)
+    });
   }
 
-  goDailySearch(){
-    this.navCtrl.push('SearchConditionsPage');
+  goDailySearch() {
+    this.navCtrl.push('DailyMeSearchPage',{
+      user: this.user,
+      onUpdate: this.updateDaily.bind(this),
+      onDelete: this.deleteDaily.bind(this)
+    });
   }
 
 }

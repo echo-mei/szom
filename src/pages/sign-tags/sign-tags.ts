@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { SignProvider } from '../../providers/sign/sign';
+import { StorageProvider } from '../../providers/storage/storage';
 
 @IonicPage()
 @Component({
@@ -11,31 +12,35 @@ export class SignTagsPage {
 
   tags: any[];
 
+  onSign: () => {};
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public signProvider: SignProvider,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    public storage: StorageProvider
   ) {
+    this.onSign = this.navParams.get('onSign');
     this.getTags();
   }
 
   getTags() {
-    let date = new Date();
-    this.signProvider.signInCount(date.getFullYear(), date.getMonth()+1).subscribe(
+    this.signProvider.signInTypeList().subscribe(
       (tags) => {
         this.tags = tags;
       }
     );
   }
 
-  sign(signInType) {
+  sign(tag) {
     let sign = {
-      signInType: signInType
+      signInType: tag.value
     };
     this.signProvider.signIn(sign).subscribe(
       () => {
         this.viewCtrl.dismiss();
+        this.onSign();
       }
     );
   }

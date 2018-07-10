@@ -1,0 +1,14 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>自定义标签</ion-title>
+    <ion-buttons end>
+      <button (click)="addImpression()" ion-button clear>完成</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-input placeholder="请输入标签" [(ngModel)]="tagName"></ion-input>
+</ion-content>

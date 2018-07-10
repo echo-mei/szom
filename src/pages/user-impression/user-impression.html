@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>印象标签</ion-title>
+    <ion-buttons end>
+      <button ion-button clear (click)="goAddImpression()">添加</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <time-select #timeSelect (onChange)="getImpressionList()"></time-select>
+  <div class="impression">
+    <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count}}</ion-badge>
+  </div>
+</ion-content>

@@ -22,19 +22,4 @@ export class StorageProvider {
     localStorage.clear();
   }
 
-  setToken(token) {
-    this.set('token', token);
-  }
-
-  getToken() {
-    return this.get('token');
-  }
-
-  setItem(key,value){
-    localStorage.setItem(key,JSON.stringify(value));
-  }
-  getItem(key){
-    return JSON.parse(localStorage.getItem(key));
-  }
-
 }

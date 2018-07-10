@@ -1,14 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-
-
-/**
- * Generated class for the LikeListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StorageProvider } from '../../providers/storage/storage';
 
 @IonicPage()
 @Component({
@@ -19,13 +11,26 @@ export class LikeListPage {
 
   likerList:object;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.likerList = this.navParams.get("liker");
-    console.log(this.likerList);
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public storage: StorageProvider
+  ) {
+    this.likerList = this.navParams.get("likerList");
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LikeListPage');
+  goUserInfo(user): any {
+    if(user.personId==JSON.parse(this.storage.get('user')).personId) {
+      this.navCtrl.push('MeInfoPage');
+    }else {
+      this.navCtrl.push('UserInfoPage', {
+        user: user,
+        followOrCancel: true,
+        showSelfInfo: true,
+        showDaily: true,
+        showTags: true
+      });
+    }
   }
 
 }

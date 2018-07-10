@@ -24,25 +24,26 @@
     <ion-row text-center padding-vertical *ngIf="stlikeList" class="like-classify">
       <ion-col *ngFor="let stlike of stlikeList;let i=index;">
         <p class="num">{{stlike.likeCounts}}</p>
-        <p class="des">{{stlike.jobLevel}}
+        <p class="des">{{stlike.operatorTypeName}}
           <p>
       </ion-col>
     </ion-row>
   </div>
   <ion-list *ngIf="logDataList" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
-      <h4>{{log.title}}</h4>
+      <h4>{{log.content}}</h4>
       <div class="other">
         <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
         <ion-note>
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.likeCount}}</ion-note>
+          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
+        </ion-note>
         <ion-note>
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.commentCount}}</ion-note>
+          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
+        </ion-note>
       </div>
-      <!-- <ion-thumbnail item-end *ngIf="i%2==0">
-        <img src="img/thumbnail-totoro.png">
-        <img-loader src="img/thumbnail-totoro.png" useImg fallback="assets/imgs/fail.jpg"></img-loader>
-      </ion-thumbnail> -->
+      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList.length">
+        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
+      </ion-thumbnail>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="more($event)">

@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>工作日志11</ion-title>
+    <ion-title>工作日志</ion-title>
     <ion-buttons right>
       <button ion-button (click)="backCreateDaily()">完成</button>
     </ion-buttons>
@@ -11,20 +11,24 @@
 
 
 <ion-content>
-    <!-- (ionInput)="getItems($event)" -->
-  <ion-searchbar></ion-searchbar>
+  <div class="mySearch"><ion-icon class="szom" name="md-sousuo"></ion-icon></div>
+  <ion-searchbar [(ngModel)]="searchKeyword" (ionInput)="initDailyList($event)" placeholder="搜索"></ion-searchbar>
   <ion-list radio-group *ngIf="logDataList">
     <ion-item *ngFor="let log of logDataList;">
+      <ion-thumbnail  item-end>
+      </ion-thumbnail>
+
+      <ion-radio value="cord{{log.dailyId}}" (click)="changeRadio(logDataList.indexOf(log))" item-start></ion-radio>
       <ion-label>
         <p>{{log.title}}</p>
-        <p>{{log.publishTime}}
+        <p class="pubTime">{{log.publishTime}}
           <ion-note float-right>
-            <ion-icon name="star"></ion-icon>{{log.likeCount}}
-            <ion-icon name="star"></ion-icon>{{log.commentCount}}
+            <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.likeCount}}
+            <ion-icon class="szom lastIcon" name="md-xiaoxi"></ion-icon> {{log.commentCount}}
           </ion-note>
         </p>
       </ion-label>
-      <ion-radio value="cord{{log.dailyId}}" (click)="changeRadio(logDataList.indexOf(log))"></ion-radio>
+
     </ion-item>
   </ion-list>
 </ion-content>

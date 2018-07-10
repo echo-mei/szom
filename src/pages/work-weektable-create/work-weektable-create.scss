@@ -1,0 +1,111 @@
+page-work-weektable-create {
+    .content{
+        .scroll-content{
+            padding: 0!important;
+            .Popup{
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                position: absolute;
+                z-index: 2;
+                padding: rem(20) rem(40);
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                .box{
+                    box-sizing: border-box;
+                    background-color: #fff;
+                    height: auto;
+                    width: 100%;
+                    div{
+                        font-size: rem(15);
+                    }
+                    .title{
+                        height: rem(50);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-bottom: 1px solid #EEEEEE;
+                        
+                    }
+                    .content{
+                        height: auto;
+                        ion-list{
+                            margin: 0;
+                            ion-item{
+                                height: auto;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                padding: 0 rem(10);
+                                border: none;
+                                .item-inner{
+                                    border: none;
+                                }
+                                .label{
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+                    .btn{
+                        height: rem(50);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        button{
+                            box-sizing: border-box;
+                            height: 100%;
+                            width: 50%;
+                            background-color: #F7F7F7;
+                            border: 1px solid #CACCCC;
+                            font-size: rem(15);
+                            color: #4D74EB;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .list{
+        padding: 0 rem(16);
+
+        .item{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: rem(16);
+            color: #000000;
+            letter-spacing: 0;
+            height: rem(44);
+            line-height: rem(44);
+            .box{
+                display: flex;
+                direction: row;
+                align-items: center;
+                ion-datetime{
+                    margin-right: rem(10);
+                }
+                p{
+                    margin-right: rem(10);
+                    padding-right: rem(8);
+                }
+                ion-icon{
+                    color: #D9D9D9;
+                }
+            }
+            border-bottom: 1px solid #F8F9FA;
+        }
+    }
+    .text{
+        height: 30%;
+        ion-textarea{
+            height: 100%;
+            padding: 0 rem(16);
+            textarea{
+                height: 100%;
+                margin: 0;
+            }
+        }
+    }
+}

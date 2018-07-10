@@ -6,60 +6,6 @@ page-work-weektable {
     ul,li{
         list-style-type: none;
     }
-    .time-select{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .day-data{
-        height: 150px;
-        width: 100%;
-        border-bottom: 1px solid #999;
-    }
-    .day-data>div{
-        height: 100%;
-        width: 20%;
-        border: 1px solid #999;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    }
-    .day-data>div p{
-        display: flex;
-        justify-content: center;
-    }
-    .work-data{
-        height: 100%;
-        width: 80%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    }
-    .work-data li{
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-grow: 1;
-    }
-    .work-data li>.Period{
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 100%;
-        border: 1px solid #999;
-    }
-    .work-data li>.work{
-        width: calc(100% - 50px);
-        height: 100%;
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        border: 1px solid #999;
-        padding: 0 10px;
-    }
     .work-data li>.work button{
         font-size: 10px;
         height: 50%;
@@ -68,47 +14,161 @@ page-work-weektable {
         color: #10A0FC;
     }
     // 头部
- .toolbar{
-    padding: 2rem 0;
-  }
-  .scroll-content{
-    margin-top: 50px;
-    padding:0px!important;
-  }
-  .toolbar-background-ios{
-    border-color: transparent!important;
-  }
-  .toolbar .back-button{
-    top: 0.5rem;
-  }
-  .toolbar .bar-buttons .bar-button:not(first-child){
-      font-size: 1.5rem;
-  }
-// 内容
-.content-ios{
-    background-color: #efeff4;
-    padding:0px;
-}
-.time-select{
-    background-color: #ffff;
-    margin-bottom:15px;
-}
-ul{
-    background-color: #ffff;
-}
-.day-data{
-    border-bottom: none;
-}
-.day-data > div,.Period,.work{
-    border: 1px solid #e5e5e5!important;
-}
-.work-data li > .work button{
-    background: #fff;
-}
-.button-round-ios{
-    padding: 0 3rem;
-}
- .day-data > div,.Period{
-     color:#888888;
- }
+    .header{
+        &::after{
+            height: 0;
+        }
+    }
+    .toolbar{
+        display: flex;
+        align-items: center;
+        .toolbar-background{
+            background: #FFFFFF;
+        }
+        .back-button{
+            position: initial;
+        }
+        .title{
+            padding: 0;
+            position: initial;
+        }
+    }
+    .scroll-content{
+        margin-top: 50px;
+        padding:0px!important;
+        .time-select{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            div{
+                font-size: rem(18);
+                color: #333333;
+                letter-spacing: -0.22px;
+            }
+        }
+    }
+    .toolbar-background-ios{
+        border-color: transparent!important;
+    }
+    .toolbar .back-button{
+        top: 0.5rem;
+    }
+    .toolbar .bar-buttons .bar-button:not(first-child){
+        font-size: 1.5rem;
+    }
+    //内容
+    .data{
+        .week-title{
+            font-size: rem(12);
+            background-color: #FAFAFA;
+            color: #666666;
+            letter-spacing: -0.42px;
+            height: rem(20);
+            line-height: rem(20);
+            padding-left: rem(10);
+        }
+    }
+    .list{
+        padding: rem(0) rem(10);
+        margin: 0;
+        .item {
+            box-sizing: border-box;
+            border-bottom: 2px solid #EEEEEE;
+            height: rem(83);
+            .item-inner{
+                padding-right: 11px;
+            }
+            .label{
+                margin: 8px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .work-box{
+                    width: 90%;
+                    .work-title{
+                        p{
+                            color: #333333;
+                            font-size: rem(15);
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            margin-bottom: rem(10);
+                        }
+                    }
+                    .work-data{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        
+                        p{
+                            letter-spacing: -0.08px;
+                            font-size: rem(13);
+                            color: #AFAFAF;
+                            display: block;
+                            height: rem(15);
+                            line-height: rem(15);
+                            margin: 0;
+                            margin-right: rem(10);
+                        }
+                        button{
+                            padding: 0 rem(5);
+                            font-size: rem(10);
+                            border: none;
+                            outline: none;
+                            box-shadow: none;
+                            border-radius: 0;
+                            height: rem(16);
+                            line-height: rem(16);
+                        }
+                        button.blue{
+                            color: #488aff;
+                            background-color: rgba(72,138,255, 0.3);;
+                        }
+                        button.green{
+                            color: #3FA60C;
+                            background-color: rgba(63,166,12, 0.3);
+                        }
+                        button.yellow{
+                            color: #FF7A45;
+                            background-color: rgba(255,122,69, 0.3);
+                        }
+                        button.purple{
+                            color: #B031CA;
+                            background-color: rgba(176,49,202, 0.3);
+                        }
+                    }
+                }
+                ion-icon{
+                    color: #CCCCCC;
+                }
+                
+            }
+        }
+
+        .item:after{
+            content: '';
+            height: 1px;  //控制边框宽度
+            width: 200%;  //控制边框长度
+            position: absolute;
+            left: 0px;
+            top: auto;
+            right: auto;
+            bottom: 0px;
+            background-color: #eeeeee;
+            border: 0px solid transparent;
+            border-radius: 0px;
+            -webkit-border-radius: 0px;
+            transform: scale(0.5);  //缩放宽度，达到0.5px的效果
+            -webkit-transform: scale(0.5);
+            -moz-transform: scale(0.5);
+            -ms-transform: scale(0.5);
+            -o-transform: scale(0.5);
+            transform-origin: top left;  //定义缩放基点
+            -webkit-transform-origin: top left;
+            -moz-transform-origin: top left;
+            -ms-transform-origin: top left;
+            -o-transform-origin: top left;
+        }
+    }
+
 }

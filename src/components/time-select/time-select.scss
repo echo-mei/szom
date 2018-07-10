@@ -1,0 +1,66 @@
+time-select {
+  
+  .displayer {
+    border-bottom: rem(0.5) solid #F1F1F1;
+    height: rem(38);
+    ion-icon.szom {
+      margin: 0;
+      font-size: rem(14);
+      color: #D9D9D9;
+      margin: 0 rem(15);
+      min-width: initial;
+    }
+    
+    .item-inner {
+      padding-right: 0!important;
+      margin-left: rem(2)!important;
+      border-bottom: 0!important;
+      ion-label {
+        margin: 0;
+        font-size: rem(15);
+        color: #AFAFAF;
+        letter-spacing: 0;
+        text-align: left;
+      }
+    }
+  }
+  
+  ion-item.item {
+    height: rem(44);
+    padding-left: rem(15);
+    .item-inner {
+      border-bottom: rem(0.5) solid #F1F1F1!important;
+      padding-right: 0!important;
+      ion-label {
+        margin: 0;
+        font-size: rem(16);
+        color: #000000;
+        letter-spacing: 0;
+        text-align: left;
+        line-height: rem(20);
+      }
+    }
+    ion-icon.szom {
+      margin: 0;
+      font-size: rem(14);
+      color: #D9D9D9;
+      margin: 0 rem(15);
+      min-width: initial;
+    }
+  }
+  .buttons {
+    background: #fff;
+    display: flex;
+    padding: rem(9) rem(15);
+    button {
+      height: rem(29);
+      flex-grow: 1;
+      border: rem(1) solid #DDDDDD;
+      border-radius: rem(2);
+      font-size: rem(14);
+      letter-spacing: 0;
+      text-align: right;
+      line-height: rem(18);
+    }
+  }
+}

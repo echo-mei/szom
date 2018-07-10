@@ -1,12 +1,31 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>通讯录搜索</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar>
+    <div class="input-box">
+      <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..."></ion-searchbar>
+      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';search()"></ion-icon>
+    </div>
+    <button ion-button (click)="goBack()" clear float-right>取消</button>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-  <ion-searchbar></ion-searchbar>
+  <ion-list no-lines>
+    <div *ngFor="let unit of unitList;">
+      <button class="unit" ion-item (click)="goAddresslistUnit(unit)">
+        {{unit.orgName}}
+        <ion-icon item-end class="szom" name="you"></ion-icon>
+      </button>
+    </div>
+  </ion-list>
+  <ion-list class="type-list" no-lines>
+    <div *ngFor="let user of personList;">
+      <ion-item (click)="goUserInfo(user)">
+        <img src="assets/imgs/user.jpg">
+        <h2>{{user.name}}</h2>
+        <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+      </ion-item>
+    </div>
+  </ion-list>
 </ion-content>

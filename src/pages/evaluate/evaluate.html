@@ -22,29 +22,15 @@
 </ion-header>
 
 <ion-content>
-      
+  <!-- 组织部门评价 -->
   <div [ngSwitch]="pet">
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <ion-list *ngSwitchCase="'zzbm'">
-      <ion-item  *ngFor="let evaluate of zzbmEvaluateLists">
-        <h4 class="text">{{evaluate.evaluationTitle}}</h4>
-        <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
-        <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
-      </ion-item>
-    </ion-list>
-  
-    <ion-list *ngSwitchCase="'sjld'">
-      <ion-item  *ngFor="let evaluate of sjldEvaluateLists">
-        <h4 class="text">{{evaluate.evaluationTitle}}</h4>
-        <p class="subtext" float-left>{{evaluate.evaluationTime}}   来源:{{evaluate.source}}</p>            
-        <p class="subtext" float-right>记录人:{{evaluate.evaluatorName}}</p>
-      </ion-item>
-    </ion-list>
-
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+    <div *ngSwitchCase="'zzbm'">
+       <page-evaluate-list></page-evaluate-list>
+    </div>
+    <!-- 上级领导评价 -->
+    <div *ngSwitchCase="'sjld'">
+       <page-evaluate-list></page-evaluate-list>
+    </div>
   </div>
+
 </ion-content>

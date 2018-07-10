@@ -13,7 +13,7 @@
 
 <ion-content overflow-scroll="false">
   <div class="conditions">
-    <div #btn class="select-btn" (click)="selectShow(btn)">
+    <div class="select-btn" (click)="selectTimeShowFlag = !selectTimeShowFlag">
       <div class="left">
         <ion-icon [class.color-blue]="timeStarts" class="szom" name="md-shaixuan"></ion-icon>
         <p class="title">筛选:</p>
@@ -21,22 +21,18 @@
         <p [class.color-blue]="timeStarts || timeEnd" *ngIf="!isTimeStart || timeEnd">至</p>
         <p [class.color-blue]="timeEnd" class="text">{{timeEnd}}</p>
       </div>
-      <ion-icon class="szom" [name]="selectBtn" (click)="selectTimeShowFlag = !selectTimeShowFlag"></ion-icon>
+      <ion-icon class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
     </div>
 
-    <ion-list class="select-time" *ngIf="selectTimeShowFlag">
+    <ion-list class="select-time" [hidden] ="!selectTimeShowFlag">
       <div class="date-select">
         <div class="title">起始时间：</div>
-        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" (ngModelChange)="TimeStartChange()"
-          [(ngModel)]="timeStarts"></ion-datetime>
-        <div #tip [class.tip]="isTimeStart" *ngIf="isTimeStart">请选择</div>
+        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" [(ngModel)]="timeStarts" placeholder="请选择"></ion-datetime>
         <ion-icon class="szom" name="md-you"></ion-icon>
       </div>
       <div class="date-select">
         <div class="title">结束时间：</div>
-        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" (ngModelChange)="TimeEndChange()"
-          [(ngModel)]="timeEnd"></ion-datetime>
-        <div #tip [class.tip]="isTimeEnd" *ngIf="isTimeEnd">请选择</div>
+        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" [(ngModel)]="timeEnd" placeholder="请选择"></ion-datetime>
         <ion-icon class="szom" name="md-you"></ion-icon>
       </div>
       <div class="btn">
@@ -46,7 +42,7 @@
     </ion-list>
   </div>
 
-  <div class="shade" *ngIf="selectTimeShowFlag" (click)="selectTimeShowFlag = false"></div>
+  <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
   <ion-list *ngIf="logDataList" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
       <h4 *ngIf="selectIndex"

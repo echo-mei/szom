@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonicPage, NavController, PopoverController } from 'ionic-angular';
 import { PopSelectComponent } from '../../components/pop-select/pop-select';
 
@@ -7,26 +7,24 @@ import { PopSelectComponent } from '../../components/pop-select/pop-select';
   selector: 'page-dynamic',
   templateUrl: 'dynamic.html',
 })
-export class DynamicPage {
 
-  type = '1';
+export class DynamicPage {
+  pet:any = "1";
+  type = "attention";
 
   constructor(
     public navCtrl: NavController,
     public popoverCtrl: PopoverController
   ) {
+    
   }
 
   goDynamicSearch() {
-    this.navCtrl.push('DynamicSearchPage');
-  }
-
-  goDynamicCreate(){
-    this.navCtrl.push('DailyCreatePage');
+    this.navCtrl.push('DynamicSearchPage',{type:this.type});
   }
 
   popover(event) {
-    const popover = this.popoverCtrl.create(PopSelectComponent, {
+    const popover = this.popoverCtrl.create("PopSelectComponent", {
       buttons: [
         {
           text: '工作日志',
@@ -38,21 +36,21 @@ export class DynamicPage {
         {
           text: '每周一励',
           handler: () => {
-            this.navCtrl.push('DailyOnePage',{ 'single': true });
+            this.navCtrl.push('DailyOnePage');
             popover.dismiss();
           }
         },
         {
           text: '每季三励',
           handler: () => {
-            this.navCtrl.push('DailyThreePage',{ 'single': true });
+            this.navCtrl.push('DailyThreePage');
             popover.dismiss();
           }
         },
         {
           text: '每年十励',
           handler: () => {
-            this.navCtrl.push('DailyThePage',{ 'single': true });
+            this.navCtrl.push('DailyTenPage');
             popover.dismiss();
           }
         }
@@ -65,5 +63,6 @@ export class DynamicPage {
     });
   }
 
+ 
 
 }

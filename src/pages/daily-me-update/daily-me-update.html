@@ -1,0 +1,23 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>修改日志</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="dailyForm">
+    <ion-list no-lines>
+      <!-- <ion-item>
+        <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
+      </ion-item> -->
+      <ion-item>
+        <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <image-picker #imagePicker></image-picker>
+    <button class="post-button" ion-button block (click)="sendDailyList()" [disabled]="dailyForm.invalid">发布</button>
+  </form>
+</ion-content>

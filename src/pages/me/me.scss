@@ -12,39 +12,39 @@ page-me {
     }
   }
   .item-ios ion-avatar img{
-    width: 50px;
-    height: 50px;
+    width: rem(50);
+    height: rem(50);
   }
   // 头部
   .toolbar{
-    padding: 2rem 0;
+    padding:rem(24) 0;
   }
   .scroll-content{
-    margin-top: 50px;
+    margin-top: rem(50);
   }
   .toolbar-background-ios{
     border-color: transparent!important;
   }
   // 内容
   .item-ios{
-    padding: 0 10px!important;
+    padding: 0 rem(12)!important;
   }
   .label-ios{
-    font-size: 1.5rem;
+    font-size: rem(15);
   }
   .list-ios .item-block .item-inner{
     border-bottom: 0.55px solid #e5e5e5;
   }
   .list-ios .item-block .item-inner:not(:first-child){
     border-bottom:none;
-    margin:10px 0;
+    margin:rem(12) 0;
   }
   .item-block:first-child{
-    margin: 15px 0 10px 0;
+    margin: rem(16) 0 rem(10) 0;
     border-top:none!important;
   }
   .label-ios{
-    margin: 13px 8px 13px 0;
+    margin: rem(15) rem(10) rem(12) 0;
   }
   .button-block{
     width: 95%;

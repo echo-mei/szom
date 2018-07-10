@@ -1,0 +1,15 @@
+page-user-impression-add {
+  ion-navbar {
+    .toolbar-background {
+      background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    }
+    .toolbar-title, ion-icon {
+      color: #fff;
+    }
+    button.bar-button {
+      font-size: rem(17)!important;
+      color: #FFFFFF;
+      letter-spacing: 0;
+    }
+  }
+}

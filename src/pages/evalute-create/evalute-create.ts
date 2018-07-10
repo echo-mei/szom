@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EvaluateProvider } from '../../providers/evaluate/evaluate';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 /**
  * Generated class for the EvaluteCreatePage page.
  *
@@ -20,9 +22,23 @@ export class EvaluteCreatePage {
   evaluationTitle:string = '';
   evaluationContent:string = '';
   publisher = 1;
+  evaluteFrom:FormGroup;
+  onCreate: () => {};
+  constructor(
+    public navCtrl: NavController,
+     public navParams: NavParams,
+     public EvaluateProvider:EvaluateProvider,
+     public formBuilder: FormBuilder,
+    ) {
+      this.onCreate = this.navParams.get('onCreate');
+      this.evaluteFrom = formBuilder.group({
+        //被评价人、来源、标题
+        evaluationObject: ['', Validators.compose([Validators.required])],
+        source: ['', Validators.compose([Validators.required])],
+        title: ['', Validators.compose([Validators.required])]
+      });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public EvaluateProvider:EvaluateProvider) {
-  }
+      }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EvaluteCreatePage');
@@ -34,15 +50,19 @@ export class EvaluteCreatePage {
 
   postEvaluteCreate(){
     let params = {
-      evaluationId:this.evaluationId,
-      evaluationObjectCode: this.evaluationObjectCode,
-      evaluationTitle: this.evaluationTitle,
-      evaluationContent: this.evaluationContent
-    }
+      ...this.evaluteFrom.value
+    };
+    // let params = {
+    //   evaluationId:this.evaluationId,
+    //   evaluationObjectCode: this.evaluationObjectCode,
+    //   evaluationTitle: this.evaluationTitle,
+    //   evaluationContent: this.evaluationContent
+    // }
     this.EvaluateProvider.createEvalute(params).subscribe(
       (data) => {
         this.evaluationId +=1;
         this.navCtrl.pop();
+        this.onCreate && this.onCreate();
       }
     );
   }

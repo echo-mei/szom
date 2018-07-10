@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DateUtilProvider {
 
+  private DAY_MILLISECOND = 1 * 24 * 60 * 60 * 1000;
+
   format(date: Date, fmt: string): string {
     var o = {
       "M+": date.getMonth() + 1, //月份
@@ -17,5 +19,138 @@ export class DateUtilProvider {
     for (var k in o)
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+  }
+
+  // 是否同一天
+  isSameDay(date1: Date, date2: Date) {
+    return date1.getFullYear()==date2.getFullYear() && date1.getMonth()==date2.getMonth() && date1.getDate()==date2.getDate();
+  }
+
+  // 是否闰年
+  isLeapYear(year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+  }
+
+  // 获取某年中某月的天数
+  getMonthDays(year, month) {
+    return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] || (this.isLeapYear(year) ? 29 : 28);
+  }
+
+  // 获取某年的第几周的开始和结束日期
+  getOneWeek(year, index) {
+    let firstDate, lastDate;
+    let date = new Date(year, 0, 1);
+    if(date.getDay() > 1) {
+      date = new Date(date.getTime() - (date.getDay()-1) * this.DAY_MILLISECOND);
+    }else if(date.getDay() == 0) {
+      date = new Date(date.getTime() - 6 * this.DAY_MILLISECOND);
+    }
+    for(let i = 0; i <= index; i++) {
+      firstDate = date;
+      while(date.getDay()) {
+        date = new Date(date.getTime() + 1 * this.DAY_MILLISECOND);
+      }
+      lastDate = date;
+      date = new Date(date.getTime() + 1 * this.DAY_MILLISECOND);
+    }
+    return {
+      firstDate: firstDate,
+      lastDate: lastDate
+    }
+  }
+
+  // 获取一年的所有周
+  getWeeksOfYear(year): {
+    firstDate: Date,
+    lastDate: Date
+  }[] {
+    let weeks = [];
+    let firstDate = new Date(year, 0, 1);
+    let lastDate = new Date(year, 11, 31);
+    if(firstDate.getDay() > 1) {
+      firstDate = new Date(firstDate.getTime() - (firstDate.getDay()-1) * this.DAY_MILLISECOND);
+    }else if(firstDate.getDay() == 0) {
+      firstDate = new Date(firstDate.getTime() - 6 * this.DAY_MILLISECOND);
+    }
+    if(lastDate.getDay() != 0) {
+      lastDate = new Date(lastDate.getTime() + (7 - lastDate.getDay()) * this.DAY_MILLISECOND);
+    }
+    while(firstDate.getTime() < lastDate.getTime()) {
+      weeks.push({
+        firstDate: new Date(firstDate.getTime()),
+        lastDate: new Date(firstDate.getTime() + 6 * this.DAY_MILLISECOND)
+      });
+      firstDate = new Date(firstDate.getTime() + 7 * this.DAY_MILLISECOND);
+    }
+    return weeks;
+  }
+
+  // 获取日期所在周
+  getWeekOfDay(date: Date): {
+    index: number,
+    week: {
+      firstDate: Date,
+      lastDate: Date
+    }
+  } {
+    let result;
+    this.getWeeksOfYear(date.getFullYear()).find((week, i) => {
+      let b = date >= week.firstDate && date <= week.lastDate;
+      if(b) {
+        result = {
+          index: i,
+          week: week
+        };
+      }
+      return b;
+    });
+    return result;
+  }
+
+  // 获取日期所在季
+  getQuarterOfDay(date: Date): {
+    index?: number,
+    quarter?: {
+      firstDate: Date,
+      lastDate: Date
+    }
+  } {
+    let result;
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    if(month>=0&&month<=2) {
+      result = {
+        index: 1,
+        quarter: {
+          firstDate: new Date(year, 0, 1),
+          lastDate: new Date(year, 2, 31)
+        }
+      };
+    }else if(month>=3&&month<=5) {
+      result = {
+        index: 2,
+        quarter: {
+          firstDate: new Date(year, 2, 1),
+          lastDate: new Date(year, 5, 30)
+        }
+      };
+    }else if(month>=6&&month<=8) {
+      result = {
+        index: 3,
+        quarter: {
+          firstDate: new Date(year, 6, 1),
+          lastDate: new Date(year, 8, 30)
+        }
+      };
+    }else if(month>=9&&month<=1) {
+      result = {
+        index: 4,
+        quarter: {
+          firstDate: new Date(year, 9, 1),
+          lastDate: new Date(year, 11, 31)
+        }
+      };
+    }
+    return result;
   }
 }

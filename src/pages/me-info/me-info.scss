@@ -1,16 +1,172 @@
 page-me-info {
-  // 头部
-  .toolbar{
-    padding: 2rem 0;
+ 
+  ion-navbar {
+    .toolbar-background {
+      background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    }
+    .toolbar-title, ion-icon {
+      color: #fff;
+    }
   }
-  .scroll-content{
-    margin-top: 50px;
-    padding:0px!important;
+  .list .item-block .item-inner{
+    border-bottom: 0 !important;
+    margin-left: 0px !important;
+    // margin-left: rem(-15);
   }
-  .toolbar-background-ios{
-    border-color: transparent!important;
+  .scroll-content {
+    background: #ffffff;
   }
-  .toolbar .back-button{
-    top: 0.5rem;
+  .twoTime{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    height: rem(38);
+    border-bottom: 0.5px solid #FAFAFA;
+    .datetime{
+      padding-left: 0px;
+    }
+    .selectTime{
+      position:absolute;
+      height: rem(28);
+      width: rem(144);
+      background-color: #FAFAFA;
+      border-bottom: 0;
+      ion-datetime{
+        font-size: rem(14);
+        color: #545454;
+      }
+    }
+    .selectTime1{
+      top: 50%;
+      margin-top: rem(-14);
+      left: rem(16);
+    }
+    .selectTime2{
+      top: 50%;
+      margin-top: rem(-14);
+      right: rem(16);
+    }
+    ion-icon{
+      font-size: rem(9);
+    }
+    .guodu{
+      position: absolute;
+      width: rem(16);
+      height: rem(2);
+      top: 50%;
+      margin-top: rem(-1);
+      background-color: #dedddd;
+    }
+  }
+  
+  ion-item.user-info {
+    width: rem(360);
+    height: rem(70);
+    background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    .item-inner {
+      padding-right: 0!important;
+      ion-label.label {
+        margin: 0;
+        padding-left: rem(75);
+        img {
+          position: absolute;
+          left: rem(15);
+          top: rem(10);
+          width: rem(50);
+          height: rem(50);
+        }
+        h2 {
+          font-size: rem(18);
+          color: #FFFFFF;
+          letter-spacing: rem(-0.63);
+          ion-badge {
+            margin-left: rem(7);
+            padding: rem(1) rem(5);
+            font-size: 10px;
+            color: #FFFFFF;
+            font-weight: normal;
+          }
+        }
+        ion-note {
+          opacity: 0.99;
+          font-size: rem(12);
+          color: #fff;
+          line-height: rem(18);
+        }
+      }
+    }
+  }
+  ion-segment {
+    height: rem(44);
+    background: #FFFFFF;
+    margin-bottom: rem(2);
+    border-bottom: 3px solid #FAFAFA;
+    .segment-button {
+      line-height: rem(44)!important;
+      border-bottom: 0!important;
+      font-size: rem(15)!important;
+      color: #666666!important;
+      letter-spacing: 0;
+      position: relative;
+      &.segment-activated {
+        color: #4D74EB!important;
+      }
+      &.segment-activated:after {
+        content: '';
+        height: rem(2);
+        background: #4D74EB;
+        width: 20%;
+        position: absolute;
+        bottom: 0;
+        left: 40%;
+      }
+    }
+  }
+  ion-list.type-list {
+    ion-item.item {
+      height: rem(54);
+      .item-inner {
+        padding-left: rem(15);
+        padding-right: 0;
+        border-bottom: rem(1) solid #F1F1F1;;
+        ion-note {
+          font-size: rem(12);
+          color: #CCCCCC;
+          letter-spacing: 0;
+          text-align: left;
+        }
+        h4 {
+          font-size: rem(15);
+          color: #333333;
+          letter-spacing: 0;
+        }
+        ion-icon.szom {
+          position: absolute;
+          right: rem(15);
+          font-size: rem(10);
+          margin: 0;
+          color: #D9D9D9;
+        }
+        
+      }
+    }
+  }
+  .impression {
+    padding-left: rem(10);
+    background: #fff;
+    ion-badge {
+      height: rem(30);
+      padding: 0 rem(8);
+      line-height: rem(30);
+      margin: rem(5) rem(5);
+      color: #4D74EB;
+      background: rgba(77,116,235,0.10);
+      border-radius: 1px;
+      font-size: rem(14);
+      font-weight: normal;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
   }
 }

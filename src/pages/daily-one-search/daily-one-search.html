@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-toolbar>
+    <div class="input-box">
+      <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      <ion-searchbar [(ngModel)]="key" (ionInput)="searchList()" placeholder="搜索每周一励"></ion-searchbar>
+      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';searchList()"></ion-icon>
+    </div>
+    <button ion-button (click)="goBack()" clear float-right>取消</button>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+  <time-select #timeSelect showButtons=true (onSure)="searchList()" (onReset)="searchList()"></time-select>
+  <div *ngIf="timeSelect.showPicker" class="modal-shadow"></div>
+  <ion-list class="daily-list" no-lines>
+    <ion-item *ngFor="let log of dailyOneList;" (click)="goDailyShow(log)" tappable>
+      <div class="content">
+        <h3>{{log.title}}</h3>
+        <img-loader *ngIf="log.img" [src]="log.img" useImg fallback="assets/imgs/fail.jpg"></img-loader>
+      </div>
+      <div>
+        <span>{{log.startDate | date:'yyyy.MM.dd'}}-{{log.endDate | date:'yyyy.MM.dd'}}</span>
+        <span class="icons">
+          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
+          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
+        </span>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

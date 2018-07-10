@@ -1,0 +1,46 @@
+page-user-impression-create {
+  ion-navbar {
+    .toolbar-background {
+      background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    }
+    .toolbar-title, ion-icon {
+      color: #fff;
+    }
+    button.bar-button {
+      font-size: rem(17)!important;
+      color: #FFFFFF;
+      letter-spacing: 0;
+    }
+  }
+  ion-content {
+    .scroll-content {
+      padding: rem(15)!important;
+    }
+    button.footer {
+      position: fixed;
+      bottom: rem(21);
+      width: rem(330);
+    }
+    .impression-list {
+      ion-badge {
+        display: block;
+        float: left;
+        height: rem(30);
+        padding: 0 rem(8);
+        line-height: rem(30);
+        margin: rem(5) rem(5);
+        background: rgba(153,153,153,0.10);
+        border-radius: 1px;
+        font-size: rem(14);
+        font-weight: normal;
+        font-size: 14px;
+        color: #999999;
+        letter-spacing: 0;
+        &.checked {
+          color: #4D74EB;
+          background: rgba(77,116,235,0.10);
+        }
+      }
+    }
+  }
+}

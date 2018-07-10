@@ -1,3 +1,19 @@
 page-me-update-zs {
-
+  ion-navbar {
+    .toolbar-background {
+      background: #fff;
+    }
+    .toolbar-title, ion-icon {
+      font-size: rem(17);
+      font-weight: bold;
+      color: #333333;
+      letter-spacing: 0;
+      text-align: center;
+    }
+    .bar-button {
+      font-size: rem(17)!important;
+      color: #545454;
+      letter-spacing: 0;
+    }
+  }
 }

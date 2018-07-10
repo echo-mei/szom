@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DragulaService } from 'ng2-dragula';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 
 @IonicPage()
 @Component({
@@ -9,24 +9,26 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AddresslistMinePage {
 
-  // 展开组的序号
-  expandIndex: number = 0;
-
-  groupList: any[];
+  friendKeyList: any = [];
+  friendValueList: any = [];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public dragulaService: DragulaService
+    public addresslistProvider: AddresslistProvider
   ) {
-    this.groupList = [
-      {groupId: 1, groupName: '默认分组'},
-      {groupId: 2, groupName: '特别关注'}
-    ];
+    this.getFriendList();
   }
 
-  toggle(index) {
-    this.expandIndex = this.expandIndex == index ? null : index;
+  getFriendList() {
+    this.addresslistProvider.getMyFriendsList().subscribe(
+      (data) => {
+        for(let key in data) {
+          this.friendKeyList.push(key);
+          this.friendValueList.push(data[key]);
+        }
+      }
+    );
   }
 
 }

@@ -1,0 +1,33 @@
+page-type-custom {
+    //头部
+    .header{
+        
+        &::after{
+            background-image: none;
+        }
+        .toolbar{
+            .back-button{
+                color: #fff;
+            }
+            .toolbar-background{
+                background: -webkit-gradient(linear, left top, right top, from(#3555DE), to(#628FF7)) !important;
+                background: linear-gradient(to right, #3555DE, #628FF7) !important;
+            }
+            .toolbar-content{
+                position: relative;
+                .toolbar-title{
+                    color: #fff;
+                }
+                .button{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    font-size: rem(17);
+                    height: 100%;
+                    margin: 0;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

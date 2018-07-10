@@ -8,23 +8,23 @@
 
 
 <ion-content padding>
-  <form>
+  <form [formGroup]="evaluteFrom"><!--[formGroup]="evaluteFrom"-->
     <ion-list>
       <ion-item>
         <ion-label>被评价人:</ion-label>
-        <ion-input type="text" [(ngModel)]="evaluationObject" name="evaluationObject" (click)="goEvaluteCreateSearch()"></ion-input>
+        <ion-input type="text" [(ngModel)]="evaluationObject" formControlName="evaluationObject" name="evaluationObject" (click)="goEvaluteCreateSearch()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>来源：</ion-label>
-        <ion-input type="text" [(ngModel)]="source" name="source"></ion-input>
+        <ion-input type="text" [(ngModel)]="source"   formControlName="source" name="source"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>标题：</ion-label>
-        <ion-textarea [(ngModel)]="evaluationTitle" name="evaluationTitle"></ion-textarea>
+        <ion-textarea [(ngModel)]="evaluationTitle" name="evaluationTitle" formControlName="title" name="title"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <button ion-button block (click)="postEvaluteCreate()">发布</button>
+        <button ion-button block (click)="postEvaluteCreate()" [disabled]="evaluteFrom.invalid">发布</button> <!-- [disabled]="evaluteFrom.invalid"-->
       </ion-item>
     </ion-list>
   </form>

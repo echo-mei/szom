@@ -21,7 +21,8 @@
       <ion-note float-right (click)="goMeSign()">
         <ion-badge color="dark">在岗</ion-badge>
       </ion-note> -->
-      <div class="sign" (click)="goMeSign()">出差</div>
+      <div *ngIf="todaySign&&todaySign.signInId" class="sign" (click)="goMeSign()">{{todaySign.signInTypeName}}</div>
+      <div *ngIf="!todaySign||!todaySign.signInId" class="sign" (click)="goSignTags()">签到</div>
     </h2>
     <p class="desc">单位：{{me.unitName}}</p>
     <p class="desc">职位：{{me.dutyName}}</p>
@@ -49,7 +50,7 @@
     </div>
     <div class="gzt-item mnsl" (click)="goDailyTenPage()">
         <ion-icon name="md-meiniansanli" class="szom"></ion-icon>
-      <p>每年三励</p>
+      <p>每年十励</p>
     </div>
     <div class="gzt-item gbpj" tappable (click)="goEvalute()">
         <ion-icon name="md-ganbupingjia" class="szom"></ion-icon>

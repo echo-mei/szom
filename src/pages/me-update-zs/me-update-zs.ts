@@ -12,8 +12,10 @@ export class MeUpdateZsPage {
   title: any;
   attr: any;
   user: any;
-
+  selfInfo: any;
   value: any;
+
+  onUpdate: () => {}
 
   constructor(
     public navCtrl: NavController,
@@ -24,18 +26,21 @@ export class MeUpdateZsPage {
     this.title = navParams.get('title');
     this.attr = navParams.get('attr');
     this.user = navParams.get('user');
-    this.value = this.user[this.attr];
+    this.selfInfo = navParams.get('selfInfo');
+    this.onUpdate = navParams.get('onUpdate');
+    this.value = this.selfInfo[this.attr];
   }
 
   save() {
     let selfInfo = {
-      ...this.user,
+      ...this.selfInfo,
+      personId: this.user.personId
     };
     selfInfo[this.attr] = this.value;
     this.userProvider.saveMySelfInfo(selfInfo).subscribe(
-      (data) => {
+      () => {
         this.navCtrl.pop();
-        this.user[this.attr] = this.value;
+        this.onUpdate();
       }
     );
   }

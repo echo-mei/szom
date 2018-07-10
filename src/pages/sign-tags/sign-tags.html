@@ -1,5 +1,4 @@
-  <ion-row>
-    <ion-col col-4 *ngFor="let tag of tags">
-      <button ion-button (click)="sign(tag.signInType)">{{tag.signInType}} {{tag.counts}}</button>
-    </ion-col>
-  </ion-row>
+<h2>今日签到</h2>
+<div class="impression">
+  <ion-badge *ngFor="let tag of tags" (click)="sign(tag)">{{tag.name}}</ion-badge>
+</div>

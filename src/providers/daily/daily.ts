@@ -21,8 +21,8 @@ export class DailyProvider {
   }
 
   // 创建日志
-  createDaily(params): Observable<any> {
-    return this.http.post(`${BASE_URL}/logDaily`,params);
+  createDaily(params, files?): Observable<any> {
+    return this.http.upload(`${BASE_URL}/logDaily`, params, files);
   }
 
   // 获取日志
@@ -52,14 +52,12 @@ export class DailyProvider {
     return null;
   }
 
-  commentDaily(dynamicId, params): Observable<any> {
-    // TODO: 评论日志
-    return this.http.post(`${BASE_URL}/dynamicbiz/createStComment/${dynamicId}`, params);
+  commentDaily(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/dynamicbiz/createStCommentBiz`, params);
   }
 
-  likeDaily(dynamicId): Observable<any> {
-    // TODO: 点赞日志
-    return this.http.post(`${BASE_URL}/dynamicbiz/createStLike/${dynamicId}`);
+  likeDaily(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/dynamicbiz/createStLikeBiz`,params);
   }
 
   cancelLikeDaily(params): Observable<any> {
@@ -69,31 +67,28 @@ export class DailyProvider {
 
   // 查询每周一励列表
   getDailyOneList(params): Observable<any> {
-    return this.http.get(`${BASE_URL}/logWeekly`,params);
+    return this.http.get(`${BASE_URL}/logWeekly`, params);
   }
 
   // 获取每周一励
-  getDailyOne(id): Observable<any> {
-    // TODO: 获取每周一励
-    return null;
+  getDailyOne(weeklyId): Observable<any> {
+    return this.http.get(`${BASE_URL}/logWeekly/${weeklyId}`);
   }
 
   // 修改每周一励
-  updateDailyOne(id): Observable<any> {
-    // TODO: 修改每周一励
-    return null;
+  updateDailyOne(weeklyId, params): Observable<any> {
+    return this.http.put(`${BASE_URL}/logWeekly/${weeklyId}`, params);
   }
 
   // 创建每周一励
-  createDailyOne(id): Observable<any> {
-    // TODO: 创建每周一励
-    return null;
+  createDailyOne(logWeekly, files?): Observable<any> {
+    console.log(logWeekly, files);
+    return this.http.upload(`${BASE_URL}/logWeekly`, logWeekly, files);
   }
 
   // 删除每周一励
-  deleteDailyOne(id): Observable<any> {
-    // TODO: 删除每周一励
-    return null;
+  deleteDailyOne(weeklyId): Observable<any> {
+    return this.http.delete(`${BASE_URL}/logWeekly/${weeklyId}`);
   }
 
   //查询每季三励列表
@@ -103,26 +98,22 @@ export class DailyProvider {
 
   // 获取每季三励
   getDailyThree(id): Observable<any> {
-    // TODO: 获取每季三励
-    return null;
+    return this.http.get(`${BASE_URL}/logQuarterly/${id}`);
   }
 
   // 修改每季三励
-  updateDailyThree(id): Observable<any> {
-    // TODO: 修改每季三励
-    return null;
+  updateDailyThree(id, quarterly): Observable<any> {
+    return this.http.put(`${BASE_URL}/logQuarterly/${id}`, quarterly);
   }
 
   // 创建每季三励
-  createDailyThree(id): Observable<any> {
-    // TODO: 创建每季三励
-    return null;
+  createDailyThree(quarterly, files?): Observable<any> {
+    return this.http.upload(`${BASE_URL}/logQuarterly`, quarterly, files);
   }
 
   // 删除每季三励
   deleteDailyThree(id): Observable<any> {
-    // TODO: 删除每季三励
-    return null;
+    return this.http.delete(`${BASE_URL}/logQuarterly/${id}`);
   }
 
   //查询每年十励列表
@@ -132,32 +123,27 @@ export class DailyProvider {
 
   // 获取每年十励
   getDailyTen(id): Observable<any> {
-    // TODO: 获取每年十励
-    return null;
+    return this.http.get(`${BASE_URL}/logYearly/${id}`);
   }
 
   // 修改每年十励
-  updateDailyTen(id): Observable<any> {
-    // TODO: 修改每年十励
-    return null;
+  updateDailyTen(id, logYearly): Observable<any> {
+    return this.http.put(`${BASE_URL}/logYearly/${id}`, logYearly);
   }
 
   // 创建每年十励
-  createDailyTen(id): Observable<any> {
-    // TODO: 创建每年十励
-    return null;
+  createDailyTen(logYearly, files?): Observable<any> {
+    return this.http.upload(`${BASE_URL}/logYearly`, logYearly, files);
   }
 
   // 删除每年十励
   deleteDailyTen(id): Observable<any> {
-    // TODO: 删除每年十励
-    return null;
+    return this.http.delete(`${BASE_URL}/logYearly/${id}`);
   }
 
-  //post请求
-  doPost(apiUrl,json,callback){
-    //`${REAL_URL}`请求地址'http://192.168.0.197:8803'
-      var Url=REAL_URL+apiUrl;
-    console.log(Url);
+  // 获取干部动态
+  getDynamic(userId): Observable<any> {
+    return this.http.get(`${BASE_URL}/getDynamic/${userId}`)
   }
+
 }

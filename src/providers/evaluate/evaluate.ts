@@ -11,7 +11,7 @@ export class EvaluateProvider {
 
   // 干部评价列表
   getEvaluateList(): Observable<any> {
-    return this.http.get(`${BASE_URL}/personalEvaluation`);
+    return this.http.get(`${BASE_URL}/personalEvaluation?evaluationId`);
   }
 
   // 获取评价

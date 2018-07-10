@@ -1,97 +1,92 @@
 page-addresslist-other {
-    .scroll-content{
-        background: #fafafa;
+  .scroll-content {
+    background: #F4F4F4;
+  }
+  .searcher {
+    position: relative;
+    background: #FFFFFF;
+    height: rem(42);
+    width: rem(360);
+    padding: rem(4) rem(15) rem(6) rem(15);
+    .szom {
+      position: absolute;
+      left: rem(27);
+      top: rem(14);
+      z-index: 1;
+      font-size: rem(13);
+      color: #AFAFAF;
     }
-    .searchbar{
-        width: 100%;
-        background: #fff;
-        padding: rem(4) rem(15) rem(6) rem(15);
-        min-height: auto;
-        margin-bottom: rem(4);
-        .searchbar-input-container{
-            display: flex;
-            align-items: center;
-        }
-        .searchbar-input{
-            height: rem(32);
-            line-height: normal;
-            background-color: #F4F4F4;
-            border-radius: .2rem;
-            color: #333;
-            font-size: rem(14);
-            padding-left: rem(30);
-            box-shadow: none;
-            background-color: #F4F4F4;
-            border-radius: rem(2);
-        }
-        .searchbar-search-icon{
-            top: rem(5);
-            left: rem(6);
-        }
+    .searchbar {
+      padding: 0;
+      margin: 0;
+      background: #F4F4F4;
+      border-radius: 2px;
+      height: rem(32);
+      width: rem(330);
+      .searchbar-search-icon {
+        display: none;
+      }
+      .searchbar-input {
+        padding-left: rem(35);
+      }
     }
+  }
 
-    .list{
-        .item{
-            padding:0 0 0 rem(15);
-            &:last-child{
-                padding-bottom: 0;
-            }
-
-            ion-avatar{
-                width: rem(50);
-                height: rem(50);
-                line-height: rem(50);
-                margin: rem(12) rem(9) rem(12) 0;
-                color: #fff;
-                text-align: center;
-                border-radius: rem(2);
-                background-color: #4D74EB;
-                border-radius: 1px;
-                font-family: PingFangSC-Medium;
-                font-size: rem(18);
-                color: #FFFFFF;
-                letter-spacing: -0.63px;
-
-                img{
-                    width: 100%;
-                    height: 100%;
-                }
-
-                ion-icon{
-                    font-size: rem(30);
-                    height: rem(50);
-                    line-height: rem(50);
-                }
-            }
-
-            .item-inner{
-                border-bottom: .5px solid #f9f9f9;
-
-                .label{
-                    margin: rem(12) 0 rem(12) 0;
-                    position: relative;
-
-                    ion-icon{
-                        position: absolute;
-                        top: rem(5);
-                        right: rem(5);
-                        color: #d9d9d9;
-                        font-size: rem(14);
-                    }
-                }
-                h2{
-                    height: rem(21);
-                    line-height: rem(21);
-                    font-family: PingFangSC-Medium;
-                    font-size: rem(15);
-                    color: #333333;
-                    letter-spacing: -0.52px;
-                }
-            }
+  .type-list {
+    ion-item {
+      width: rem(360);
+      height: rem(75);
+      background: #FFFFFF;
+      .item-inner {
+        padding-right: 0!important;
+        ion-label.label {
+          margin: 0;
+          padding-left: rem(75);
+          img {
+            position: absolute;
+            left: rem(15);
+            top: rem(10);
+            width: rem(50);
+            height: rem(50);
+          }
+          .type-name {
+            position: absolute;
+            left: rem(15);
+            top: rem(10);
+            width: rem(50);
+            height: rem(50);
+            line-height: rem(50);
+            text-align: center;
+            font-size: rem(18);
+            background: #F5A623;
+            color: #fff;
+            border-radius: 2px;
+            letter-spacing: rem(-0.63);
+          }
+          h2 {
+            font-size: rem(15);
+            color: #333333;
+            letter-spacing: rem(0.52);
+            line-height: rem(21);
+            font-weight: bold;
+          }
+          ion-note {
+            opacity: 0.99;
+            font-size: rem(12);
+            color: #999999;
+            letter-spacing: rem(-0.42);
+            line-height: rem(17);
+          }
         }
-
-
+        ion-icon.szom {
+          position: absolute;
+          right: rem(15);
+          font-size: rem(12);
+          margin: 0;
+          padding: 0;
+          color: #D9D9D9;
+        }
+      }
     }
-
-
+  }
 }

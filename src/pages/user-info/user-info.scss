@@ -1,3 +1,122 @@
 page-user-info {
-
+  ion-navbar {
+    .toolbar-background {
+      background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    }
+    .toolbar-title, ion-icon {
+      color: #fff;
+    }
+  }
+  .scroll-content {
+    background: #F4F4F4;
+  }
+  ion-item.user-info {
+    width: rem(360);
+    height: rem(70);
+    background-image: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    .item-inner {
+      padding-right: 0!important;
+      ion-label.label {
+        margin: 0;
+        padding-left: rem(75);
+        img {
+          position: absolute;
+          left: rem(15);
+          top: rem(10);
+          width: rem(50);
+          height: rem(50);
+        }
+        h2 {
+          font-size: rem(18);
+          color: #FFFFFF;
+          letter-spacing: rem(-0.63);
+          ion-badge {
+            margin-left: rem(7);
+            padding: rem(1) rem(5);
+            font-size: 10px;
+            color: #FFFFFF;
+            font-weight: normal;
+          }
+        }
+        ion-note {
+          opacity: 0.99;
+          font-size: rem(12);
+          color: #fff;
+          line-height: rem(18);
+        }
+      }
+    }
+  }
+  ion-list.type-list {
+    button.item {
+      padding-top: rem(18);
+      .item-inner {
+        padding-right: 0;
+        padding-left: rem(15);
+        ion-label {
+          margin: 0;
+          h2 {
+            font-size: rem(18);
+            color: #333333;
+            line-height: rem(25);
+            font-weight: bolder;
+          }
+        }
+        ion-icon.szom {
+          position: absolute;
+          right: rem(15);
+          font-size: rem(10);
+          margin: 0;
+          color: #D9D9D9;
+        }
+      }
+    }
+    ion-item.item {
+      height: rem(54);
+      .item-inner {
+        padding-left: rem(15);
+        padding-right: 0;
+        ion-note {
+          font-size: rem(12);
+          color: #CCCCCC;
+          letter-spacing: 0;
+          text-align: left;
+        }
+        h4 {
+          font-size: rem(15);
+          color: #333333;
+          letter-spacing: 0;
+        }
+        img-loader {
+          width: rem(36);
+          height: rem(36);
+          margin: 0 rem(15);
+        }
+      }
+    }
+    .impression {
+      padding-left: rem(10);
+      background: #fff;
+      ion-badge {
+        height: rem(30);
+        padding: 0 rem(8);
+        line-height: rem(30);
+        margin: rem(5) rem(5);
+        color: #4D74EB;
+        background: rgba(77,116,235,0.10);
+        border-radius: 1px;
+        font-size: rem(14);
+        font-weight: normal;
+        font-size: 14px;
+        letter-spacing: 0;
+      }
+    }
+  }
+  .footer-buttons {
+    position: fixed;
+    bottom: 0;
+    background: #F4F4F4;
+    height: rem(56);
+    width: rem(360);
+  }
 }

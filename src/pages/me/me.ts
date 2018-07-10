@@ -41,7 +41,7 @@ export class MePage {
   }
 
   getMe() {
-    this.userProvider.getMe().subscribe(
+    this.userProvider.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode}).subscribe(
       me => {
         this.me = me;
       }

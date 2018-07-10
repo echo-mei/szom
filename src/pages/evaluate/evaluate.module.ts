@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { EvaluatePage } from './evaluate';
+import { EvaluateListPageModule } from '../evaluate-list/evaluate-list.module';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,10 @@ import { EvaluatePage } from './evaluate';
   ],
   imports: [
     IonicPageModule.forChild(EvaluatePage),
+    EvaluateListPageModule
+  ],
+  exports:[
+    EvaluatePage
   ],
 })
-export class LeaderevaluatePageModule {}
+export class EvaluatePageModule {}

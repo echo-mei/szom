@@ -9,48 +9,34 @@
 <ion-content padding>
   <ion-item-group>
     <ion-item-divider color="light">关注</ion-item-divider>
-    <div *ngFor="let item of likerList;">
-    <!-- <ion-item *ngFor="let item of likerList;" *ngIf="item.group == '关注'">
-      <ion-avatar item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-avatar>
-      <h2>{{ item.name }}</h2>
-      <div>
-          <p>深圳市委组织部</p>
-          <p>宣传科干事</p>
-      </div>
-    </ion-item> -->
-    <ion-item  *ngIf="item.group == '关注'">
-      <ion-thumbnail item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-thumbnail>
-      <h2>{{ item.name }}</h2>
-      <p>{{ item.org }} 丨 {{ item.pos }}</p>
-    </ion-item>
-  </div>
-
-
-  <ion-item-divider color="light">本单位</ion-item-divider>
-    <div *ngFor="let item of likerList;">
-      <ion-item  *ngIf="item.group == '关注'">
+    <div *ngFor="let item of likerList.listAttention;">
+      <ion-item (click)="goUserInfo(item)">
         <ion-thumbnail item-start>
           <img src="assets/imgs/user.jpg">
         </ion-thumbnail>
         <h2>{{ item.name }}</h2>
-        <p>{{ item.org }} 丨 {{ item.pos }}</p>
+        <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>
       </ion-item>
-  </div>
-
-  <ion-item-divider color="light">其他组织</ion-item-divider>
-    <div *ngFor="let item of likerList;">
-      <ion-item  *ngIf="item.group == '关注'">
+    </div>
+    <ion-item-divider color="light">本单位</ion-item-divider>
+    <div *ngFor="let item of likerList.listMyUnit">
+      <ion-item (click)="goUserInfo(item)">
         <ion-thumbnail item-start>
           <img src="assets/imgs/user.jpg">
         </ion-thumbnail>
         <h2>{{ item.name }}</h2>
-        <p>{{ item.org }} 丨 {{ item.pos }}</p>
+        <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>
       </ion-item>
-  </div>
-
+    </div>
+    <ion-item-divider color="light">其他组织</ion-item-divider>
+    <div *ngFor="let item of likerList.listOtherUnit">
+      <ion-item (click)="goUserInfo(item)">
+        <ion-thumbnail item-start>
+          <img src="assets/imgs/user.jpg">
+        </ion-thumbnail>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>
+      </ion-item>
+    </div>
   </ion-item-group>
 </ion-content>

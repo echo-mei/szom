@@ -1,11 +1,22 @@
 import { NgModule } from '@angular/core';
-import { PopSelectComponent } from './pop-select/pop-select';
+import { IonicModule } from 'ionic-angular';
 import { ImagePickerComponent } from './image-picker/image-picker';
+import { TimeSelectComponent } from './time-select/time-select';
+
 @NgModule({
-	declarations: [PopSelectComponent,
-    ImagePickerComponent],
-	imports: [],
-	exports: [PopSelectComponent,
-    ImagePickerComponent]
+	declarations: [
+    ImagePickerComponent,
+    TimeSelectComponent
+  ],
+	imports: [
+    IonicModule
+  ],
+	exports: [
+    ImagePickerComponent,
+    TimeSelectComponent
+  ],
+  entryComponents: [
+    ImagePickerComponent
+  ]
 })
 export class ComponentsModule {}

@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the AddresslistOtherPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { UnitProvider } from '../../providers/unit/unit';
 
 @IonicPage()
 @Component({
@@ -17,21 +11,25 @@ export class AddresslistOtherPage {
 
   organizationlist = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public unitProvider: UnitProvider
+  ) {
+    this.getOrgList();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddresslistOtherPage');
-    this.organizationlist = [
-      {img:'img/slimer.png',text:'市委办公厅'},
-      {img:'img/slimer.png',text:'市委政法委'},
-      {img:'img/slimer.png',text:'市委宣传部'},
-      {img:'img/slimer.png',text:'市委统战部'}
-    ]
+  getOrgList() {
+    this.unitProvider.getOtherUnitList().subscribe(
+      (list) => {
+        this.organizationlist = list;
+      }
+    );
   }
 
-  getTeamList() {
-    this.navCtrl.push('TeamListUnitPage');
+  goAddresslistUnit(org) {
+    this.navCtrl.push('AddresslistUnitPage', {
+      org: org
+    });
   }
 }

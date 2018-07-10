@@ -1,9 +1,3 @@
-<!--
-  Generated template for the AddresslistOtherPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header no-border>
 
   <ion-navbar color="white">
@@ -14,16 +8,16 @@
 
 
 <ion-content>
-  <ion-searchbar placeholder="搜索服务、办事项目"></ion-searchbar>
-  <ion-list>
-    <ion-item *ngFor="let item of organizationlist" (click)="getTeamList()">
-      <ion-avatar item-start class="unit">
-          {{ item.text.substring(2,4) }}
-      </ion-avatar>
-      <h2>{{ item.text }}</h2>
-      <ion-icon class="szom" name="md-you"></ion-icon>
+  <!-- <div class="searcher">
+    <ion-icon class="szom" name="sousuo"></ion-icon>
+    <ion-searchbar (click)="goAddresslistSearch()" placeholder="搜索"></ion-searchbar>
+  </div> -->
+  <ion-list class="type-list" no-lines>
+    <ion-item *ngFor="let org of organizationlist" (click)="goAddresslistUnit(org)">
+      <div class="type-name">{{org.shortName}}</div>
+      <h2>{{org.orgName}}</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
     </ion-item>
-    
   </ion-list>
 
 

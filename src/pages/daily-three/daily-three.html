@@ -1,57 +1,39 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title>每季三励</ion-title>
     <ion-buttons right>
-        <button ion-button (click)="goDailySearch()">
-          <ion-icon class="szom" name="md-sousuo"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button (click)="goDailySearch()">
+        <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list  *ngIf="dailyThreeList" no-lines>
-    <ion-item>
-      <div class="body-box">
-        <div class="date-box"></div>
-        <div class="context-box">
-          <div class="text-area" (click)="goDailyCreate()">本周完成最满意的一件事...</div>
-          <p float-left>{{nowTime}}</p>
-        </div>
+  <ion-list *ngIf="dailyThreeList" no-lines>
+    <ion-item *ngIf="canCreate()">
+      <ion-note item-start>{{getCurrentIndex()}}</ion-note>
+      <div class="text" (click)="goDailyCreate()">本季完成最满意的一件事...</div>
+      <div>
+        <span *ngIf="quarter.quarter">{{quarter.quarter.firstDate | date:'yyyy-MM-dd'}}-{{quarter.quarter.lastDate | date:'yyyy-MM-dd'}}</span>
       </div>
     </ion-item>
-
-    <ion-item  *ngFor="let log of dailyThreeList;" (click)="goDailyShow()">
-      <div class="body-box">
-        <div class="date-box">{{log.dailyId}}</div>
-        <div class="context-box">
-          <h3>{{log.title}}</h3>
-          
-          <div class="action-box">
-              <ion-note>
-                <span>{{log.startTime}}</span>
-                <span style="margin:0 5px;">-</span>
-                <span>{{log.endTime}}</span>
-              </ion-note>
-              <div>
-                <ion-note>
-                  <ion-icon class="szom" name="md-dianzanmoren" float-left></ion-icon>
-                  <p float-left>{{log.likeCount}}</p>
-                </ion-note>
-                <ion-note>
-                  <ion-icon class="szom" name="md-xiaoxi" float-left></ion-icon>
-                  <p float-left>{{log.commentCount}}</p>
-                </ion-note>
-              </div>
-            </div>
-
-        </div>
+    <ion-item *ngFor="let log of dailyThreeList;" (click)="goDailyShow(log)" tappable>
+      <ion-note item-start>{{getIndex(log)}}</ion-note>
+      <div class="content">
+        <h3>{{log.content}}</h3>
+        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
+      </div>
+      <div>
+        <span>{{log.startDate | date:'yyyy.MM.dd'}}-{{log.endDate | date:'yyyy.MM.dd'}}</span>
+        <span class="icons">
+          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
+          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
+        </span>
       </div>
     </ion-item>
-
   </ion-list>
 </ion-content>
-

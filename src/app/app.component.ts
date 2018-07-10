@@ -38,7 +38,7 @@ export class MyApp {
           this.platform.exitApp();
         }else {
           this.toastCtrl.create({
-            cssClass: 'http-error',
+            cssClass: 'mini',
             message: '再按一次退出应用',
             position: 'bottom',
             duration: 2000

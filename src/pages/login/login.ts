@@ -53,7 +53,7 @@ export class LoginPage {
   }
 
   getSMSCode() {
-    this.userProvider.getSMSCode(this.loginForm.value.userCode).subscribe(
+    this.userProvider.getSMSCode({accountNo: this.loginForm.value.userCode}).subscribe(
       () => {
         this.second = 60;
         let interval = setInterval(() => {
@@ -68,7 +68,7 @@ export class LoginPage {
 
   login() {
     let params = {
-      userCode: this.loginForm.value.userCode,
+      accountNo: this.loginForm.value.userCode,
       channel: /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 'MOBILE' : 'PC'
     };
     let fn = 'login';

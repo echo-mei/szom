@@ -7,6 +7,8 @@ import { ImageUtilProvider } from '../../providers/image-util/image-util';
 })
 export class ImagePickerComponent {
 
+  max = 9;
+
   images: any[] = [];
 
   constructor(
