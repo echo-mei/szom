@@ -1,70 +1,81 @@
-<ion-list *ngIf="dynamicList" (click)="commentInputHide()">
-  <ion-card *ngFor="let dynamic of dynamicList;let i=index;">
-    <ion-card-header>
-      <ion-item no-padding>
-        <ion-avatar item-start>
-          <img src="assets/imgs/user.jpg">
-        </ion-avatar>
-        <h3>{{dynamic.soaPersonInfoDTO.name}}</h3>
-      </ion-item>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="content-wrap" [hidden]="!showAllFlag">
-        <p class="content showEllipsis">
-          {{dynamic.content}}
-        </p>
-        <!-- <ion-textarea #content rows="3" readonly value="{{dynamic.content}}"></ion-textarea> -->
-        <p class="more" (click)="showAllFlag=false;" *ngIf="showMoreBtn(content)">更多</p>
-      </div>
-      <div class="content-wrap" [hidden]="showAllFlag">
-        <p class="content showAll">
-          {{dynamic.content}}
-        </p>
-        <p class="more" (click)="showAllFlag=true;">收起</p>
-      </div>
-      <img src="assets/imgs/horizontal.png">
-      <div class="other">
-        <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd'}}</ion-note>
-        <ion-note class="handle" float-right>
-          <button ion-button clear class="xiaoxi" (click)="startComment(dynamic);$event.stopPropagation();">
-            <ion-icon class="szom" name="md-xiaoxi"></ion-icon>
-          </button>
-          <button *ngIf="!hasMeLike(dynamic)" ion-button clear (click)="sendLike(dynamic);$event.stopPropagation();">
-            <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
-          </button>
-          <button *ngIf="hasMeLike(dynamic)" ion-button clear>
-            <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-          </button>
-        </ion-note>
-      </div>
-      <div class="line"></div>
-      <ion-row>
-        <ion-col col-1>
-          <ion-icon class="szom zanList" name="md-dianzandianji"></ion-icon>
-        </ion-col>
-        <ion-col class="zanName" *ngIf="dynamic.sbLikeList">
-          <a (click)="goLikeList()" *ngFor="let user of dynamic.sbLikeList.slice(0, 9)" class="zanName">{{user.likeUserName}}、</a>
-          <span class="andSoOn" [hidden]="dynamic.sbLikeList.length<11">等{{dynamic.sbLikeList.length}}人觉得很赞</span>
-        </ion-col>
-      </ion-row>
-      <ion-list class="comList" *ngIf="dynamic.sbCommentList">
-        <p *ngFor="let comment of dynamic.sbCommentList" (click)="startComment(dynamic,comment.sbCommentId,comment.commentUserName);$event.stopPropagation();">
-          <a>{{comment.commentUserName}}</a><span *ngIf="comment.beCommentUserName">回复<a>{{comment.beCommentUserName}}</a></span>:
-          <span>{{comment.content}}</span>
-        </p>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-</ion-list>
-<ion-infinite-scroll (ionInfinite)="more($event)" *ngIf="type!='recommend'">
-  <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
-</ion-infinite-scroll>
+<ion-content>
+  <ion-list *ngIf="dynamicList" (click)="commentInputHide()">
+    <ion-card *ngFor="let dynamic of dynamicList;let i=index;">
+      <ion-card-header>
+        <ion-item no-padding>
+          <ion-avatar item-start>
+            <img src="dynamic.soaPersonInfoDTO.photoBlob" *ngIf="dynamic.soaPersonInfoDTO.photoBlob;else elseBlock">
+            <ng-template #elseBlock>
+              <img src="assets/imgs/user.jpg">
+            </ng-template>
+          </ion-avatar>
+          <h3>{{dynamic.soaPersonInfoDTO.name}}</h3>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="content-wrap" [hidden]="!showAllFlag">
+          <p class="content showEllipsis">
+            {{dynamic.content}}
+          </p>
+          <!-- <ion-textarea #content rows="3" readonly value="{{dynamic.content}}"></ion-textarea> -->
+          <p class="more" (click)="showAllFlag=false;" *ngIf="showMoreBtn(content)">更多</p>
+        </div>
+        <div class="content-wrap" [hidden]="showAllFlag">
+          <p class="content showAll">
+            {{dynamic.content}}
+          </p>
+          <p class="more" (click)="showAllFlag=true;">收起</p>
+        </div>
+        <ion-thumbnail item-end *ngIf="dynamic.uploadFileDetailDTOList&&dynamic.uploadFileDetailDTOList.length">
+          <img *ngIf="dynamic.uploadFileDetailDTOList.length" [src]="getImageUrl(dynamic.uploadFileDetailDTOList[0])">
+        </ion-thumbnail>
+        <div class="other">
+          <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd'}}</ion-note>
+          <ion-note class="handle" float-right>
+            <button ion-button clear class="xiaoxi" (click)="startComment(dynamic);$event.stopPropagation();">
+              <ion-icon class="szom" name="md-xiaoxi"></ion-icon>
+            </button>
+            <button *ngIf="!hasMeLike(dynamic)" ion-button clear (click)="sendLike(dynamic);$event.stopPropagation();">
+              <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+            </button>
+            <button *ngIf="hasMeLike(dynamic)" ion-button clear>
+              <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+            </button>
+          </ion-note>
+        </div>
+        <div class="line"></div>
+        <ion-row>
+          <ion-col col-1>
+            <ion-icon class="szom zanList" name="md-dianzandianji"></ion-icon>
+          </ion-col>
+          <ion-col class="zanName" *ngIf="dynamic.sbLikeList">
+            <a (click)="goLikeList()" *ngFor="let user of dynamic.sbLikeList.slice(0, 9)" class="zanName">{{user.likeUserName}}、</a>
+            <span class="andSoOn" [hidden]="dynamic.sbLikeList.length<11">等{{dynamic.sbLikeList.length}}人觉得很赞</span>
+          </ion-col>
+        </ion-row>
+        <ion-list class="comList" *ngIf="dynamic.sbCommentList">
+          <p *ngFor="let comment of dynamic.sbCommentList" (click)="startComment(dynamic,comment.sbCommentId,comment.commentUserName);$event.stopPropagation();">
+            <a>{{comment.commentUserName}}</a>
+            <span *ngIf="comment.beCommentUserName">回复
+              <a>{{comment.beCommentUserName}}</a>
+            </span>:
+            <span>{{comment.content}}</span>
+          </p>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="more($event)" *ngIf="type!='recommend'">
+    <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
-<ion-footer no-border>
-  <ion-item class="publish-comment" no-lines>
-    <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment" id="commentInput"></ion-textarea>
-    <div item-end>
-      <button ion-button (click)="sendComment()">发送</button>
-    </div>
-  </ion-item>
-</ion-footer>
+</ion-content>
+
+<!-- <ion-footer no-border> -->
+<ion-item class="publish-comment" no-lines #commentEle>
+  <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment" id="commentInput"></ion-textarea>
+  <div item-end>
+    <button ion-button (click)="sendComment()">发送</button>
+  </div>
+</ion-item>
+<!-- </ion-footer> -->

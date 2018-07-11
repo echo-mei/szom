@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 import { UserProvider } from '../../providers/user/user';
 import { ImpressionProvider } from '../../providers/impression/impression';
 import { StorageProvider } from '../../providers/storage/storage';
+import { DynamicProvider } from '../../providers/dynamic/dynamic';
 
 @IonicPage()
 @Component({
@@ -12,6 +13,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class UserInfoPage {
 
+  showBaseInfo:boolean;
   showSelfInfo:boolean;
   showDaily:boolean;
   showTags:boolean;
@@ -22,6 +24,8 @@ export class UserInfoPage {
   user: any = {};
 
   userSelfInfo: any = {};
+
+  daily: any = {};
 
   tagList: any[] = [];
 
@@ -36,8 +40,12 @@ export class UserInfoPage {
     public addresslistProvider: AddresslistProvider,
     public userProvider: UserProvider,
     public impressionProvider: ImpressionProvider,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public dynamicProvider: DynamicProvider,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController
   ) {
+    this.showBaseInfo = this.navParams.get('showBaseInfo');
     this.showSelfInfo = this.navParams.get('showSelfInfo');
     this.showDaily = this.navParams.get('showDaily');
     this.showTags = this.navParams.get('showTags');
@@ -53,11 +61,12 @@ export class UserInfoPage {
 
   // 获取用户基本信息
   getUserInfo(){
-    this.userProvider.getUserInfoByPersonId(this.user.personId).subscribe(
+    this.userProvider.getUserInfo({userCode: this.user.userCode}).subscribe(
       (user) => {
         this.user = user;
         this.getUserSelfInfo();
         this.getImpressionList();
+        this.getUerDailyList();
       }
     );
   }
@@ -67,6 +76,18 @@ export class UserInfoPage {
     this.userProvider.getUserSelfInfo(this.user.personId).subscribe(
       (data) => {
         this.userSelfInfo = data;
+      }
+    );
+  }
+
+  // 获取用户日志列表
+  getUerDailyList() {
+    this.dynamicProvider.getPersonDynamicList({
+      userCode: this.user.userCode,
+      size: 1
+    }).subscribe(
+      (list) => {
+        list.length && (this.daily = list[0]);
       }
     );
   }
@@ -86,8 +107,20 @@ export class UserInfoPage {
     this.navCtrl.push('DailyMePage');
   }
 
+  goBaseInfo() {
+    this.navCtrl.push('UserBaseinfoPage', {
+      user: this.user
+    });
+  }
+
   goUserSelfInfo() {
     this.navCtrl.push('UserSelfinfoPage', {
+      user: this.user
+    });
+  }
+
+  goUserDynamicList() {
+    this.navCtrl.push('UserDynamicListPage', {
       user: this.user
     });
   }
@@ -107,20 +140,38 @@ export class UserInfoPage {
       () => {
         this.getUserInfo();
         this.onFollow && this.onFollow();
+        this.toastCtrl.create({
+          cssClass: 'mini',
+          message: '发送关注申请成功',
+          duration: 1000,
+          position: 'middle'
+        }).present();
       }
     );
   }
 
   cancelFollow() {
-    this.userProvider.postFollow({
-      userCode: this.user.userCode,
-      status: '05'
-    }).subscribe(
-      () => {
-        this.getUserInfo();
-        this.onCancelFollow && this.onCancelFollow();
-      }
-    );
+    let alert = this.alertCtrl.create({
+      message: '确认删除？',
+      buttons: [
+        { text: '取消', role: 'cancel' },
+        {
+          text: '确认', handler: () => {
+            this.userProvider.postFollow({
+              attentedUserCode: this.user.userCode,
+              userCode: JSON.parse(this.storage.get('user')).userCode,
+              status: '05'
+            }).subscribe(
+              () => {
+                this.getUserInfo();
+                this.onCancelFollow && this.onCancelFollow();
+              }
+            );
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   agree() {
@@ -143,6 +194,8 @@ export class UserInfoPage {
       status: '03'
     }).subscribe(
       () => {
+        this.agreeOrRefuse = false;
+        this.followOrCancel = true;
         this.getUserInfo();
         this.onRefuse && this.onRefuse();
       }

@@ -68,9 +68,12 @@ export class MeInfoPage {
 
   goSignTags() {
     let popover = this.popoverCtrl.create('SignTagsPage', {
-      onSign: this.getTodaySign.bind(this)
+      onSign: () => {
+        this.getTodaySign();
+        this.onSign && this.onSign();
+      }
     }, {
-      cssClass: 'small short'
+      cssClass: 'auto'
     });
     popover.present();
   }

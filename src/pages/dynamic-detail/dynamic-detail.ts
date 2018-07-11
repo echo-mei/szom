@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { StorageProvider } from '../../providers/storage/storage';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
-
+import { BASE_URL } from '../../config';
 
 @IonicPage()
 @Component({
@@ -52,6 +52,10 @@ export class DynamicDetailPage {
         this.events.publish(this.dynamicListSus, this.dynamic);
       }
     );
+  }
+
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
   hasMeLike(): boolean {

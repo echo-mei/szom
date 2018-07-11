@@ -8,7 +8,6 @@ import { BASE_URL } from '../../config';
 export class DynamicProvider {
 
   constructor(public http: HttpProvider) {
-    console.log('Hello DynamicProvider Provider');
   }
 
   // 获取关注动态信息列表
@@ -46,5 +45,9 @@ export class DynamicProvider {
     return this.http.post(`${BASE_URL}/dynamicbiz/createStLike`,params);
   }
 
+  // 查询个人通讯录动态信息列表
+  getPersonDynamicList(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/sbDynamic/listAddressBookDynamicMessage`, params);
+  }
 
 }

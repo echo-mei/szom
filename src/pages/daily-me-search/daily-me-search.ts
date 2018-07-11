@@ -56,7 +56,7 @@ export class DailyMeSearchPage {
     //g （全文查找出现的所有 pattern） 
     if (keyword) {
       let hlValue = new RegExp(keyword, "g");
-      str = str.replace(hlValue, "<font class='hightBright'>" + keyword + "</font>");
+      str = str.replace(hlValue, "<font class='hightBright'>$&</font>");
     }
     return str;
   }

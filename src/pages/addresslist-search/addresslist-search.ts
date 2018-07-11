@@ -23,8 +23,8 @@ export class AddresslistSearchPage {
     public userProvider: UserProvider,
     public storage: StorageProvider
   ) {
-    this.getUnitList();
-    this.getPersonList();
+    // this.getUnitList();
+    // this.getPersonList();
   }
 
   getUnitList(): any {

@@ -12,7 +12,7 @@ import { StorageProvider } from '../../providers/storage/storage';
   templateUrl: 'daily-ten.html',
 })
 export class DailyTenPage {
-
+  user: any;
   size:number = 10;
   dailyTenList: any[] = []; // 每年十励列表
   year:number;  // 当前年
@@ -25,6 +25,7 @@ export class DailyTenPage {
     public events: Events,
     public storage: StorageProvider
   ) {
+    this.user = this.navParams.get('user');
     let date = new Date();
     this.year = date.getFullYear();
     this.initList();
@@ -124,7 +125,9 @@ export class DailyTenPage {
   }
 
   goDailySearch(){
-    this.navCtrl.push('SearchConditionsPage');
+    this.navCtrl.push('DailyTenSearchPage',{
+      user:this.user
+    });
   }
 
 }

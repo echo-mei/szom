@@ -24,6 +24,12 @@ export class AddresslistPage {
     this.getFriendList();
   }
 
+  initFriendList() {
+    this.friendKeyList = [];
+    this.friendValueList = [];
+    this.getFriendList();
+  }
+
   getFriendList() {
     this.addresslistProvider.getMyFriendsList().subscribe(
       (data) => {
@@ -40,7 +46,12 @@ export class AddresslistPage {
   }
 
   goAddresslistNew() {
-    this.navCtrl.push('AddresslistNewPage');
+    this.navCtrl.push('AddresslistNewPage', {
+      onFollow: this.getFriendList.bind(this),
+      onCancelFollow: this.getFriendList.bind(this),
+      onAgree: this.getFriendList.bind(this),
+      onRefuse: this.getFriendList.bind(this)
+    });
   }
 
   goAddresslistOther() {
@@ -67,13 +78,14 @@ export class AddresslistPage {
       this.navCtrl.push('UserInfoPage', {
         user: user,
         followOrCancel: true,
+        showBaseInfo: true,
         showSelfInfo: true,
         showDaily: true,
         showTags: true,
-        onFollow: this.getFriendList.bind(this),
-        onCancelFollow: this.getFriendList.bind(this),
-        onAgree: this.getFriendList.bind(this),
-        onRefuse: this.getFriendList.bind(this),
+        onFollow: this.initFriendList.bind(this),
+        onCancelFollow: this.initFriendList.bind(this),
+        onAgree: this.initFriendList.bind(this),
+        onRefuse: this.initFriendList.bind(this),
       });
     }
   }

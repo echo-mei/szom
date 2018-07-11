@@ -2,6 +2,6 @@
   <ion-calendar [options]="calendarOptions" (monthChange)="goMonth($event)"
     (onSelect)="goSign($event)"></ion-calendar>
   <div class="impression">
-    <ion-badge *ngFor="let tag of tags">{{tag.signInName}}  <span>{{tag.count}}</span></ion-badge>
+    <ion-badge *ngFor="let tag of tags">{{tag.dicItemName}}  <span>{{tag.count}}</span></ion-badge>
   </div>
 </ion-content>

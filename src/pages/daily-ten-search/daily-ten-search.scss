@@ -1,4 +1,4 @@
-page-daily-three-search {
+page-daily-ten-search {
     .scroll-content {
         background: #fafafa;
       }
@@ -191,11 +191,6 @@ page-daily-three-search {
           height: 100%;
           z-index: 2;            
         }
-        .hightBright{
-          color: #4D74EB ;
-          font-weight: bold;
-          font-size: rem(15);
-        }
         // 列表部分
         .daily-list {
           margin: 0;
@@ -242,7 +237,9 @@ page-daily-three-search {
               text-overflow: ellipsis;
               white-space: normal;
               margin: 0 0 rem(15) 0;
-              
+              .hightBright{
+                  color: #4D74EB ;
+              }
             }
             .other{
               color: #AFAFAF;

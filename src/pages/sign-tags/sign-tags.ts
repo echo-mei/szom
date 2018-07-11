@@ -35,7 +35,7 @@ export class SignTagsPage {
 
   sign(tag) {
     let sign = {
-      signInType: tag.value
+      signInType: tag.dicItemCode
     };
     this.signProvider.signIn(sign).subscribe(
       () => {

@@ -16,8 +16,8 @@ export class DailyProvider {
   }
 
   // 获取获赞情况
-  getfindSTLike(accountType): Observable<any> {
-    return this.http.get(`${BASE_URL}/logDaily/findLikeCount/${accountType}`);
+  getfindSTLike(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/logDaily/findLikeCount`, params);
   }
 
   // 创建日志

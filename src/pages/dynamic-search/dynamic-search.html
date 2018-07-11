@@ -55,9 +55,8 @@
         <ion-note>
           <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.sbCommentList.length}}</ion-note>
       </div>
-      <ion-thumbnail item-end *ngIf="i%2==0">
-        <img src="img/thumbnail-totoro.png">
-        <!-- <img-loader src="img/thumbnail-totoro.png" useImg fallback="assets/imgs/fail.jpg"></img-loader> -->
+      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList&&log.uploadFileDetailDTOList.length">
+        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
       </ion-thumbnail>
     </ion-item>
   </ion-list>

@@ -3,8 +3,8 @@
   <ion-toolbar>
     <div class="input-box">
       <ion-icon class="szom" name="md-sousuo"></ion-icon>
-      <ion-searchbar [(ngModel)]="key" (ionInput)="searchList()" placeholder="搜索每周一励"></ion-searchbar>
-      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';searchList()"></ion-icon>
+      <ion-searchbar [(ngModel)]="key" (ionInput)="goSelcet($event)" placeholder="搜索每周一励"></ion-searchbar>
+      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';goSelcet($event)"></ion-icon>
     </div>
     <button ion-button (click)="goBack()" clear float-right>取消</button>
   </ion-toolbar>
@@ -13,13 +13,13 @@
 
 
 <ion-content>
-  <time-select #timeSelect showButtons=true (onSure)="searchList()" (onReset)="searchList()"></time-select>
+  <time-select #timeSelect showButtons=true (onSure)="goSelcet()" (onReset)="goSelcet()"></time-select>
   <div *ngIf="timeSelect.showPicker" class="modal-shadow"></div>
   <ion-list class="daily-list" no-lines>
     <ion-item *ngFor="let log of dailyOneList;" (click)="goDailyShow(log)" tappable>
       <div class="content">
-        <h3>{{log.title}}</h3>
-        <img-loader *ngIf="log.img" [src]="log.img" useImg fallback="assets/imgs/fail.jpg"></img-loader>
+        <h3 [innerHTML]="highLight(log.content,key)">{{log.content}}</h3>
+        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
       </div>
       <div>
         <span>{{log.startDate | date:'yyyy.MM.dd'}}-{{log.endDate | date:'yyyy.MM.dd'}}</span>

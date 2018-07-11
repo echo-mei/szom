@@ -1,0 +1,107 @@
+page-user-dynamic-list {
+  .toolbar{
+    .toolbar-background {
+        background: linear-gradient(to right, #3555DE, #628FF7)!important;
+    }
+  }
+  .like-main {
+    background: linear-gradient(to right, #3555DE, #628FF7);
+    height: rem(180);
+    position: relative;
+    .total{
+      font-size: rem(48);
+      color: #FFFFFF;
+      letter-spacing: 0;
+      text-align: center;
+      padding-top: rem(12);
+      line-height: rem(67);
+      .des{
+        opacity: 0.68;
+        font-size: rem(12);
+        color: #FFFFFF;
+        letter-spacing: 0;
+        text-align: center;
+        line-height: rem(14);
+        margin: 0;
+      }
+    }
+    .like-classify{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding-bottom: rem(18);
+      .col {
+        padding: 0;
+        p {
+          margin: 0;
+          &.num{
+            font-size: rem(18);
+            color: #FFFFFF;
+            letter-spacing: 0;
+            text-align: center;
+            line-height: rem(25);
+          }
+          &.des{
+            opacity: 0.68;
+            font-size: rem(10);
+            color: #FFFFFF;
+            letter-spacing: 0;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+  .list {
+    .item{
+      padding: rem(16) rem(15) 0;
+      .item-inner{
+        padding-right: 0;
+        border-bottom: rem(0.5) solid #f9f9f9;
+        ion-label {
+          margin: 0;
+          h4 {
+            font-family: PingFangSC-Medium;
+            font-size: rem(15);
+            line-height: rem(21);
+            color: #333333;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+          }
+          .other {
+            margin: rem(16) 0;
+            ion-note {
+              font-size: rem(13);
+              color: #AFAFAF;
+              letter-spacing: rem(-0.08);
+              text-align: right;
+              line-height: rem(15);
+              margin-right: rem(13);
+              &.date {
+                margin-right: rem(27);
+              }
+              ion-icon {
+                font-size: rem(10);
+              }
+            }
+          }
+        }
+        ion-thumbnail {
+          margin: 0;
+          min-width: initial;
+          min-height: initial;
+          align-self: flex-start;
+          img {
+            width: rem(60);
+            height: rem(60);
+          }
+        }
+      }
+    }
+  }
+}

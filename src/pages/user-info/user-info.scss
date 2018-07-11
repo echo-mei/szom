@@ -118,5 +118,10 @@ page-user-info {
     background: #F4F4F4;
     height: rem(56);
     width: rem(360);
+    padding: 0 rem(15);
+    button {
+      border-radius: 1px;
+      height: rem(40);
+    }
   }
 }

@@ -3,32 +3,39 @@ import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angul
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 
+/**
+ * Generated class for the DailyTenSearchPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @IonicPage()
 @Component({
-  selector: 'page-daily-three-search',
-  templateUrl: 'daily-three-search.html',
+  selector: 'page-daily-ten-search',
+  templateUrl: 'daily-ten-search.html',
 })
-export class DailyThreeSearchPage {
+export class DailyTenSearchPage {
   @ViewChild('infinite') infinite: InfiniteScroll;
   onUpdate: (daily) => {};
   onDelete: (dailyId) => {};
   user: any;
   size: number = 10;
-  timeStarts: string = "";
-  timeEnd: string = "";
+  timeStarts: string = '';
+  timeEnd: string = '';
   searchQuery: string = '';
-  // keywords = '';  /*关键词*/
   selectTimeShowFlag = false;
 
   //原数据
   dailyList: Array<object>;
+   /*关键词*/
   selectString: string = '';
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
-    public dateUtil: DateUtilProvider) {
+    public dateUtil: DateUtilProvider
+  ) {
 
   }
 
@@ -36,7 +43,6 @@ export class DailyThreeSearchPage {
     this.user = this.navParams.get('user');
     this.onUpdate = this.navParams.get('onUpdate');
     this.onDelete = this.navParams.get('onDelete');
-    console.log(this.user);
     this.initLogDailyList();
   }
 
@@ -44,7 +50,7 @@ export class DailyThreeSearchPage {
     this.dailyList = [];
     this.more();
   }
-
+  //返回
   goBack() {
     this.navCtrl.pop();
   }
@@ -100,9 +106,10 @@ export class DailyThreeSearchPage {
       searchStart: this.timeStarts,
       searchEnd: this.timeEnd
     };
-    this.dailyProvider.getDailyThreeList(params).subscribe(
+    console.log(params);
+    this.dailyProvider.getDailyTenList(params).subscribe(
       (data) => {
-        console.log(data);
+        console.log(this.dailyList);
         infinite && infinite.complete();
         if (data.length) {
           infinite && infinite.enable(true);
@@ -115,9 +122,13 @@ export class DailyThreeSearchPage {
 
   }
 
-  light(str, keyWord) {
-    if(keyWord){
-      var str = str.replace(new RegExp(keyWord, 'g'), "<font class='hightBright' size='15px'>" + keyWord + "</font>")
+  // 搜索正则高亮匹配
+  highLight(str, keyword) {
+    //正则替换 
+    //g （全文查找出现的所有 pattern） 
+    if (keyword) {
+      let hlValue = new RegExp(keyword, "g");
+      str = str.replace(hlValue, "<font class='hightBright'>" + keyword + "</font>");
     }
     return str;
   }

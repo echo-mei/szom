@@ -10,35 +10,27 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-segment [(ngModel)]="pet">
-      <ion-segment-button value="1" (click)="type='attention'">
-        关注
-      </ion-segment-button>
-      <ion-segment-button value="2" (click)="type='unit'">
-        本单位
-      </ion-segment-button>
-      <ion-segment-button value="3" (click)="type='recommend'">
-        推荐
-      </ion-segment-button>
-      <ion-segment-button value="4" (click)="type='leaderlike'">
-        领导批赞
-      </ion-segment-button>
-    </ion-segment>
+  <ion-buttons class="sildes-btns">
+    <button ion-button clear (click)="goDynamicList(0)" [class.active]="isActive === 0">关注</button>
+    <button ion-button clear (click)="goDynamicList(1)" [class.active]="isActive === 1">本单位</button>
+    <button ion-button clear (click)="goDynamicList(2)" [class.active]="isActive === 2">推荐</button>
+    <button ion-button clear (click)="goDynamicList(3)" [class.active]="isActive === 3">领导批赞</button>
+  </ion-buttons>
 </ion-header>
 
 <ion-content>
-  <div [ngSwitch]="pet">
-    <div *ngSwitchCase="'1'">
-      <page-dynamic-list [type]="type"></page-dynamic-list>
-    </div>
-    <div *ngSwitchCase="'2'">
-      <page-dynamic-list [type]="type"></page-dynamic-list>
-    </div>
-    <div *ngSwitchCase="'3'">
-      <page-dynamic-list [type]="type"></page-dynamic-list>
-    </div>
-    <div *ngSwitchCase="'4'">
-      <page-dynamic-list [type]="type"></page-dynamic-list>
-    </div>
-  </div>
+  <ion-slides #mySlider (ionSlideDidChange)="onSlideChanged($event)">
+    <ion-slide>
+      <page-dynamic-list type="attention"></page-dynamic-list>
+    </ion-slide>
+    <ion-slide>
+      <page-dynamic-list type="unit"></page-dynamic-list>
+    </ion-slide>
+    <ion-slide>
+      <page-dynamic-list type="recommend"></page-dynamic-list>
+    </ion-slide>
+    <ion-slide>
+      <page-dynamic-list type="leaderlike"></page-dynamic-list>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

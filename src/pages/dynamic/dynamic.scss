@@ -1,15 +1,12 @@
 page-dynamic {
+    .scroll-content {
+        padding-top: rem(4);
+        background-color:#fafafa;
+        padding-bottom: 0!important;
+    }
     .toolbar .toolbar-title{
         font-size: rem(17) !important;
         color: #333333;
-    }
-    ion-segment-button{
-        font-size: rem(15) !important;
-        color: #666666 !important;
-    }
-    .segment .segment-button.activated, .segment .segment-button.segment-activated{
-        border-color: #4D74EB;
-        color: #4D74EB !important;
     }
     ion-navbar{
         ion-icon{
@@ -19,6 +16,53 @@ page-dynamic {
             margin-right: rem(10) !important;
         }
     }
-  
-    
+    .sildes-btns{
+        border-top: .5px solid #f1f1f1;
+        margin: 0;
+        display: flex;
+        .button{
+            flex: 1;
+            margin: 0;
+            height: rem(44);
+            line-height: rem(44);
+            color: #666666;
+            font-size: rem(15);
+            padding: 0;
+            .button-inner{
+                display: inline-block;
+                width: auto;
+                position: relative;
+            }
+
+            &.active{
+                background-color: transparent;
+                .button-inner{
+                    font-family: PingFangSC-Medium;
+                    color: #4D74EB;
+
+                    &:before{
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        height: rem(2);
+                        width: 100%;
+                        background: #4D74EB;
+                    }
+                }
+            }
+        }
+    }
+    .swiper-slide{
+        text-align: left;
+        overflow: auto;
+        .slide-zoom{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            text-align: left;
+        }
+    }
+
+
 }

@@ -34,7 +34,7 @@
   <div class="divider">近三个月</div>
   <ion-list class="type-list" no-lines>
     <ion-item *ngFor="let user of monthUserList" (click)="goUserInfo(user)">
-      <img-loader useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader>
+      <img src="assets.jpg" onerror="this.src='assets/imgs/user.jpg'">
       <h2>{{user.name}}</h2>
       <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
       <button *ngIf="user.status=='01'" ion-button item-end>待确定</button>

@@ -25,7 +25,6 @@ export class LikeListPage {
     }else {
       this.navCtrl.push('UserInfoPage', {
         user: user,
-        followOrCancel: true,
         showSelfInfo: true,
         showDaily: true,
         showTags: true

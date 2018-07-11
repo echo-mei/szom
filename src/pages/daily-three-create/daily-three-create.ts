@@ -41,7 +41,7 @@ export class DailyThreeCreatePage {
     this.quarter = this.navParams.get('quarter');
     this.onCreate = this.navParams.get('onCreate');
     this.dailyThreeForm = formBuilder.group({
-      title: ['', Validators.compose([Validators.required])],
+      // title: ['', Validators.compose([Validators.required])],
       content: ['', Validators.compose([Validators.required])]
     });
   }

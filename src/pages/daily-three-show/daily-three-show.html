@@ -14,7 +14,7 @@
 
 <ion-content>
   <div *ngIf="dailyThree" class="daily-detail-main">
-    <h2 class="title">《{{dailyThree.title}}》</h2>
+    <!-- <h2 class="title">《{{dailyThree.title}}》</h2> -->
     <pre class="content">{{dailyThree.content}}</pre>
     <ul class="squared" no-padding *ngIf="dailyThree.uploadFileDetailDTOList.length">
       <li *ngFor="let img of dailyThree.uploadFileDetailDTOList">

@@ -14,6 +14,11 @@ export class AddresslistNewPage {
   todayUserList: any[] = [];
   monthUserList: any[] = [];
 
+  onFollow: () => {};
+  onCancelFollow: () => {};
+  onAgree: () => {};
+  onRefuse: () => {};
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -21,6 +26,12 @@ export class AddresslistNewPage {
     public dateUtil: DateUtilProvider,
     public storage: StorageProvider
   ) {
+    this.initUserList();
+  }
+
+  initUserList() {
+    this.todayUserList = [];
+    this.monthUserList = [];
     this.getUserList();
   }
 
@@ -50,10 +61,22 @@ export class AddresslistNewPage {
         showSelfInfo: true,
         showDaily: true,
         showTags: true,
-        onFollow: this.getUserList.bind(this),
-        onCancelFollow: this.getUserList.bind(this),
-        onAgree: this.getUserList.bind(this),
-        onRefuse: this.getUserList.bind(this),
+        onFollow: () => {
+          this.initUserList();
+          this.onFollow && this.onFollow();
+        },
+        onCancelFollow: () => {
+          this.initUserList();
+          this.onCancelFollow && this.onCancelFollow();
+        },
+        onAgree: () => {
+          this.initUserList();
+          this.onAgree && this.onAgree();
+        },
+        onRefuse: () => {
+          this.initUserList();
+          this.onRefuse && this.onRefuse();
+        }
       });
     }
   }

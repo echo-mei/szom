@@ -22,8 +22,8 @@ export class DailyOneShowPage {
   //评价对象类型:1、个人每日工作日志;2、每周一励;3、每季三励;4、每年十励;5、班子每日工作日志;6、评价业务信息
   commentObjectType = 2;
 
-  onDelete: () => {};
-  onUpdate: () => {};
+  onDelete: (dailyId) => {};
+  onUpdate: (dailyId) => {};
 
   constructor(
     public navCtrl: NavController,
@@ -45,7 +45,7 @@ export class DailyOneShowPage {
     this.dailyProvider.getDailyOne(this.dailyOne.weeklyId).subscribe(
       (daily) => {
         this.dailyOne = daily;
-        isUpdate && this.onUpdate && this.onUpdate();
+        isUpdate && this.onUpdate && this.onUpdate(this.dailyOne.weeklyId);
       }
     );
   }
@@ -86,7 +86,7 @@ export class DailyOneShowPage {
                     this.dailyProvider.deleteDailyOne(this.dailyOne.weeklyId).subscribe(
                       () => {
                         this.navCtrl.pop();
-                        this.onDelete && this.onDelete();
+                        this.onDelete && this.onDelete(this.dailyOne.weeklyId);
                       }
                     );
                   }

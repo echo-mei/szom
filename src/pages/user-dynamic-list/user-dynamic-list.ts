@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { DynamicProvider } from '../../providers/dynamic/dynamic';
+import { BASE_URL } from '../../config';
 import { DailyProvider } from '../../providers/daily/daily';
-import { REAL_URL, BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
 
 @IonicPage()
 @Component({
-  selector: 'page-daily-me',
-  templateUrl: 'daily-me.html',
+  selector: 'page-user-dynamic-list',
+  templateUrl: 'user-dynamic-list.html',
 })
-export class DailyMePage {
+export class UserDynamicListPage {
 
   @ViewChild('infinite') infinite: InfiniteScroll;
 
@@ -23,8 +24,8 @@ export class DailyMePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public dynamicProvider: DynamicProvider,
     public dailyProvider: DailyProvider,
-    public events: Events,
     public storage: StorageProvider
   ) {
     this.user = this.navParams.get('user');
@@ -45,7 +46,7 @@ export class DailyMePage {
     if (this.logDataList.length) {
       params['startTime'] = this.logDataList[0]['publishTime'];
     }
-    this.dailyProvider.getLogDailyList(params).subscribe(
+    this.dynamicProvider.getPersonDynamicList(params).subscribe(
       (data) => {
         if (data.length) {
           for (let i = data.length - 1; i >= 0; i--) {
@@ -65,7 +66,7 @@ export class DailyMePage {
     if (this.logDataList.length) {
       params['endTime'] = this.logDataList[this.logDataList.length - 1]['publishTime'];
     }
-    this.dailyProvider.getLogDailyList(params).subscribe(
+    this.dynamicProvider.getPersonDynamicList(params).subscribe(
       (data) => {
         infinite && infinite.complete();
         if (data.length) {
@@ -96,43 +97,18 @@ export class DailyMePage {
     )
   }
 
-  updateDaily(daily) {
-    for (let i = 0; i < this.logDataList.length; i++) {
-      if (this.logDataList[i]['dailyId'] === daily.dailyId) {
-        this.logDataList[i] = daily;
-        return;
+  goDailyShow(dynamic) {
+    this.navCtrl.push('UserDynamicShowPage', {
+      dynamic: dynamic,
+      onUpdate: (dynamic) => {
+        console.log(dynamic);
+        for (let i = 0; i < this.logDataList.length; i++) {
+          if (this.logDataList[i]['dynamicId'] === dynamic.dynamicId) {
+            this.logDataList[i] = dynamic;
+            return;
+          }
+        }
       }
-    }
-  }
-
-  deleteDaily(dailyId) {
-    for (let i = 0; i < this.logDataList.length; i++) {
-      if (this.logDataList[i]['dailyId'] === dailyId) {
-        this.logDataList.splice(i,1);
-        return;
-      }
-    }
-  }
-
-  goDailyShow(daily) {
-    this.navCtrl.push('DailyMeShowPage', {
-      daily: daily,
-      onUpdate: this.updateDaily.bind(this),
-      onDelete: this.deleteDaily.bind(this)
-    });
-  }
-
-  goDailyCreate() {
-    this.navCtrl.push('DailyMeCreatePage', {
-      onCreate: this.load.bind(this)
-    });
-  }
-
-  goDailySearch() {
-    this.navCtrl.push('DailyMeSearchPage',{
-      user: this.user,
-      onUpdate: this.updateDaily.bind(this),
-      onDelete: this.deleteDaily.bind(this)
     });
   }
 

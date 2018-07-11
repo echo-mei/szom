@@ -1,7 +1,8 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, InfiniteScroll, Events, TextInput } from 'ionic-angular';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { StorageProvider } from '../../providers/storage/storage';
+import { BASE_URL } from '../../config';
 
 
 @IonicPage()
@@ -12,11 +13,12 @@ import { StorageProvider } from '../../providers/storage/storage';
 
 export class DynamicListPage {
   @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('content') content;
+  // @ViewChild('content') content;
+  @ViewChild('comment') commentEle:any;
   @Input() type: any;
 
   showAllFlag: boolean = true;
-  showMore:boolean = true;
+  showMore: boolean = true;
 
   dataOverFlag = false;
   likeFlag = false;
@@ -27,8 +29,8 @@ export class DynamicListPage {
   // 要回复评论的那条评论的id
   commentId: string = '';
   // 评论区显示的提示
-  placeholder:string = "";
-  dynamicList: Array<object> = [];
+  placeholder: string = "";
+  dynamicList:any;
   dynamicListSus: string = "";
 
 
@@ -36,22 +38,16 @@ export class DynamicListPage {
     public navParams: NavParams,
     public dynamicProvider: DynamicProvider,
     public events: Events,
-    public storage: StorageProvider,
-    private elementRef: ElementRef
+    public storage: StorageProvider
   ) {
-
   }
 
   ngOnInit() {
     this.dynamicListSus = this.type + "-dynamicList:change";
     this.events.subscribe(this.dynamicListSus, (dynamic) => {
-      console.log(this.dynamicListSus+"订阅成功");
+      console.log(this.dynamicListSus + "订阅成功");
       this.getDynamic(dynamic);
     })
-    this.events.unsubscribe("attention-dynamicSearchList:change"); 
-    this.events.unsubscribe("unit-dynamicSearchList:change"); 
-    this.events.unsubscribe("recommend-dynamicSearchList:change"); 
-    this.events.unsubscribe("leaderlike-dynamicSearchList:change");
     this.initDynamicList();
   }
 
@@ -75,10 +71,10 @@ export class DynamicListPage {
   //   return false;
   // }
 
-  showMoreBtn(content: TextInput){
+  showMoreBtn(content: TextInput) {
     // console.log(content.getElementRef().nativeElement)
     // console.log(content);
-    // return false;
+    return false;
   }
 
   initDynamicList() {
@@ -96,6 +92,8 @@ export class DynamicListPage {
         return this.dynamicProvider.getRecommendDynamicList();
       case "leaderlike":
         return this.dynamicProvider.getLeaderLikeDynamicList(params);
+      default:
+        return this.dynamicProvider.getAttentionDynamicList(params);
     }
   }
 
@@ -142,15 +140,19 @@ export class DynamicListPage {
   getDynamic(dynamic) {
     this.dynamicProvider.getDynamicDetail({ dynamicId: dynamic.dynamicId }).subscribe(
       (data) => {
-        for(let i=0;i<this.dynamicList.length;i++){
-          if(this.dynamicList[i]['dynamicId'] === data.dynamicId){
+        for (let i = 0; i < this.dynamicList.length; i++) {
+          if (this.dynamicList[i]['dynamicId'] === data.dynamicId) {
             var obj = JSON.parse(JSON.stringify(data));
             this.dynamicList[i] = obj;
-            return ;
+            return;
           }
         }
       }
     );
+  }
+
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
   hasMeLike(dynamic): boolean {
@@ -161,10 +163,10 @@ export class DynamicListPage {
   }
 
   sendLike(dynamic) {
-    this.dynamicProvider.likeDaily({dynamicId:dynamic.dynamicId}).subscribe(
+    this.dynamicProvider.likeDaily({ dynamicId: dynamic.dynamicId }).subscribe(
       () => {
         // 列表更新
-        this.events.publish(this.dynamicListSus,dynamic);
+        this.events.publish(this.dynamicListSus, dynamic);
       }
     );
   }
@@ -172,9 +174,9 @@ export class DynamicListPage {
   startComment(dynamic, commentId?, placeholder?) {
     this.dynamic = dynamic;
     this.commentId = commentId;
-    if(placeholder){
-      this.placeholder = "回复"+placeholder+" :";
-    }else{
+    if (placeholder) {
+      this.placeholder = "回复" + placeholder + " :";
+    } else {
       this.placeholder = "";
     }
     this.commentInputShow();
@@ -188,7 +190,7 @@ export class DynamicListPage {
       }).subscribe(
         () => {
           // 列表更新
-          this.events.publish(this.dynamicListSus,this.dynamic);
+          this.events.publish(this.dynamicListSus, this.dynamic);
           this.comment = '';
           this.dynamic = {};
           this.commentId = '';
@@ -202,19 +204,19 @@ export class DynamicListPage {
     // 隐藏tabs栏
     let tabs = document.getElementsByClassName('tabbar').item(0);
     tabs['style'].display = 'none';
-    let footer = document.getElementsByClassName('footer').item(0);
+    let footer = document.getElementsByClassName('publish-comment').item(0);
     footer['style'].display = 'block';
     let textareaObject = document.getElementById('commentInput').getElementsByTagName('textarea').item(0);
     textareaObject.focus();
   }
 
   commentInputHide() {
+    console.log(this.commentEle)
     // 显示tabs栏
     let tabs = document.getElementsByClassName('tabbar').item(0);
     tabs['style'].display = 'flex';
-    let footer = document.getElementsByClassName('footer').item(0);
+    let footer = document.getElementsByClassName('publish-comment').item(0);
     footer['style'].display = 'none';
   }
-
 
 }

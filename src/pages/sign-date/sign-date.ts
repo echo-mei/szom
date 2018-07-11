@@ -57,7 +57,7 @@ export class SignDatePage {
           for(let key in data) {
             _daysConfig.push({
               date: new Date(key),
-              subTitle: data[key].signInName
+              subTitle: data[key].dicItemName
             });
           }
         };

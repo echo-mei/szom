@@ -13,6 +13,52 @@
     <h2>{{user.name}}<ion-badge>出差</ion-badge></h2>
     <ion-note>{{user.orgName}} | {{user.dutyName}}</ion-note>
   </ion-item>
+  <ion-list no-lines class="type-list" *ngIf="showBaseInfo">
+    <button ion-item (click)="goBaseInfo()">
+      <h2>基本信息</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
+    </button>
+    <ion-item>
+      <ion-note>出生年月</ion-note>
+      <h4>{{user.birthday}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>性别</ion-note>
+      <h4>{{user.sexName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>民族</ion-note>
+      <h4>{{user.nationalityName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>籍贯</ion-note>
+      <h4>{{user.nativePlaceName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>政治面貌</ion-note>
+      <h4>{{user.politicStatusName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>入党时间</ion-note>
+      <h4>{{user.partyTime}}</h4>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-note>全日制学历学位</ion-note>
+      <h4>{{user.fullTimeDegreeName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>全日制毕业院校</ion-note>
+      <h4>{{user.fullTimeGraSchool}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>在职学历学位</ion-note>
+      <h4>{{user.onJobDegreeName}}</h4>
+    </ion-item>
+    <ion-item>
+      <ion-note>在职毕业院校及专业</ion-note>
+      <h4>{{user.onJobEducationMojor}}</h4>
+    </ion-item> -->
+  </ion-list>
   <ion-list no-lines class="type-list" *ngIf="showSelfInfo">
     <button ion-item (click)="goUserSelfInfo()">
       <h2>个人自述</h2>
@@ -36,18 +82,18 @@
     </ion-item>
   </ion-list>
   <ion-list class="type-list" no-lines *ngIf="showDaily">
-    <button ion-item>
+    <button ion-item (click)="goUserDynamicList()">
       <h2>工作日志</h2>
       <ion-icon item-end class="szom" name="you"></ion-icon>
     </button>
     <ion-item>
-      <!-- <h4>率能理解哦里面了fasdfadsewrew发的说法的发大水发大水法撒旦发射点发</h4> -->
+      <h4>{{daily.content}}</h4>
       <!-- <img-loader item-end useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader> -->
     </ion-item>
   </ion-list>
   <ion-list class="type-list" no-lines *ngIf="showTags" style="margin-bottom: 80px;">
     <button ion-item (click)="goUserImpression()">
-      <h2>映像标签</h2>
+      <h2>印象标签</h2>
       <ion-icon item-end class="szom" name="you"></ion-icon>
     </button>
     <div class="impression">
@@ -55,11 +101,13 @@
     </div>
   </ion-list>
   <div class="footer-buttons" *ngIf="agreeOrRefuse">
-    <button ion-button block (click)="agree()">同意</button>
-    <button ion-button block (click)="refuse()">拒绝</button>
+    <ion-row>
+      <ion-col><button ion-button block (click)="refuse()" color="white">拒绝</button></ion-col>
+      <ion-col><button ion-button block (click)="agree()">同意</button></ion-col>
+    </ion-row>
   </div>
   <div class="footer-buttons" *ngIf="followOrCancel">
-    <button ion-button block *ngIf="!user.isAttention" (click)="follow()">关注</button>
-    <button ion-button block *ngIf="user.isAttention" (click)="cancelFollow()">取消关注</button>
+    <button ion-button block id="follow" *ngIf="!user.isAttention" (click)="follow()">关注</button>
+    <button ion-button block id="cancel-follow" color="white" *ngIf="user.isAttention" (click)="cancelFollow()">取消关注</button>
   </div>
 </ion-content>

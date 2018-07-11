@@ -63,4 +63,15 @@ export class DailyListRadioPage {
   changeRadio(index){
     this.selectDaily = this.logDataList[index];
   }
+
+  // 搜索正则高亮匹配
+  highLight(str, keyword) {
+    //正则替换
+    //g （全文查找出现的所有 pattern）
+    if (keyword) {
+      let hlValue = new RegExp(keyword, "gi");
+      str = str.replace(hlValue, "<font class='hightBright'>" + keyword + "</font>");
+    }
+    return str;
+  }
 }

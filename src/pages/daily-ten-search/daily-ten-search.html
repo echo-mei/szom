@@ -42,12 +42,11 @@
         </div>
       </ion-list>
     </div>
-    <!-- <time-select #timeSelect showButtons=true (onSure)="goSelcet()" (onReset)="goSelcet()"></time-select> -->
+    
     <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
     <ion-list *ngIf="dailyList" class="daily-list">
       <ion-item *ngFor="let log of dailyList;let i=index;" tappable (click)="goDailyShow(log)">
-        
-        <h3 [innerHTML]="light(log.content, selectString)"></h3>
+          <h3 [innerHTML]="highLight(log.content,selectString)"></h3>
         <div class="other">
           <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
           <ion-note>

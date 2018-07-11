@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, InfiniteScroll, Events } from 'ionic-angular';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
+import { BASE_URL } from '../../config';
+import { StorageProvider } from '../../providers/storage/storage';
 
 
 @IonicPage()
@@ -26,7 +28,8 @@ export class DynamicSearchPage {
     public navParams: NavParams,
     public dateUtil: DateUtilProvider,
     public dynamicProvider: DynamicProvider,
-    public events: Events
+    public events: Events,
+    public storage: StorageProvider
   ) {
     this.type = this.navParams.get("type");
     this.initDynamicList();
@@ -50,7 +53,7 @@ export class DynamicSearchPage {
     //g （全文查找出现的所有 pattern） 
     if(keyword){
       let hlValue = new RegExp(keyword,"g");
-      str = str.replace(hlValue, "<font class='hightBright'>"+keyword+"</font>");
+      str = str.replace(hlValue, "<font class='hightBright'>$&</font>");
     }
     return str;
   }
@@ -125,6 +128,10 @@ export class DynamicSearchPage {
         return;
       }
     }
+  }
+
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
 }
