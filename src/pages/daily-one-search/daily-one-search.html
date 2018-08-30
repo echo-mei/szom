@@ -1,33 +1,62 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-toolbar>
-    <div class="input-box">
+  <ion-toolbar color="white">
+    <div class="szom-search">
       <ion-icon class="szom" name="md-sousuo"></ion-icon>
-      <ion-searchbar [(ngModel)]="key" (ionInput)="goSelcet($event)" placeholder="搜索每周一励"></ion-searchbar>
-      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';goSelcet($event)"></ion-icon>
+      <ion-searchbar #searchbar [(ngModel)]="selectString" (ionInput)="goSelcet($event)" placeholder=""></ion-searchbar>
+      <ion-icon *ngIf="selectString" class="szom" name="md-guanbi" (click)="selectString='';goSelcet($event)"></ion-icon>
     </div>
-    <button ion-button (click)="goBack()" clear float-right>取消</button>
+    <button class="cancel-btn" ion-button (click)="goBack()" clear float-right>取消</button>
   </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content>
-  <time-select #timeSelect showButtons=true (onSure)="goSelcet()" (onReset)="goSelcet()"></time-select>
-  <div *ngIf="timeSelect.showPicker" class="modal-shadow"></div>
-  <ion-list class="daily-list" no-lines>
+  <div class="conditions">
+    <div class="select-btn" (click)="selectTimeShowFlag = !selectTimeShowFlag">
+      <ion-icon [class.color-blue]="timeStarts" class="szom" name="md-shaixuan"></ion-icon>
+      <span class="title">筛选:</span>
+      <span class="color-blue" *ngIf="timeStarts || timeEnd">{{timeStarts}}至{{timeEnd}}</span>
+      <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
+    </div>
+
+    <ion-list class="select-time" [hidden]="!selectTimeShowFlag">
+      <div class="date-select">
+        <ion-item *ngIf="dateControls">
+          <ion-label class="times">起始时间：</ion-label>
+          <ion-multi-picker item-content [(ngModel)]="timeStarts" [multiPickerColumns]="dateControls" placeholder="请选择" doneText="确定"
+            cancelText="取消"></ion-multi-picker>
+        </ion-item>
+        <ion-icon class="szom" name="md-you"></ion-icon>
+      </div>
+      <div class="date-select">
+        <ion-item *ngIf="dateControls">
+          <ion-label class="times">结束时间：</ion-label>
+          <ion-multi-picker item-content [(ngModel)]="timeEnd" [multiPickerColumns]="dateControls" placeholder="请选择" doneText="确定"
+            cancelText="取消"></ion-multi-picker>
+        </ion-item>
+        <ion-icon class="szom" name="md-you"></ion-icon>
+      </div>
+      <div class="btn">
+        <button ion-button color="light" (click)="reset()">重置</button>
+        <button ion-button (click)="goSelcet($event)">确定</button>
+      </div>
+    </ion-list>
+  </div>
+  <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
+
+  <div *ngIf="dailyOneList" [class.setDiv]="!dailyOneList.length">
+    <not-found *ngIf="!dailyOneList.length && showNotFound"></not-found>
+  </div>
+
+  <ion-list class="daily-list" no-lines [class.listDiv]="dailyOneList.length">
     <ion-item *ngFor="let log of dailyOneList;" (click)="goDailyShow(log)" tappable>
-      <div class="content">
-        <h3 [innerHTML]="highLight(log.content,key)">{{log.content}}</h3>
-        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
-      </div>
-      <div>
-        <span>{{log.startDate | date:'yyyy.MM.dd'}}-{{log.endDate | date:'yyyy.MM.dd'}}</span>
-        <span class="icons">
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
-        </span>
-      </div>
+      <list-item [log]="log" [selectString]="selectString" [getImageUrl] = "getImageUrl"></list-item>
     </ion-item>
   </ion-list>
+  <ion-infinite-scroll (ionInfinite)="more(true,$event)">
+    <ion-infinite-scroll-content loadingText="正在加载...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, PopoverController } from 'ionic-angular';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { BASE_URL } from '../../config';
 import { DailyProvider } from '../../providers/daily/daily';
 import { StorageProvider } from '../../providers/storage/storage';
+import { UserDynamicShowPage } from '../user-dynamic-show/user-dynamic-show';
+import { DailyMeLikelistPage } from '../daily-me-likelist/daily-me-likelist';
 
-@IonicPage()
 @Component({
   selector: 'page-user-dynamic-list',
   templateUrl: 'user-dynamic-list.html',
@@ -26,7 +27,8 @@ export class UserDynamicListPage {
     public navParams: NavParams,
     public dynamicProvider: DynamicProvider,
     public dailyProvider: DailyProvider,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public popoverCtrl: PopoverController
   ) {
     this.user = this.navParams.get('user');
     this.getfindSTLike();
@@ -72,6 +74,7 @@ export class UserDynamicListPage {
         if (data.length) {
           infinite && infinite.enable(true);
           this.logDataList = this.logDataList.concat(data);
+          console.log(this.logDataList)
         } else {
           infinite && infinite.enable(false);
         }
@@ -85,7 +88,7 @@ export class UserDynamicListPage {
 
   getfindSTLike() {
     this.dailyProvider.getfindSTLike({
-      accountCode: JSON.parse(this.storage.get('user')).userCode
+      accountCode: this.user.userCode
     }).subscribe(
       (data) => {
         let that = this;
@@ -98,7 +101,7 @@ export class UserDynamicListPage {
   }
 
   goDailyShow(dynamic) {
-    this.navCtrl.push('UserDynamicShowPage', {
+    this.navCtrl.push(UserDynamicShowPage, {
       dynamic: dynamic,
       onUpdate: (dynamic) => {
         console.log(dynamic);
@@ -110,6 +113,16 @@ export class UserDynamicListPage {
         }
       }
     });
+  }
+
+  showDetailLike() {
+    let popover = this.popoverCtrl.create(DailyMeLikelistPage,{
+      stlikeList:this.stlikeList,
+      stlikeSum:this.stlikeSum
+    }, {
+      cssClass: 'daily-likelist-pop'
+    });
+    popover.present();
   }
 
 }

@@ -1,11 +1,13 @@
 <ion-header no-border>
 
   <ion-toolbar>
-    <div class="input-box">
+    <div class="szom-search">
       <ion-icon class="szom" name="md-sousuo"></ion-icon>
-      <ion-searchbar #searchbar [(ngModel)]="selectString" (ionInput)="goSelcet($event)" placeholder="搜索服务、办事项目"></ion-searchbar>
+      <ion-searchbar #searchbar [(ngModel)]="selectString" (ionInput)="search()" placeholder=""></ion-searchbar>
+      <ion-icon *ngIf="selectString" class="szom" name="md-guanbi" (click)="selectString='';search()"></ion-icon>
     </div>
-    <button ion-button (click)="goBack()" clear float-right>取消</button>
+    <button class="cancel-btn" ion-button (click)="goBack()" clear float-right>取消</button>
+
   </ion-toolbar>
 
 </ion-header>
@@ -14,14 +16,10 @@
 <ion-content overflow-scroll="false">
   <div class="conditions">
     <div class="select-btn" (click)="selectTimeShowFlag = !selectTimeShowFlag">
-      <div class="left">
-        <ion-icon [class.color-blue]="timeStarts" class="szom" name="md-shaixuan"></ion-icon>
-        <p class="title">筛选:</p>
-        <p [class.color-blue]="timeStarts" class="text">{{timeStarts}}</p>
-        <p [class.color-blue]="timeStarts || timeEnd" *ngIf="!isTimeStart || timeEnd">至</p>
-        <p [class.color-blue]="timeEnd" class="text">{{timeEnd}}</p>
-      </div>
-      <ion-icon class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
+      <ion-icon [class.color-blue]="timeStarts" class="szom" name="md-shaixuan"></ion-icon>
+      <span class="title">筛选:</span>
+      <span class="color-blue" *ngIf="timeStarts || timeEnd">{{timeStarts}}至{{timeEnd}}</span>
+      <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
     </div>
 
     <ion-list class="select-time" [hidden]="!selectTimeShowFlag">
@@ -38,61 +36,25 @@
       </div>
       <div class="btn">
         <button ion-button color="light" (click)="reset()">重置</button>
-        <button ion-button (click)="goSelcet($event)">确定</button>
+        <button ion-button (click)="search()">确定</button>
       </div>
     </ion-list>
   </div>
-  <!--搜索内容-->
-  <!-- <ion-list>
-    <ion-item *ngFor="let item of items;">
-      <div class="body-box">
-        <div class="date-box">{{item.weekNums}}</div>
-        <div class="context-box">
-          <div class="content">
-            <h3>{{item.title}}</h3>
-            <ion-thumbnail class="head">
-              <img src="assets/imgs/user.jpg">
-            </ion-thumbnail>
-          </div>
-          <div class="action-box">
-            <ion-note>
-              <span>{{item.startDate | date:'yyyy-MM-dd'}}</span>
-              <span style="margin:0 5px;">-</span>
-              <span>{{item.endDate | date:'yyyy-MM-dd'}}</span>
-            </ion-note>
-            <div>
-              <ion-note>
-                <ion-icon class="szom" name="md-dianzanmoren" float-left></ion-icon>
-                <p float-left>{{item.listStLike.length}}</p>
-              </ion-note>
-              <ion-note>
-                <ion-icon class="szom" name="md-xiaoxi" float-left></ion-icon>
-                <p float-left>{{item.listStComment.length}}</p>
-              </ion-note>
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </ion-item>
-  </ion-list> -->
-  <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
-  <ion-list *ngIf="dailyList" class="daily-list">
+  <div class="shade" [hidden]="!selectTimeShowFlag" (click)="search()"></div>
+  <div *ngIf="!isLoading&&!dailyList.length" class="setDiv">
+    <not-found></not-found>
+  </div>
+  <ion-list *ngIf="dailyList" class="daily-list" [class.topDiv]="dailyList.length">
+    <div style="text-align:center;" *ngIf="isLoading">
+      <ion-spinner name="bubbles"></ion-spinner>
+    </div>
     <ion-item *ngFor="let log of dailyList;let i=index;" tappable (click)="goDailyShow(log)">
-      <h4 [innerHTML]="highLight(log.content,selectString)"></h4>
-      <div class="other">
-        <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
-        <ion-note>
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}</ion-note>
-        <ion-note>
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}</ion-note>
-      </div>
-      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList.length">
-        <img [src]="'/ionic/upload?Authorization='+storage.get('token')+'&filePath='+log.uploadFileDetailDTOList[0].filePath">
-      </ion-thumbnail>
+      <list-item [log]="log" [getImageUrl] = "getImageUrl" [selectString]="selectString"></list-item>
     </ion-item>
   </ion-list>
-  <ion-infinite-scroll (ionInfinite)="more($event)">
+
+  <ion-infinite-scroll *ngIf="hasMore" (ionInfinite)="more($event)">
     <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

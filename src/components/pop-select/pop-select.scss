@@ -4,5 +4,11 @@ pop-select {
     font-size: 14px;
     color: #fff;
     padding: rem(8) rem(15);
+
+    ion-icon{
+      width: rem(16);
+      height: rem(16);
+      margin-right: rem(4);
+    }
   }
 }

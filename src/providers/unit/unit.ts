@@ -29,4 +29,24 @@ export class UnitProvider {
     return this.http.get(`${BASE_URL}/contactList/otherUnit`, params);
   }
 
+  // 查询其他单位下的所有子集机构
+  getOtherUnitOrgsList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/otherUnit/orgs`, params);
+  }
+
+  // 查询其他本单位及下属机构的所有人员
+  getOtherUnitUsersList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/otherUnit/users`, params);
+  }
+
+  // 查询单位下的所有子集机构
+  getOwnUnitOrgssList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/ownUnit/childOrgs`, params);
+  }
+
+  // 查询本单位及下属机构的所有人员
+  getOwnUnitUsersList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/ownUnit/users`, params);
+  }
+
 }

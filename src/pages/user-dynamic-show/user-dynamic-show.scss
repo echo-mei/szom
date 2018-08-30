@@ -15,6 +15,18 @@ page-user-dynamic-show {
       color: #595959;
       line-height: rem(22);
       margin: 0 0 rem(5) 0;
+      .tag {
+        width: rem(35);
+        height: rem(19);
+        opacity: 0.55;
+        background: #4D74EB;
+        border-radius: 1px;
+        font-size: 12px;
+        color: #0A195B;
+        text-align: center;
+        padding: rem(2) rem(5);
+        font-weight: bold;
+      }
     }
     ul.squared {
       &:after {

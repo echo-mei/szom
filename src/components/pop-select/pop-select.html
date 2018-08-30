@@ -1,1 +1,4 @@
-<div text-center *ngFor="let button of buttons" (click)="button.handler()">{{button.text}}</div>
+<div text-center *ngFor="let button of buttons" (click)="button.handler()">
+    <ion-icon *ngIf="button.icon" class="szom" [name]="button.icon"></ion-icon>
+    {{button.text}}
+</div>

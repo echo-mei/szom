@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
-    <ion-title>工作日志</ion-title>
+  <ion-navbar color="white">
+    <ion-title>创建工作日志</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,10 +14,15 @@
         <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
       </ion-item> -->
       <ion-item>
+        <ion-label>{{maxLength-dailyForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
         <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
       </ion-item>
     </ion-list>
     <image-picker #imagePicker></image-picker>
-    <button class="post-button" ion-button block (click)="postDailyCreate()" [disabled]="dailyForm.invalid">发布</button>
+    <button class="post-button" ion-button block (click)="postDailyCreate()"
+      [disabled]="
+        (dailyForm.invalid&&!imagePicker.images.length)
+        || dailyForm.controls['content'].value.length>maxLength
+        || (dailyForm.controls['content'].value&&dailyForm.controls['content'].value.trim()==='')">发布</button>
   </form>
 </ion-content>

@@ -1,106 +1,98 @@
 page-daily-me {
-  .toolbar{
-    .toolbar-background {
-        background: linear-gradient(to right, #3555DE, #628FF7)!important;
+  .add-new{
+    position: fixed;
+    right: rem(20);
+    bottom: rem(45);
+    width: rem(50);
+    height: rem(50);
+    line-height: rem(50);
+    background-color:color($colors,mainBlueColor);
+    border-radius: 50%;
+    text-align: center;
+    z-index: 3;
+
+    ion-icon{
+      color:#fff;
+      height: rem(50);
+      line-height: rem(50);
+      font-size: rem(22);
+    }
+  }
+  .bottom{
+    padding-left: 0 !important;
+  }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+    button{
+      font-size: rem(18);
+      color: #FFFFFF;
+      height: rem(46);
+      width: rem(208);
     }
   }
   .like-main {
     background: linear-gradient(to right, #3555DE, #628FF7);
-    height: rem(180);
+    margin: rem(8) rem(15);
     position: relative;
-    .total{
-      font-size: rem(48);
+    text-align: center;
+    overflow: hidden;
+    h1{
+      font-size: rem(36);
+      color: #FFFFFF;
+      letter-spacing: 0;
+      line-height: rem(50);
+      margin: rem(15) 0 0 0;
+    }
+    .des{
+      position: relative;
+      top: rem(-4);
+      display: inline-block;
+      opacity: 0.68;
+      font-size: rem(12);
       color: #FFFFFF;
       letter-spacing: 0;
       text-align: center;
-      padding-top: rem(12);
-      line-height: rem(67);
-      .des{
-        opacity: 0.68;
-        font-size: rem(12);
-        color: #FFFFFF;
-        letter-spacing: 0;
-        text-align: center;
+      line-height: rem(14);
+      margin-bottom: rem(15);
+
+      ion-icon{
+        position: absolute;
+        top: 0;
+        right: rem(-12);
+        font-size: rem(10);
         line-height: rem(14);
-        margin: 0;
-      }
-    }
-    .like-classify{
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      padding-bottom: rem(18);
-      .col {
-        padding: 0;
-        p {
-          margin: 0;
-          &.num{
-            font-size: rem(18);
-            color: #FFFFFF;
-            letter-spacing: 0;
-            text-align: center;
-            line-height: rem(25);
-          }
-          &.des{
-            opacity: 0.68;
-            font-size: rem(10);
-            color: #FFFFFF;
-            letter-spacing: 0;
-            text-align: center;
-          }
-        }
+        transform: scale(0.5)
       }
     }
   }
   .list {
+    .item:last-child{
+      border: 0;
+    }
     .item{
-      padding: rem(16) rem(15) 0;
+      padding: rem(16) rem(15);
+      border-bottom: .5px solid color($colors,boderColor);
       .item-inner{
+        border-bottom: 0;
         padding-right: 0;
-        border-bottom: rem(0.5) solid #f9f9f9;
         ion-label {
           margin: 0;
-          h4 {
-            font-family: PingFangSC-Medium; 
-            font-size: rem(15);
-            line-height: rem(21);
-            color: #333333;
-            margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-          }
-          .other {
-            margin: rem(16) 0;
-            ion-note {
-              font-size: rem(13);
-              color: #AFAFAF;
-              letter-spacing: rem(-0.08);
-              text-align: right;
-              line-height: rem(15);
-              margin-right: rem(13);
-              &.date {
-                margin-right: rem(27);
-              }
-              ion-icon {
-                font-size: rem(10);
-              }
-            }
-          }
         }
-        ion-thumbnail {
-          margin: 0;
-          min-width: initial;
-          min-height: initial;
-          align-self: flex-start;
-          img {
-            width: rem(60);
-            height: rem(60);
-          }
-        }
+
       }
     }
   }

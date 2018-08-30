@@ -7,20 +7,31 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list no-lines>
     <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/imgs/user.jpg">
-      </ion-avatar>
+      <ion-thumbnail item-start>
+        <img *ngIf="me.personId" [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-thumbnail>
       <h4>{{me.name}}</h4>
-      <ion-note item-end>
-        <p>{{me.unitName}}</p>
-        <p>{{me.dutyName}}</p>
-      </ion-note>
+      <p>{{me.unitName}} | {{me.dutyName}}</p>
+
     </ion-item>
-    <button ion-item>帮助与反馈</button>
-    <button ion-item>账户安全</button>
-    <button ion-item>系统设置</button>
+    <button ion-item *ngIf="menuProvider.hasMenu('me-help')">
+      <i class="szom ion-md-banzhu" style="color: #02BA9E;"></i>
+      帮助与反馈
+    </button>
+
+    <button ion-item *ngIf="menuProvider.hasMenu('me-account')" (click)="meSafe()">
+      <i class="szom ion-md-zhanghuanquan" style="color: #4C6AEF;"></i>
+      账户安全
+      <ion-icon class="szom" name="you" item-end></ion-icon>
+    </button>
+
+    <button ion-item *ngIf="menuProvider.hasMenu('me-setting')">
+      <!-- <embed src="../../assets/imgs/me-setting.svg" type="image/svg+xml"/> -->
+      <i class="szom ion-md-xitongshezhi" style="color: #5E6999;"></i>
+      系统设置
+    </button>
   </ion-list>
-  <button ion-button block (click)="logout()">退出</button>
+  <button class="exit" ion-button full (click)="logout()">退出</button>
 </ion-content>

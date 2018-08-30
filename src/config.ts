@@ -1,4 +1,7 @@
 const BASE_URL = '/ionic';
-const REAL_URL = 'http://192.168.0.197:8800';
 
-export {REAL_URL, BASE_URL};
+const WEBSOCKET_URL = '/ws/endpointLglms';
+
+const MOCKJS_OPEN = true;
+
+export { BASE_URL, WEBSOCKET_URL, MOCKJS_OPEN };

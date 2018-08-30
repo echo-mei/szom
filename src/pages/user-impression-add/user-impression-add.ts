@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { ImpressionProvider } from '../../providers/impression/impression';
 
-@IonicPage()
 @Component({
   selector: 'page-user-impression-add',
   templateUrl: 'user-impression-add.html',

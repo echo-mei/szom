@@ -2,8 +2,9 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderRes
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { ToastController, LoadingController } from 'ionic-angular';
+import { ToastController, LoadingController, App, Events } from 'ionic-angular';
 import { StorageProvider } from '../storage/storage';
+import { LoginPage } from '../../pages/login/login';
 
 @Injectable()
 export class HttpInterceptorProvider implements HttpInterceptor {
@@ -11,7 +12,9 @@ export class HttpInterceptorProvider implements HttpInterceptor {
   constructor(
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public app: App,
+    public events: Events
   ) {
   }
 
@@ -24,7 +27,7 @@ export class HttpInterceptorProvider implements HttpInterceptor {
       headers: headers
     });
     let loading = this.loadingCtrl.create({
-      content: ''
+      content: '处理中...'
     });
     appReq.method!='GET' && loading.present();
     return next
@@ -47,30 +50,33 @@ export class HttpInterceptorProvider implements HttpInterceptor {
                 break;
             case 401:
                 // TODO: 无权限处理
-                message = '用户无权限';
+                this.storage.clear();
+                this.events.publish('logout');
+                message = res['error'].message;
                 loading.dismiss();
+                this.app.getRootNav().setRoot(LoginPage);
                 break;
             case 404:
                 // TODO: 404 处理
-                message = '资源未找到';
+                message = res['error'].message;
                 loading.dismiss();
                 break;
             case 500:
                 // TODO: 500 处理
-                message = '服务器异常';
+                message = res['error'].message;
                 loading.dismiss();
                 break;
             default:
                 // 其他错误
-                message = '异常';
+                message = res['error'].message;
                 loading.dismiss();
                 break;
         }
         let toast = this.toastCtrl.create({
-          cssClass: 'http-error',
+          cssClass: 'mini',
           message: message,
-          duration: 2000,
-          position: 'bottom'
+          position: 'bottom',
+          duration: 2000
         });
         toast.present();
         // 以错误的形式结束本次请求

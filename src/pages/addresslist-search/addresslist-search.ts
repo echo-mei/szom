@@ -1,35 +1,48 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { UnitProvider } from '../../providers/unit/unit';
 import { UserProvider } from '../../providers/user/user';
 import { StorageProvider } from '../../providers/storage/storage';
+import { AddresslistUnitPage } from '../addresslist-unit/addresslist-unit';
+import { MeInfoPage } from '../me-info/me-info';
+import { UserInfoPage } from '../user-info/user-info';
+import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 
-@IonicPage()
 @Component({
   selector: 'page-addresslist-search',
   templateUrl: 'addresslist-search.html',
 })
 export class AddresslistSearchPage {
+  @ViewChild('searchEle') searchEle;
 
   key: string;
 
-  unitList: any[];
-  personList: any = [];
+  unitList: any[] = [];
+  friendKeyList: any = [];
+  friendValueList: any = [];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public unitProvider: UnitProvider,
     public userProvider: UserProvider,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public addresslistProvider: AddresslistProvider
   ) {
     // this.getUnitList();
     // this.getPersonList();
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.searchEle.setFocus();//为输入框设置焦点
+    }, 150);
+  }
+
+
   getUnitList(): any {
     let params = {};
-    if(this.key) {
+    if (this.key) {
       params['keyWords'] = this.key;
     }
     this.unitProvider.getOrgList(params).subscribe(
@@ -40,28 +53,35 @@ export class AddresslistSearchPage {
   }
 
   getPersonList(): any {
+    this.friendKeyList = [];
+    this.friendValueList = [];
     let params = {};
-    if(this.key) {
+    if (this.key) {
       params['keyWords'] = this.key;
+    }else  {
+      return;
     }
-    this.userProvider.getPersonList(params).subscribe(
-      (list) => {
-        this.personList = list;
+    this.addresslistProvider.getMyFriendsList(params).subscribe(
+      (data) => {
+        for(let key in data) {
+          this.friendKeyList.push(key);
+          this.friendValueList.push(data[key]);
+        }
       }
     );
   }
 
   goAddresslistUnit(org) {
-    this.navCtrl.push('AddresslistUnitPage', {
+    this.navCtrl.push(AddresslistUnitPage, {
       org: org
     });
   }
 
   goUserInfo(user): any {
-    if(user.userCode==JSON.parse(this.storage.get('user')).userCode) {
-      this.navCtrl.push('MeInfoPage');
-    }else {
-      this.navCtrl.push('UserInfoPage', {
+    if (user.userCode == JSON.parse(this.storage.get('user')).userCode) {
+      this.navCtrl.push(MeInfoPage, { user: user });
+    } else {
+      this.navCtrl.push(UserInfoPage, {
         user: user,
         followOrCancel: true,
         showSelfInfo: true,
@@ -72,7 +92,7 @@ export class AddresslistSearchPage {
   }
 
   search() {
-    this.getUnitList();
+    // this.getUnitList();
     this.getPersonList();
   }
 

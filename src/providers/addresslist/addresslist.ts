@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpProvider } from '../http/http';
 
 import { Observable } from 'rxjs';
-import { BASE_URL,REAL_URL} from '../../config';
+import { BASE_URL } from '../../config';
 
 @Injectable()
 export class AddresslistProvider {
@@ -35,5 +35,13 @@ export class AddresslistProvider {
 
   getPersonInfo(uid): Observable<any> {
     return this.http.get(`${BASE_URL}/getPersonInfo/${uid}`)
+  }
+
+  hasNewStAttention(): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/stAttentionRelation/hasNewStAttention`);
+  }
+
+  updateToViewed(): Observable<any> {
+    return this.http.put(`${BASE_URL}/contactList/stAttentionRelation/updateToViewed`, null);
   }
 }

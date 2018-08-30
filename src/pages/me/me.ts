@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, AlertController} from 'ionic-angular';
+import { AlertController, Events, NavController, App, ActionSheetController} from 'ionic-angular';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserProvider } from '../../providers/user/user';
+import { MenuProvider } from '../../providers/menu/menu';
+import { LoginPage } from '../login/login';
+import { MeSafePage } from '../me-safe/me-safe';
 
-@IonicPage()
 @Component({
   selector: 'page-me',
   templateUrl: 'me.html',
@@ -15,29 +17,30 @@ export class MePage {
   constructor(
     public storage: StorageProvider,
     public alertCtrl: AlertController,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public events: Events,
+    public navCtrl: NavController,
+    public menuProvider: MenuProvider,
+    public app: App,
+    public actionSheetCtrl: ActionSheetController
   ) {
     this.getMe();
   }
 
   logout() {
-    let alert = this.alertCtrl.create({
-      message: '确认退出？',
+    this.actionSheetCtrl.create({
+      title: '退出智慧干部后，你将不再收到来自智慧干部的消息',
       buttons: [
         {
-          text: '取消',
-          role: 'cancel'
-        },
-        {
-          text: '确认',
-          handler: () => {
-            this.storage.remove('token');
-            this.storage.remove('user');
+          text: '确定', handler: () => {
+            this.app.getRootNav().setRoot(LoginPage);
+            this.storage.clear();
+            this.events.publish('logout');
           }
-        }
+        },
+        { text: '取消', role: 'cancel' }
       ]
-    });
-    alert.present();
+    }).present();
   }
 
   getMe() {
@@ -47,5 +50,7 @@ export class MePage {
       }
     );
   }
-
+  meSafe() {
+    this.navCtrl.push(MeSafePage);
+  }
 }

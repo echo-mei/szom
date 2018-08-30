@@ -1,0 +1,36 @@
+<ion-header>
+
+    <ion-navbar>
+      <ion-title>修改手机号码</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content>
+    <p></p>
+    <form [formGroup]="form"><!--  (ngSubmit)="login()" -->
+      <ion-list>
+          <ion-item>
+            <ion-label class="telFont">新手机号码</ion-label>
+            <ion-input formControlName="phoneNum" type="number" class="telNum" float-right></ion-input>
+            <button type="button" ion-button clear item-end  *ngIf="form.controls['phoneNum'].value" (click)="form.controls['phoneNum'].setValue('')">
+              <ion-icon class="szom" name="guanbi"></ion-icon>
+            </button>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="msgCode" type="text" placeholder="验证码"></ion-input>
+            <button type="button" ion-button clear item-end  *ngIf="form.controls['msgCode'].value" (click)="form.controls['msgCode'].setValue('')">
+              <ion-icon class="szom" name="guanbi"></ion-icon>
+            </button>
+          </ion-item>
+          <ion-label class="tips">请输入修改后的手机号码和验证码</ion-label>
+          <button *ngIf="!second" ion-button clear item-end (click)="getSMSCode()" float-right>获取验证码</button>
+          <button *ngIf="second" type="button" ion-button clear item-end float-right>
+            {{second}} 秒
+          </button>
+          <button ion-button block class="verify" (click)="sureSubmit()" [disabled]="form.invalid">提交</button>
+      </ion-list>
+    </form>
+  </ion-content>
+  

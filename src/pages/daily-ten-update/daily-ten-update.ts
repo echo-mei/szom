@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,AlertController, Events } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams,AlertController, Events } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-ten-update',
   templateUrl: 'daily-ten-update.html',

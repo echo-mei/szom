@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
 
-@IonicPage()
 @Component({
   selector: 'page-user-dynamic-show',
   templateUrl: 'user-dynamic-show.html',
@@ -34,6 +33,7 @@ export class UserDynamicShowPage {
     this.placeholder = this.originalPlaceholder;
     this.dynamic = this.navParams.get('dynamic');
     this.onUpdate = this.navParams.get('onUpdate');
+    this.getDynamic();
   }
 
   getDynamic(isUpdate?: boolean) {

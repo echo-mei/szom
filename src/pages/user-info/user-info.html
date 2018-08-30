@@ -1,16 +1,14 @@
 <ion-header no-border>
-
   <ion-navbar>
     <ion-title>详细资料</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content>
   <ion-item class="user-info">
-    <img src="assets/imgs/user.jpg">
-    <h2>{{user.name}}<ion-badge>出差</ion-badge></h2>
+    <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+    <h2>{{user.name}}<span>{{user.isAttention?"(已关注)":"(未关注)"}}</span><ion-badge float-right>出差</ion-badge></h2>
     <ion-note>{{user.orgName}} | {{user.dutyName}}</ion-note>
   </ion-item>
   <ion-list no-lines class="type-list" *ngIf="showBaseInfo">
@@ -20,7 +18,7 @@
     </button>
     <ion-item>
       <ion-note>出生年月</ion-note>
-      <h4>{{user.birthday}}</h4>
+      <h4>{{user.birthday | date: 'yyyy-MM-dd'}}({{user.age}}岁)</h4>
     </ion-item>
     <ion-item>
       <ion-note>性别</ion-note>
@@ -34,13 +32,13 @@
       <ion-note>籍贯</ion-note>
       <h4>{{user.nativePlaceName}}</h4>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
       <ion-note>政治面貌</ion-note>
       <h4>{{user.politicStatusName}}</h4>
-    </ion-item>
+    </ion-item> -->
     <ion-item>
       <ion-note>入党时间</ion-note>
-      <h4>{{user.partyTime}}</h4>
+      <h4>{{user.partyTime | date: 'yyyy-MM-dd'}}</h4>
     </ion-item>
     <!-- <ion-item>
       <ion-note>全日制学历学位</ion-note>
@@ -60,9 +58,9 @@
     </ion-item> -->
   </ion-list>
   <ion-list no-lines class="type-list" *ngIf="showSelfInfo">
-    <button ion-item (click)="goUserSelfInfo()">
+    <button ion-item (click)="(this.user.isAttention||this.user.isInMyUnit)&&goUserSelfInfo()">
       <h2>个人自述</h2>
-      <ion-icon item-end class="szom" name="you"></ion-icon>
+      <ion-icon *ngIf="this.user.isAttention||this.user.isInMyUnit" item-end class="szom" name="you"></ion-icon>
     </button>
     <ion-item>
       <ion-note>座右铭</ion-note>
@@ -82,22 +80,21 @@
     </ion-item>
   </ion-list>
   <ion-list class="type-list" no-lines *ngIf="showDaily">
-    <button ion-item (click)="goUserDynamicList()">
+    <button ion-item (click)="(this.user.isAttention||this.user.isInMyUnit)&&goUserDynamicList()">
       <h2>工作日志</h2>
-      <ion-icon item-end class="szom" name="you"></ion-icon>
+      <ion-icon *ngIf="this.user.isAttention||this.user.isInMyUnit" item-end class="szom" name="you"></ion-icon>
     </button>
     <ion-item>
       <h4>{{daily.content}}</h4>
-      <!-- <img-loader item-end useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader> -->
     </ion-item>
   </ion-list>
-  <ion-list class="type-list" no-lines *ngIf="showTags" style="margin-bottom: 80px;">
-    <button ion-item (click)="goUserImpression()">
+  <ion-list class="type-list {{user.isAttention ? '' : 'margin-bottom'}}" no-lines *ngIf="showTags">
+    <button ion-item (click)="(this.user.isAttention||this.user.isInMyUnit)&&goUserImpression()">
       <h2>印象标签</h2>
-      <ion-icon item-end class="szom" name="you"></ion-icon>
+      <ion-icon *ngIf="this.user.isAttention||this.user.isInMyUnit" item-end class="szom" name="you"></ion-icon>
     </button>
     <div class="impression">
-      <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count}}</ion-badge>
+      <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count>999 ? '999+' : tag.count}}</ion-badge>
     </div>
   </ion-list>
   <div class="footer-buttons" *ngIf="agreeOrRefuse">
@@ -106,7 +103,7 @@
       <ion-col><button ion-button block (click)="agree()">同意</button></ion-col>
     </ion-row>
   </div>
-  <div class="footer-buttons" *ngIf="followOrCancel">
+  <div class="footer-buttons {{ user.isAttention ? 'cancel-follow' : 'follow' }}" *ngIf="followOrCancel">
     <button ion-button block id="follow" *ngIf="!user.isAttention" (click)="follow()">关注</button>
     <button ion-button block id="cancel-follow" color="white" *ngIf="user.isAttention" (click)="cancelFollow()">取消关注</button>
   </div>

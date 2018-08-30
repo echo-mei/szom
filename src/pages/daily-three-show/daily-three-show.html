@@ -1,12 +1,7 @@
 <ion-header no-border>
 
   <ion-navbar color="white">
-    <ion-title text-center>每季三励</ion-title>
-    <ion-buttons right>
-      <button ion-button (click)="popover($event)">
-        <ion-icon class="szom" name="md-gengduo"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-title text-center>每季{{ count | digitalChineseConversion }}励详情</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,41 +11,49 @@
   <div *ngIf="dailyThree" class="daily-detail-main">
     <!-- <h2 class="title">《{{dailyThree.title}}》</h2> -->
     <pre class="content">{{dailyThree.content}}</pre>
-    <ul class="squared" no-padding *ngIf="dailyThree.uploadFileDetailDTOList.length">
-      <li *ngFor="let img of dailyThree.uploadFileDetailDTOList">
-        <div>
-          <img [src]="getImageUrl(img)">
-        </div>
-      </li>
-    </ul>
-    <ion-note class="pubTime">{{dailyThree.publishTime | date:'yyyy-MM-dd hh:mm:ss'}}</ion-note>
-    <ion-row class="like-wrap">
+    <img-show [uploadFileDetailDTOList]="dailyThree.uploadFileDetailDTOList"></img-show>
+    <div class="other">
+      <ion-note class="pubTime">{{dailyThree.publishTime | date:'yyyy-MM-dd HH:mm:ss'}}</ion-note>
+      <button class="delete" *ngIf="dailyThree.isShowDelete" ion-button clear (click)="popover()">删除</button>
+      <button class="dianzan" *ngIf="!dailyThree.hasMeLike" ion-button clear float-right (click)="sendLike()">
+        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+      </button>
+      <button class="dianzan dianji" *ngIf="dailyThree.hasMeLike" ion-button clear float-right>
+        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      </button>
+    </div>
+    <div [hidden]="!dailyThree.listStLike.length && !dailyThree.listStComment.length" class="line"></div>
+    <ion-row class="like-wrap" *ngIf="dailyThree.listStLike.length" (click)="goLikeList()">
       <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-      <ion-note class="like-names">
-        <a (click)="goLikeList()" *ngFor="let user of dailyThree.listStLike.slice(0, 9)" class="zanName">{{user.operatorName}}、</a>
-        <span class="andSoOn">等{{dailyThree.listStLike.length}}人觉得很赞</span>
+      <ion-note class="like-names" *ngIf="dailyThree.listStLike.length<=13">
+        <span *ngFor="let user of dailyThree.listStLike.slice(0, 13);let i=index;" class="zanName">
+          <a class="zan-name">{{user.operatorName}}</a>
+          <span class="zan-name" *ngIf="i<12&&i<dailyThree.listStLike.length-1">、</span>
+        </span>
+      </ion-note>
+      <ion-note class="like-names" *ngIf="dailyThree.listStLike.length>13">
+        <span *ngFor="let user of dailyThree.listStLike.slice(0, 12);let i=index;" class="zanName">
+          <a class="zan-name">{{user.operatorName}}</a>
+          <span class="zan-name" *ngIf="i<11&&i<dailyThree.listStLike.length-1">、</span>
+        </span>
+        <span>等{{dailyThree.listStLike.length}}人觉得很赞</span>
       </ion-note>
     </ion-row>
     <ion-list class="comment-list">
       <p *ngFor="let comment of dailyThree.listStComment" class="comment-item" (click)="replyComment(comment.stCommentId,comment.operatorName)">
-        <a class="commentPeople">{{comment.operatorName}}</a><span *ngIf="comment.commentObjectName"> 回复 <a class="commentPeople">{{comment.commentObjectName}}</a></span> :
+        <a class="commentPeople">{{comment.operatorName}}</a>
+        <span *ngIf="comment.commentObjectName"> 回复
+          <a class="commentPeople">{{comment.commentObjectName}}</a>
+        </span> :
         <ion-note class="commentCon">{{comment.content}}</ion-note>
       </p>
     </ion-list>
   </div>
 </ion-content>
 
-<ion-footer no-border>
+<ion-footer no-border #footer>
   <ion-item class="publish-comment" no-lines>
     <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment"></ion-textarea>
-    <div item-end>
-      <button ion-button (click)="sendComment()">发送</button>
-      <button *ngIf="!hasMeLike()" ion-button clear (click)="sendLike()">
-        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
-      </button>
-      <button *ngIf="hasMeLike()" ion-button clear>
-        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-      </button>
-    </div>
+    <button item-end ion-button (click)="sendComment()">发送</button>
   </ion-item>
 </ion-footer>

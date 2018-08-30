@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
-/**
- * Generated class for the PersonListTeamPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { UserProvider } from '../../providers/user/user';
+import { UserInfoPage } from '../user-info/user-info';
 
-@IonicPage()
 @Component({
   selector: 'page-person-list-team',
   templateUrl: 'person-list-team.html',
@@ -19,36 +14,25 @@ export class PersonListTeamPage {
   public personList: any;
   public personInfo: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public addresslistProvider: AddresslistProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public addresslistProvider: AddresslistProvider,
+    public userProvider: UserProvider
+  ) {
     this.personList = navParams.get('personList')
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PersonListTeamPage');
-    // this.personList=[
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    //   {img:'',name:'张爱民',unit:'宣传科干事'},
-    // ];
   }
 
   goUserInfo(pid) {
     this.addresslistProvider.getPersonInfo(pid).subscribe(
       (obj) => {
         this.personInfo = obj
-        this.navCtrl.push('UserInfoPage', {
+        this.navCtrl.push(UserInfoPage, {
           personInfo: this.personInfo
         });
       }
     )
-    
+
   }
 
 }

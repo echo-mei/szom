@@ -1,0 +1,19 @@
+<!-- Generated template for the ImgShowComponent component -->
+<div>
+  <div class="single-img" *ngIf="uploadFileDetailDTOList.length==1">
+    <div class="img-wrap">
+        <img
+        [src]="getImageUrl(uploadFileDetailDTOList[0])"
+        onerror="this.src='assets/imgs/no-img.png'"
+        (click)="viewImages(0)">
+    </div>
+  </div>
+  <ul class="squared" no-padding *ngIf="uploadFileDetailDTOList.length>1">
+    <li *ngFor="let img of uploadFileDetailDTOList;let imgIndex = index;">
+      <div>
+        <img [src]="getImageUrl(img)" onerror="this.src='assets/imgs/no-img.png'"
+          (click)="viewImages(imgIndex)">
+      </div>
+    </li>
+  </ul>
+</div>

@@ -3,19 +3,12 @@ page-dynamic {
         padding-top: rem(4);
         background-color:#fafafa;
         padding-bottom: 0!important;
+        margin-bottom: 0!important;
     }
-    .toolbar .toolbar-title{
-        font-size: rem(17) !important;
-        color: #333333;
+    .card .card-content .other ion-note.handle .button{
+        padding-top: rem(3) !important;
     }
-    ion-navbar{
-        ion-icon{
-            font-size: rem(16);
-        }
-        .searchBtn{
-            margin-right: rem(10) !important;
-        }
-    }
+
     .sildes-btns{
         border-top: .5px solid #f1f1f1;
         margin: 0;
@@ -28,38 +21,33 @@ page-dynamic {
             color: #666666;
             font-size: rem(15);
             padding: 0;
-            .button-inner{
-                display: inline-block;
-                width: auto;
-                position: relative;
-            }
-
             &.active{
                 background-color: transparent;
                 .button-inner{
-                    font-family: PingFangSC-Medium;
-                    color: #4D74EB;
+                  font-family: PingFangSC-Medium;
+                  color: #4D74EB;
 
-                    &:before{
-                        content: '';
-                        position: absolute;
-                        left: 0;
-                        bottom: 0;
-                        height: rem(2);
-                        width: 100%;
-                        background: #4D74EB;
-                    }
+                  &:before{
+                      content: '';
+                      position: absolute;
+                      left: 50%;
+                      bottom: 0;
+                      height: rem(2);
+                      width: rem(30);
+                      margin-left: rem(-15);
+                      background: #4D74EB;
+                  }
                 }
-            }
+              }
         }
     }
     .swiper-slide{
-        text-align: left;
         overflow: auto;
+        justify-content: flex-start;
+        align-items: flex-start;
         .slide-zoom{
-            position: absolute;
-            top: 0;
-            bottom: 0;
+            height: 100%;
+            padding-bottom: rem(50);
             text-align: left;
         }
     }

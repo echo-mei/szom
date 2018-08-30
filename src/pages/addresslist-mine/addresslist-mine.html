@@ -12,7 +12,6 @@
     <div *ngFor="let key of friendKeyList;let i = index;">
       {{key}}
       <ion-item *ngFor="let user of friendValueList[i];" (click)="goUserInfo(user)">
-        <img-loader useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader>
         <h2>{{user.name}}</h2>
         <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
       </ion-item>

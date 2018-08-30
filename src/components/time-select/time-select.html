@@ -2,20 +2,22 @@
   <ion-icon class="szom" name="shaixuan" item-start></ion-icon>
   <div>
     <ion-note>筛选</ion-note>
-    <ion-note *ngIf="startTime||endTime">{{startTime}} 至 {{endTime}}</ion-note>
+    <ion-note *ngIf="startTime||endTime">{{startTime}} 
+      <span [hidden]="!startTime && !endTime">至</span> 
+      {{endTime}}</ion-note>
   </div>
   <ion-icon class="szom" name="you" item-end></ion-icon>
 </button>
 <div *ngIf="showPicker">
   <ion-item>
     <ion-label>起始时间</ion-label>
-    <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" [(ngModel)]="startTime"  (ngModelChange)="onChangeStart()"
+    <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" [(ngModel)]="startTime" placeholder="请选择" (ngModelChange)="onChangeStart()"
       cancelText="取消" doneText="确认"></ion-datetime>
     <ion-icon class="szom" name="you" item-end></ion-icon>
   </ion-item>
   <ion-item>
     <ion-label>结束时间</ion-label>
-    <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" [(ngModel)]="endTime" (ngModelChange)="onChangeEnd()"
+    <ion-datetime displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" [(ngModel)]="endTime" placeholder="请选择" (ngModelChange)="onChangeEnd()"
       cancelText="取消" doneText="确认"></ion-datetime>
     <ion-icon class="szom" name="you" item-end></ion-icon>
   </ion-item>

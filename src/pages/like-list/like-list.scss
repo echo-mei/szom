@@ -1,27 +1,14 @@
 page-like-list {
-    ion-content{
-        .scroll-content{
-            padding: 0!important;
-        }
-    }
     ion-item{
-        ion-label{
-            // display: flex;
-            // align-items: center;
-            // justify-content: space-between;
-        } 
         h2{
             margin: 0 !important;
         }
-        
+
     }
     .item p{
         font-size: rem(13) !important;
         margin-top: rem(5);
         color: #999999 !important;
-    }
-    .toolbar-background{
-        background-color: #fff;
     }
     ion-item-group{
         ion-item-divider{
@@ -32,7 +19,7 @@ page-like-list {
     .item ion-thumbnail{
         min-width: 50px;
         min-height: 50px;
-        
+
         img{
             width: 50px;
             height: 50px;
@@ -48,23 +35,6 @@ page-like-list {
     }
     ion-item-group .item-ios:last-child .item-inner{
         border-bottom: 1px solid #f3f2f2;
-    }
-    .header{
-        height: rem(48);
-    }
-    .toolbar{
-        height: rem(48);
-    }
-    .fixed-content{
-        margin-top: rem(48);
-    }
-    .scroll-content{
-        margin-top: rem(48);
-    }
-    .toolbar-title{
-        font-size: rem(17);
-        color: #333333;
-        text-align: center;
     }
     .item-divider{
         font-size: rem(12);
@@ -82,11 +52,8 @@ page-like-list {
         color: #333333;
         font-weight: bold;
     }
-    
+
     ion-item-group .item:last-child .item-inner{
         border-bottom: 1px solid #f3f3f3;
-    }
-    .header::after, .tabs[tabsPlacement="top"] > .tabbar::after, .footer::before, .tabs[tabsPlacement="bottom"] > .tabbar::before{
-        background-image: none;
     }
 }

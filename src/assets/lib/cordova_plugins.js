@@ -1,46 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
   {
-    "id": "cordova-plugin-camera.Camera",
-    "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "Camera"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.CameraPopoverOptions",
-    "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "CameraPopoverOptions"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.camera",
-    "file": "plugins/cordova-plugin-camera/www/Camera.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "navigator.camera"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.CameraPopoverHandle",
-    "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "CameraPopoverHandle"
-    ]
-  },
-  {
-    "id": "cordova-plugin-telerik-imagepicker.ImagePicker",
-    "file": "plugins/cordova-plugin-telerik-imagepicker/www/imagepicker.js",
-    "pluginId": "cordova-plugin-telerik-imagepicker",
-    "clobbers": [
-      "plugins.imagePicker"
-    ]
-  },
-  {
     "id": "cordova-plugin-device.device",
     "file": "plugins/cordova-plugin-device/www/device.js",
     "pluginId": "cordova-plugin-device",
@@ -238,26 +198,126 @@ module.exports = [
     "runs": true
   },
   {
+    "id": "cordova-plugin-camera.Camera",
+    "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "Camera"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.CameraPopoverOptions",
+    "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "CameraPopoverOptions"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.camera",
+    "file": "plugins/cordova-plugin-camera/www/Camera.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "navigator.camera"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.CameraPopoverHandle",
+    "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "CameraPopoverHandle"
+    ]
+  },
+  {
+    "id": "cordova-plugin-telerik-imagepicker.ImagePicker",
+    "file": "plugins/cordova-plugin-telerik-imagepicker/www/imagepicker.js",
+    "pluginId": "cordova-plugin-telerik-imagepicker",
+    "clobbers": [
+      "plugins.imagePicker"
+    ]
+  },
+  {
     "id": "com-badrit-base64.Base64",
     "file": "plugins/com-badrit-base64/www/Base64.js",
     "pluginId": "com-badrit-base64",
     "clobbers": [
       "navigator.Base64"
     ]
+  },
+  {
+    "id": "cordova-plugin-statusbar.statusbar",
+    "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+    "pluginId": "cordova-plugin-statusbar",
+    "clobbers": [
+      "window.StatusBar"
+    ]
+  },
+  {
+    "id": "cordova-plugin-network-information.network",
+    "file": "plugins/cordova-plugin-network-information/www/network.js",
+    "pluginId": "cordova-plugin-network-information",
+    "clobbers": [
+      "navigator.connection",
+      "navigator.network.connection"
+    ]
+  },
+  {
+    "id": "cordova-plugin-network-information.Connection",
+    "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+    "pluginId": "cordova-plugin-network-information",
+    "clobbers": [
+      "Connection"
+    ]
+  },
+  {
+    "id": "phonegap-plugin-mobile-accessibility.mobile-accessibility",
+    "file": "plugins/phonegap-plugin-mobile-accessibility/www/mobile-accessibility.js",
+    "pluginId": "phonegap-plugin-mobile-accessibility",
+    "clobbers": [
+      "window.MobileAccessibility"
+    ]
+  },
+  {
+    "id": "phonegap-plugin-mobile-accessibility.MobileAccessibilityNotifications",
+    "file": "plugins/phonegap-plugin-mobile-accessibility/www/MobileAccessibilityNotifications.js",
+    "pluginId": "phonegap-plugin-mobile-accessibility",
+    "clobbers": [
+      "MobileAccessibilityNotifications"
+    ]
+  },
+  {
+    "id": "es6-promise-plugin.Promise",
+    "file": "plugins/es6-promise-plugin/www/promise.js",
+    "pluginId": "es6-promise-plugin",
+    "runs": true
+  },
+  {
+    "id": "cordova-plugin-screen-orientation.screenorientation",
+    "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+    "pluginId": "cordova-plugin-screen-orientation",
+    "clobbers": [
+      "cordova.plugins.screenorientation"
+    ]
   }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-  "cordova-plugin-camera": "4.0.3",
-  "cordova-plugin-telerik-imagepicker": "2.2.1",
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-device": "2.0.2",
   "cordova-plugin-splashscreen": "5.0.2",
-  "cordova-plugin-ionic-webview": "1.1.19",
-  "cordova-plugin-ionic-keyboard": "2.0.5",
+  "cordova-plugin-ionic-webview": "1.2.1",
+  "cordova-plugin-ionic-keyboard": "2.1.2",
   "cordova-plugin-file": "6.0.1",
-  "com-badrit-base64": "0.2.0"
+  "cordova-plugin-camera": "4.0.3",
+  "cordova-plugin-telerik-imagepicker": "2.2.2",
+  "com-badrit-base64": "0.2.0",
+  "cordova-plugin-statusbar": "2.4.2",
+  "cordova-plugin-network-information": "2.0.2-dev",
+  "phonegap-plugin-mobile-accessibility": "1.0.5-dev",
+  "es6-promise-plugin": "4.2.2",
+  "cordova-plugin-screen-orientation": "3.0.1"
 };
 // BOTTOM OF METADATA
 });

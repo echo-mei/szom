@@ -14,6 +14,18 @@ page-daily-three-create {
 
   ion-item {
     border-bottom: rem(0.5) solid #F1F1F1;
+    ion-label {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 0!important;
+    }
+  }
+
+  image-picker {
+    ul {
+      margin-bottom: rem(60);
+    }
   }
 
   button.post-button {

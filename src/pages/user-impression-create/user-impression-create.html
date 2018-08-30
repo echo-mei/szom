@@ -15,5 +15,7 @@
   <div class="impression-list">
     <ion-badge tappable *ngFor="let tag of tagList" (click)="check(tag)" [class]="tag.isChecked=='Y'?'checked':''">{{tag.tagName}}</ion-badge>
   </div>
-  <button class="footer" ion-button block (click)="goAddImpression()">自定义标签</button>
 </ion-content>
+<ion-footer padding>
+  <button ion-button block (click)="goAddImpression()">自定义标签</button>
+</ion-footer>

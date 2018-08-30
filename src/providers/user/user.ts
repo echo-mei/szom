@@ -13,24 +13,34 @@ export class UserProvider {
   ) {
   }
 
-  // 登陆
+  // 登录
   login(params): Observable<any> {
     return this.http.post(`${BASE_URL}/base/login`, params);
   }
 
   // 获取我的信息
   getMe(): Observable<any> {
-    return this.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode});
+    return this.http.get(`${BASE_URL}/personInfo/getMinePersonInfo`);
+    // return this.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode});
   }
 
-  // 短信验证码登陆
+  // 短信验证码登录
   sendSMSCode(params): Observable<any> {
     return this.http.post(`${BASE_URL}/base/sendSMSCode`, params);
   }
 
   // 获取验证码
   getSMSCode(params): Observable<any> {
-    return this.http.get(`${BASE_URL}/base/getSMSCode`, params);
+    return this.http.get(`${BASE_URL}/base/getLoginSMSCode`, params);
+  }
+  // 获取修改手机号短信验证码
+  getMobliePhoneSMSCode(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/userSMS/getMobliePhoneSMSCode`, params);
+  }
+
+  // 验证短信验证码
+  checkUserSMS(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/userSMS/checkUserSMS`, params);
   }
 
   // 获取用户个人信息
@@ -38,6 +48,12 @@ export class UserProvider {
     return this.http.get(`${BASE_URL}/personInfo`, params);
   }
 
+  // 获取个人头像地址
+  getHeadImageUrl(personId) {
+    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.get('token')}&personId=${personId}`;
+  }
+
+  // 获取用户个人信息
   getUserInfoByPersonId(personId): Observable<any> {
     return this.http.get(`${BASE_URL}/personInfo/${personId}`);
   }
@@ -57,6 +73,17 @@ export class UserProvider {
     return this.http.post(`${BASE_URL}/personalStatement`, selfInfo);
   }
 
+  // 账户安全-修改手机号
+  updatePhone(params): Observable<any> {
+    // TODO: 账户安全-修改手机号
+    return this.http.post(`${BASE_URL}/personInfo/updateMobilePhone`, params);
+  }
+
+  // 账户安全-修改密码
+  updatePassword(params): Observable<any>{
+    return this.http.post(`${BASE_URL}/users/updateUsersPassword`, params);
+  }
+
   // 获取我的印象标签列表
   getImpressionList(): Observable<any> {
     // TODO: 获取我的印象标签列表
@@ -69,16 +96,11 @@ export class UserProvider {
     return null;
   }
 
-  // 账户安全-修改手机号
-  updatePhone(): Observable<any> {
-    // TODO: 账户安全-修改手机号
-    return null;
-  }
+
 
   // 退出
-  logout(): Observable<any> {
-    // TODO: 退出
-    return null;
+  logout(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/base/logout`, params);
   }
 
   // 获取某天的签到信息

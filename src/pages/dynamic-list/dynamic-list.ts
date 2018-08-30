@@ -1,11 +1,14 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll, Events, TextInput } from 'ionic-angular';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { NavController, NavParams, InfiniteScroll, Events, Refresher, Content, ModalController, LoadingController, TextInput } from 'ionic-angular';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
+import { LikeListPage } from '../like-list/like-list';
+import { MeInfoPage } from '../me-info/me-info';
+import { UserInfoPage } from '../user-info/user-info';
+import { Keyboard } from '@ionic-native/keyboard';
+import { UserProvider } from '../../providers/user/user';
 
-
-@IonicPage()
 @Component({
   selector: 'page-dynamic-list',
   templateUrl: 'dynamic-list.html',
@@ -13,68 +16,74 @@ import { BASE_URL } from '../../config';
 
 export class DynamicListPage {
   @ViewChild('infinite') infinite: InfiniteScroll;
-  // @ViewChild('content') content;
-  @ViewChild('comment') commentEle:any;
+  @ViewChild(Content) content: Content;
+  @ViewChild('commentInput') commentInput:TextInput;
   @Input() type: any;
 
-  showAllFlag: boolean = true;
-  showMore: boolean = true;
+  isInfinite: number = 1;
 
-  dataOverFlag = false;
-  likeFlag = false;
   size = 10;
-  comment: any;
+  // 评论框文本输入值
+  commentData: string = "";
   // 被评论的那条记录
   dynamic: any;
-  // 要回复评论的那条评论的id
-  commentId: string = '';
-  // 评论区显示的提示
-  placeholder: string = "";
-  dynamicList:any;
+  // 要回复评论的那条评论
+  replyComment: any;
+  // 评论类型 1为评论   2为回复评论
+  commentType=1;
+  // 评论框提示
+  placeholder = "";
+  // 动态数据列表
+  dynamicList: any;
   dynamicListSus: string = "";
+  loading: any;
 
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public dynamicProvider: DynamicProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public modalCtrl: ModalController,
+    public keyboard: Keyboard,
+    public userProvider: UserProvider,
+    public loadingCtrl: LoadingController
   ) {
+    // this.keyboard.onKeyboardShow().subscribe(
+    //   (e) => {
+    //     this.commentEle.nativeElement.style.bottom = e.keyboardHeight + 'px';
+    //     this.replyCommentEle.nativeElement.style.bottom = e.keyboardHeight + 'px';
+    //   }
+    // );
+    // this.keyboard.onKeyboardHide().subscribe(
+    //   (e) => {
+    //     this.commentEle.nativeElement.style.bottom = '0px';
+    //     this.replyCommentEle.nativeElement.style.bottom = '0px';
+    //   }
+    // );
   }
 
   ngOnInit() {
     this.dynamicListSus = this.type + "-dynamicList:change";
     this.events.subscribe(this.dynamicListSus, (dynamic) => {
-      console.log(this.dynamicListSus + "订阅成功");
       this.getDynamic(dynamic);
-    })
-    this.initDynamicList();
+    });
+    // this.initDynamicList();
   }
 
-  ngOnDestroy() {
-
+  goTop() {
+    this.content.scrollToTop(500);
+    this.load();
   }
 
-  ngAfterViewInit() {
+  showMoreBtn(ele) {
+    return ele.clientHeight === ele.scrollHeight;
   }
 
-  // showMoreBtn(contentDiv) {
-  //   const style = window.getComputedStyle(contentDiv, null);
-  //   const height = parseInt(style.height, 10);
-  //   const lineHeight = parseInt(style.lineHeight, 10);
-  //   console.log(contentDiv, height, lineHeight)
-  //   if (height / lineHeight > 3) { //若行高大于1行，则显示阅读全文
-  //     this.showMore = true;
-  //   } else {
-  //     this.showMore = false;
-  //   }
-  //   return false;
-  // }
-
-  showMoreBtn(content: TextInput) {
-    // console.log(content.getElementRef().nativeElement)
-    // console.log(content);
-    return false;
+  goLikeList(dynamic) {
+    this.navCtrl.push(LikeListPage, {
+      likerList: dynamic.sbLikePersonInfoDTO
+    });
   }
 
   initDynamicList() {
@@ -98,7 +107,7 @@ export class DynamicListPage {
   }
 
 
-  load() {
+  load(refresher?: Refresher) {
     let params = {
       size: this.size
     };
@@ -108,10 +117,15 @@ export class DynamicListPage {
     this.getDynamicList(params, this.type).subscribe(
       (data) => {
         if (data) {
-          for (let i = data.length - 1; i >= 0; i--) {
-            this.dynamicList.unshift(data[i]);
+          if (this.type == 'recommend') {
+            this.dynamicList = data;
+          } else {
+            for (let i = data.length - 1; i >= 0; i--) {
+              this.dynamicList.unshift(data[i]);
+            }
           }
         }
+        refresher && refresher.complete();
       }
     );
   }
@@ -124,17 +138,45 @@ export class DynamicListPage {
     if (this.dynamicList.length) {
       params['endTime'] = this.dynamicList[this.dynamicList.length - 1]['publishTime'];
     }
+    if (!infinite) {
+      this.loading = this.loadingCtrl.create({
+        content: '处理中...',
+        // showBackdrop:false,
+        cssClass: 'loading-new'
+      });
+      this.loading.present();
+    }
     this.getDynamicList(params, this.type).subscribe(
       (data) => {
+        if (!infinite) {
+          this.loading.dismiss();
+        }
         infinite && infinite.complete();
         if (data.length) {
           infinite && infinite.enable(true);
           this.dynamicList = this.dynamicList.concat(data);
+          this.parseDynamicList();
         } else {
+          this.isInfinite = data.length;
           infinite && infinite.enable(false);
         }
+
       }
     );
+  }
+
+  parseDynamicList() {
+    let me = JSON.parse(this.storage.get('user'));
+    this.dynamicList.forEach((item) => {
+      item && item.sbLikeList && item.sbLikeList.find((user) => {
+        if (user.likeUserName === me.personName) {
+          item.hasMeLike = true;
+        } else {
+          item.hasMeLike = false;
+        }
+        return user.likeUserName === me.personName;
+      });
+    });
   }
 
   getDynamic(dynamic) {
@@ -142,8 +184,8 @@ export class DynamicListPage {
       (data) => {
         for (let i = 0; i < this.dynamicList.length; i++) {
           if (this.dynamicList[i]['dynamicId'] === data.dynamicId) {
-            var obj = JSON.parse(JSON.stringify(data));
-            this.dynamicList[i] = obj;
+            this.dynamicList[i] = data;
+            this.parseDynamicList();
             return;
           }
         }
@@ -155,13 +197,6 @@ export class DynamicListPage {
     return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
-  hasMeLike(dynamic): boolean {
-    let me = JSON.parse(this.storage.get('user'));
-    return dynamic && dynamic.sbLikeList && dynamic.sbLikeList.find((user) => {
-      return user.likeUserName == me.personName;
-    }) ? true : false;
-  }
-
   sendLike(dynamic) {
     this.dynamicProvider.likeDaily({ dynamicId: dynamic.dynamicId }).subscribe(
       () => {
@@ -171,29 +206,42 @@ export class DynamicListPage {
     );
   }
 
-  startComment(dynamic, commentId?, placeholder?) {
+  startComment(dynamic) {
+    this.commentType = 1;
     this.dynamic = dynamic;
-    this.commentId = commentId;
-    if (placeholder) {
-      this.placeholder = "回复" + placeholder + " :";
-    } else {
-      this.placeholder = "";
-    }
+    this.replyComment = {};
+    this.commentData = this.dynamic.commentData?this.dynamic.commentData:"";
+    this.placeholder = "";
     this.commentInputShow();
   }
+  startReplyComment(dynamic, comment) {
+    this.commentType = 2;
+    this.dynamic = dynamic;
+    this.replyComment = comment;
+    this.commentData = this.replyComment.commentData?this.replyComment.commentData:"";
+    this.placeholder = "回复" + this.replyComment.commentUserName + ":";
+    this.commentInputShow();
+  }
+  saveComment(str){
+    if(this.commentType === 1){
+      this.dynamic.commentData = str;
+    }else if(this.commentType === 2){
+      this.replyComment.commentData = str;
+    }
+  }
   sendComment() {
-    if (this.comment && this.dynamic.dynamicId) {
+    if (this.commentData && this.dynamic.dynamicId) {
       this.dynamicProvider.commentDaily({
         dynamicId: this.dynamic.dynamicId,
-        sbCommentId: this.commentId,
-        content: this.comment
+        sbCommentId: this.replyComment ? this.replyComment.sbCommentId : "",
+        content: this.commentData
       }).subscribe(
         () => {
           // 列表更新
           this.events.publish(this.dynamicListSus, this.dynamic);
-          this.comment = '';
+          this.commentData = '';
           this.dynamic = {};
-          this.commentId = '';
+          this.replyComment = {};
           this.commentInputHide();
         }
       );
@@ -204,19 +252,30 @@ export class DynamicListPage {
     // 隐藏tabs栏
     let tabs = document.getElementsByClassName('tabbar').item(0);
     tabs['style'].display = 'none';
-    let footer = document.getElementsByClassName('publish-comment').item(0);
-    footer['style'].display = 'block';
-    let textareaObject = document.getElementById('commentInput').getElementsByTagName('textarea').item(0);
-    textareaObject.focus();
+    this.commentInput.setFocus();
   }
 
   commentInputHide() {
-    console.log(this.commentEle)
     // 显示tabs栏
     let tabs = document.getElementsByClassName('tabbar').item(0);
     tabs['style'].display = 'flex';
-    let footer = document.getElementsByClassName('publish-comment').item(0);
-    footer['style'].display = 'none';
+    this.commentInput.setBlur();
+  }
+
+  goUserInfo(userCode) {
+    let user = { userCode: userCode };
+    this.commentInputHide();
+    if (user.userCode == JSON.parse(this.storage.get('user')).userCode) {
+      this.navCtrl.push(MeInfoPage)
+    } else {
+      this.navCtrl.push(UserInfoPage, {
+        user: user,
+        showSelfInfo: true,
+        showDaily: true,
+        showTags: true,
+        followOrCancel: true
+      });
+    }
   }
 
 }

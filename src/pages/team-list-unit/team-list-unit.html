@@ -15,7 +15,7 @@
       <ion-list class="peoples" [hidden]="!showDetail">
         <ion-item *ngFor="let item of teamlist">
           <ion-avatar item-start>
-            <img src="assets/imgs/user.jpg">
+            <img [src]="userProvider.getHeadImageUrl(item.personId)" onerror="this.src='assets/imgs/user.png'">
           </ion-avatar>
           <h2>{{ item.text }}</h2>
           <ion-note>{{ item.text }}</ion-note>

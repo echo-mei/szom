@@ -1,37 +1,44 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll, Events } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, Events, ViewController, LoadingController } from 'ionic-angular';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
+import { DynamicDetailPage } from '../dynamic-detail/dynamic-detail';
 
-
-@IonicPage()
 @Component({
   selector: 'page-dynamic-search',
   templateUrl: 'dynamic-search.html',
 })
 export class DynamicSearchPage {
   @ViewChild('infinite') infinite: InfiniteScroll;
-
-  dynamicList: any;
+  @ViewChild('searchbar') searchbar;
+  dynamicList: Array<object>;
   size = 10;
+  type: string = '';
+  selectString: string = '';
   timeStarts: string = "";
   timeEnd: string = "";
   selectTimeShowFlag = false;
-  selectString: string = '';
-  type: string = '';
   dynamicSearchListSus: string = '';
   dynamic: any;
+  onceLoad: number = 1;
+  showNotFound: boolean = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public dateUtil: DateUtilProvider,
     public dynamicProvider: DynamicProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public viewCtrl: ViewController,
+    public loadingCtrl: LoadingController
   ) {
     this.type = this.navParams.get("type");
+    this.selectString = this.navParams.get("selectString");
+    this.timeStarts = this.navParams.get("timeStarts");
+    this.timeEnd = this.navParams.get("timeEnd");
+    this.dynamicList = [];
     this.initDynamicList();
   }
 
@@ -44,18 +51,12 @@ export class DynamicSearchPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
-  }
-
-  // 搜索正则高亮匹配
-  highLight(str,keyword) {
-    //正则替换 
-    //g （全文查找出现的所有 pattern） 
-    if(keyword){
-      let hlValue = new RegExp(keyword,"g");
-      str = str.replace(hlValue, "<font class='hightBright'>$&</font>");
-    }
-    return str;
+    this.events.unsubscribe(this.dynamicSearchListSus);
+    this.viewCtrl.dismiss({
+      selectString:this.selectString,
+      timeStarts:this.timeStarts,
+      timeEnd:this.timeEnd
+    });
   }
 
   // 重置
@@ -67,15 +68,15 @@ export class DynamicSearchPage {
 
   // 跳转详情页面
   goDynamicShow(dynamic) {
-    this.navCtrl.push('DynamicDetailPage', {
+    this.navCtrl.push(DynamicDetailPage, {
       type: this.type,
       dynamic: dynamic
     });
   }
 
   initDynamicList() {
-    this.dynamicList = [];
-    this.more();
+    // this.dynamicList = [];
+    this.more(false);
   }
 
   // 搜索确定按钮实现
@@ -91,29 +92,45 @@ export class DynamicSearchPage {
       case "unit":
         return this.dynamicProvider.getUnityDnamicList(params);
       case "recommend":
-        return this.dynamicProvider.getRecommendDynamicList();
+        return this.dynamicProvider.getRecommendDynamicList(params);
       case "leaderlike":
         return this.dynamicProvider.getLeaderLikeDynamicList(params);
     }
   }
 
-  more(infinite?: InfiniteScroll) {
+  more(boolSearch=true, infinite?: InfiniteScroll) {
+    let loading = this.loadingCtrl.create({
+      content: '处理中...'
+    });
+    this.onceLoad-->0?loading.present():'';
     this.infinite && this.infinite.enable(true);
     let params = {
       size: this.size,
       searchKeyword: this.selectString,
       searchStart: this.timeStarts,
-      searchEnd: this.dateUtil.format(new Date(this.timeEnd), 'yyyy-MM-dd')
+      // searchEnd: this.dateUtil.format(new Date(this.timeEnd), 'yyyy-MM-dd')
+      searchEnd: this.timeEnd
     };
-    if (this.dynamicList.length) {
+    if (boolSearch && this.dynamicList.length) {
       params['endTime'] = this.dynamicList[this.dynamicList.length - 1]['publishTime'];
     }
     this.getDynamicList(params, this.type).subscribe(
       (data) => {
+        if(!boolSearch && !(this.dynamicList.length == data.length && data.length == 0)){
+          loading.present();
+        };
+        if(!data[0]){
+          this.showNotFound = true;
+        };
+        loading.dismiss();
+        
         infinite && infinite.complete();
+        if(!params['endTime'] && data==''){
+          this.dynamicList = [];
+        }
         if (data.length) {
           infinite && infinite.enable(true);
-          this.dynamicList = this.dynamicList.concat(data);
+          boolSearch? this.dynamicList = this.dynamicList.concat(data): this.dynamicList = data;
         } else {
           infinite && infinite.enable(false);
         }

@@ -1,0 +1,51 @@
+list-item {
+    flex: 1;
+    
+    .content {
+        height: rem(64);
+        font-size: 15px;
+        color: #333333;
+        display: flex;
+        h3 {
+            position: relative;
+            flex-grow: 1;
+            padding-right: rem(16);
+            margin-top: 0;
+            margin-bottom: 0 !important;
+            p{
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+                color: #333333;
+                font-size: rem(15) !important;
+            }
+            .bottom{
+                padding-left: rem(20);
+                position: absolute;
+                bottom: -1px;
+            span {
+                font-size: rem(13);
+                color: #AFAFAF;
+                letter-spacing: rem(-0.08);
+                line-height: rem(15);
+                &.icons {
+                    ion-icon {
+                        margin-left: rem(13);
+                        font-size: rem(13);
+                    }
+                }
+            }
+        }
+        }
+        img {
+          width: rem(68);
+          height: rem(68);
+          min-width: rem(68);
+          min-height: rem(68);
+          border-radius: rem(5);
+        }
+    }
+}

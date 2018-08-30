@@ -1,22 +1,14 @@
-import { Component,Input, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { EvaluateProvider } from '../../providers/evaluate/evaluate';
 
-/**
- * Generated class for the EvaluateListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-evaluate-list',
   templateUrl: 'evaluate-list.html',
 })
 export class EvaluateListPage {
-  @Input()  msg:string; 
+  @Input()  msg:string;
   @Input() type: any;
   pet:any = "zzbm";
   flag = 0;
@@ -27,7 +19,7 @@ export class EvaluateListPage {
   }
 
   ionViewDidLoad() {
-     
+
   }
 
   getZzbmInitDatas(){
@@ -50,7 +42,7 @@ export class EvaluateListPage {
     );
   }
 
- 
+
 
   doInfinite(infiniteScroll) {
     console.log('Begin async operation');

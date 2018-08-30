@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController, InfiniteScroll } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, InfiniteScroll } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
+import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
 
-@IonicPage()
 @Component({
   selector: 'page-search-conditions',
   templateUrl: 'search-conditions.html'
@@ -46,7 +46,7 @@ export class SearchConditionsPage {
 
   // 跳转详情页面
   goDailyShow(daily) {
-    this.navCtrl.push('DailyShowPage',{
+    this.navCtrl.push(DailyMeShowPage,{
       daily: daily
     });
   }

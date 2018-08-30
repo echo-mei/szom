@@ -1,10 +1,9 @@
 page-tabs {
     .tabs{
-    
+
         .tabbar{
             height: rem(50);
             background: #FFFFFF;
-            border-top: .5px solid #DDDDDD;
             padding-top: rem(6);
             padding-bottom: rem(4);
 
@@ -16,7 +15,7 @@ page-tabs {
                     font-size: rem(20);
                     color: #bfbfbf;
                 }
-        
+
                 .tab-button-text{
                     margin: rem(2) auto;
                     height: rem(14);
@@ -36,16 +35,16 @@ page-tabs {
                     min-width: auto;
                 }
             }
-    
+
             .tab-button[aria-selected=true]{
                 .tab-button-icon,.tab-button-text {
                     color: #4D74EB;
                 }
-            } 
+            }
         }
 
-        
-    
+
+
     }
 
 }

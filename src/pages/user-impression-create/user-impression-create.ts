@@ -1,8 +1,8 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { ImpressionProvider } from '../../providers/impression/impression';
+import { UserImpressionAddPage } from '../user-impression-add/user-impression-add';
 
-@IonicPage()
 @Component({
   selector: 'page-user-impression-create',
   templateUrl: 'user-impression-create.html',
@@ -11,6 +11,7 @@ export class UserImpressionCreatePage {
 
   user: any;
 
+  maxTagSize: number = 9;
   tagList: any[] = [];
 
   onCreate: () => {};
@@ -30,8 +31,9 @@ export class UserImpressionCreatePage {
     this.impressionProvider.allTags({
       tagOwner: this.user.userCode
     }).subscribe(
-      (list) => {
-        this.tagList = list;
+      (data) => {
+        this.maxTagSize = data.impTagShowSize || 9;
+        this.tagList = data.tagList;
       }
     );
   }
@@ -42,12 +44,12 @@ export class UserImpressionCreatePage {
       tag.isChecked == 'Y' && count++;
     });
     if(tag.isChecked == 'N') {
-      if(count<9) {
+      if(count<this.maxTagSize) {
         tag.isChecked = 'Y';
       }else {
         this.toastCtrl.create({
           cssClass: 'mini',
-          message: '最多9个',
+          message: `最多${this.maxTagSize}个`,
           duration: 1000,
           position: 'middle'
         }).present();
@@ -58,10 +60,24 @@ export class UserImpressionCreatePage {
   }
 
   goAddImpression() {
-    this.navCtrl.push('UserImpressionAddPage', {
+    this.navCtrl.push(UserImpressionAddPage, {
       onAdd: (tag) => {
+        let count = 0;
+        let removeIndex;
+        this.tagList.forEach((t, i) => {
+          if(tag.impressionTagDefId==t.impressionTagDefId) {
+            tag = t;
+            removeIndex = i;
+          }
+          t.isChecked == 'Y' && count++;
+        });
+        if(removeIndex!=undefined) {
+          this.tagList.splice(removeIndex, 1);
+        }
         this.tagList.unshift(tag);
-        this.check(tag);
+        if(count<this.maxTagSize) {
+          tag.isChecked = 'Y';
+        }
       }
     });
   }

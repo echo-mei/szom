@@ -1,0 +1,17 @@
+<div class="ina">
+  <div class="content">
+    <h3 class="oneThreeTen">
+      <p [innerHTML]="log.content | highLight:selectString"></p>
+      <div class="bottom">
+        <span>{{log.createdDate | date:'yyyy.MM.dd'}}</span>
+        <span class="icons">
+          <span *ngIf="log.countStLike>0">
+            <ion-icon class="szom" name="md-dianzandianji"></ion-icon> {{log.countStLike}}</span>
+          <span *ngIf="log.countStComment>0">
+            <ion-icon class="szom" name="md-xiaoxi1"></ion-icon> {{log.countStComment}}</span>
+        </span>
+      </div>
+    </h3>
+    <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.src='assets/imgs/no-img.png'">
+  </div>
+</div>

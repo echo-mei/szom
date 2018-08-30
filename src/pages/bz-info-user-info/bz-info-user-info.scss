@@ -1,0 +1,79 @@
+page-bz-info-user-info {
+    ion-item{
+        padding:0 rem(16) !important;
+        ion-thumbnail{
+            min-width: rem(50) !important;
+            min-height: rem(50) !important;
+            width: rem(50) !important;
+            height: rem(50) !important;
+            img{
+                min-width: rem(50) !important;
+                min-height: rem(50) !important;
+                width: rem(50) !important;
+                height: rem(50) !important;
+            }
+        }
+        h2{
+            font-size: rem(18) !important;
+            margin-bottom: rem(8) !important;
+            color: #333333;
+            font-weight: bold !important;
+        }
+        p{
+            font-size: rem(12) !important;
+            color: #333333 !important;
+        }
+        ion-icon{
+            margin-right: 0 !important;
+            color: #D9D9D9;
+            font-size: rem(5) !important;
+        }
+        .item-inner{
+            border: 0 !important;
+        }
+    }
+    .bzIntroFengong{
+        padding-top: rem(15);
+        padding: rem(16);
+        h2{
+            font-size: rem(18);
+            color: #333333;
+            margin-bottom: rem(8);
+            margin-top: rem(8);
+            font-weight: bold;
+        }
+        .item{
+            .item-inner{
+                border-bottom: 0 !important;
+                padding-right: 0;
+                ion-icon{
+                    margin-right: 0;
+                    color: #D9D9D9;
+                    font-size: rem(5);
+                }
+                .label{
+                    white-space: normal;
+                    padding-right: rem(8);
+                    color: #545454;
+                    font-size: rem(15);
+                }
+            }
+        }
+    }
+    .toolbar{
+        .toolbar-background{
+            background-color: #fff;
+        }
+        ion-icon{
+            color: #4D74EB !important;
+        }       
+    }
+    .divider{
+        height: rem(10);
+        background-color: #fafafa;
+        border: 0;
+    }
+    .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
+        background: none;
+    }
+}

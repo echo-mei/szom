@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { TimeSelectComponent } from '../../components/time-select/time-select';
 import { ImpressionProvider } from '../../providers/impression/impression';
+import { UserImpressionCreatePage } from '../user-impression-create/user-impression-create';
 
-@IonicPage()
 @Component({
   selector: 'page-user-impression',
   templateUrl: 'user-impression.html',
@@ -27,9 +27,13 @@ export class UserImpressionPage {
 
   getImpressionList() {
     let params = {tagOwner: this.user.userCode};
-    if(this.timeSelect && this.timeSelect.startTime && this.timeSelect.endTime) {
-      params['startDate'] = this.timeSelect.startTime;
-      params['endDate'] = this.timeSelect.endTime;
+    if(this.timeSelect) {
+      if(this.timeSelect.startTime) {
+        params['startDate'] = this.timeSelect.startTime;
+      }
+      if(this.timeSelect.endTime) {
+        params['endDate'] = this.timeSelect.endTime;
+      }
     }
     this.impressionProvider.statistics(params).subscribe(
       (list) => {
@@ -39,7 +43,7 @@ export class UserImpressionPage {
   }
 
   goAddImpression() {
-    this.navCtrl.push('UserImpressionCreatePage', {
+    this.navCtrl.push(UserImpressionCreatePage, {
       user: this.user,
       onCreate: this.getImpressionList.bind(this)
     });

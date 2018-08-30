@@ -1,12 +1,7 @@
 <ion-header no-border>
 
     <ion-navbar color="white">
-      <ion-title text-center>每年十励</ion-title>
-      <ion-buttons right>
-        <button ion-button (click)="popover($event)">
-          <ion-icon class="szom" name="md-gengduo"></ion-icon>
-        </button>
-      </ion-buttons>
+      <ion-title text-center>每年{{ count | digitalChineseConversion }}励详情</ion-title>
     </ion-navbar>
 
   </ion-header>
@@ -16,19 +11,30 @@
     <div *ngIf="dailyTen" class="daily-detail-main">
       <!-- <h2 class="title">《{{dailyTen.title}}》</h2> -->
       <pre class="content">{{dailyTen.content}}</pre>
-      <ul class="squared" no-padding *ngIf="dailyTen.uploadFileDetailDTOList.length">
-        <li *ngFor="let img of dailyTen.uploadFileDetailDTOList">
-          <div>
-            <img [src]="getImageUrl(img)">
-          </div>
-        </li>
-      </ul>
-      <ion-note class="pubTime">{{dailyTen.publishTime | date:'yyyy-MM-dd hh:mm:ss'}}</ion-note>
-      <ion-row class="like-wrap">
+      <img-show [uploadFileDetailDTOList]="dailyTen.uploadFileDetailDTOList"></img-show>
+      <div class="other">
+        <ion-note class="pubTime">{{dailyTen.publishTime | date:'yyyy-MM-dd HH:mm:ss'}}</ion-note>
+        <button class="delete" *ngIf="dailyTen.isShowDelete" ion-button clear (click)="popover()">删除</button>
+        <button class="dianzan" *ngIf="!dailyTen.hasMeLike" ion-button clear float-right (click)="sendLike()">
+          <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+        </button>
+        <button class="dianzan dianji" *ngIf="dailyTen.hasMeLike" ion-button clear float-right>
+          <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+        </button>
+      </div>
+      <div class="line" [hidden]="!dailyTen.listStLike.length && !dailyTen.listStComment.length"></div>
+      <ion-row class="like-wrap" *ngIf="dailyTen.listStLike.length" (click)="goLikeList()">
         <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-        <ion-note class="like-names">
-          <a (click)="goLikeList()" *ngFor="let user of dailyTen.listStLike.slice(0, 9)" class="zanName">{{user.operatorName}}、</a>
-          <span class="andSoOn">等{{dailyTen.listStLike.length}}人觉得很赞</span>
+        <ion-note class="like-names" *ngIf="dailyTen.listStLike.length<=13">
+          <span *ngFor="let user of dailyTen.listStLike.slice(0, 13);let i=index;" class="zanName">
+            <a class="zan-name">{{user.operatorName}}</a><span class="zan-name" *ngIf="i<12&&i<dailyTen.listStLike.length-1">、</span>
+          </span>
+        </ion-note>
+        <ion-note class="like-names" *ngIf="dailyTen.listStLike.length>13">
+          <span *ngFor="let user of dailyTen.listStLike.slice(0, 12);let i=index;" class="zanName">
+            <a class="zan-name">{{user.operatorName}}</a><span class="zan-name" *ngIf="i<11&&i<dailyTen.listStLike.length-1">、</span>
+          </span>
+          <span>等{{dailyTen.listStLike.length}}人觉得很赞</span>
         </ion-note>
       </ion-row>
       <ion-list class="comment-list">
@@ -40,17 +46,9 @@
     </div>
   </ion-content>
 
-  <ion-footer no-border>
+  <ion-footer no-border #footer>
     <ion-item class="publish-comment" no-lines>
       <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment"></ion-textarea>
-      <div item-end>
-        <button ion-button (click)="sendComment()">发送</button>
-        <button *ngIf="!hasMeLike()" ion-button clear (click)="sendLike()">
-          <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
-        </button>
-        <button *ngIf="hasMeLike()" ion-button clear>
-          <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-        </button>
-      </div>
+      <button item-end ion-button (click)="sendComment()">发送</button>
     </ion-item>
   </ion-footer>

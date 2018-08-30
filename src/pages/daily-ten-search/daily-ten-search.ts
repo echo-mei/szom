@@ -1,22 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
+import { StorageProvider } from '../../providers/storage/storage';
+import { BASE_URL } from '../../config';
+import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
 
-/**
- * Generated class for the DailyTenSearchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-daily-ten-search',
   templateUrl: 'daily-ten-search.html',
 })
 export class DailyTenSearchPage {
   @ViewChild('infinite') infinite: InfiniteScroll;
+  @ViewChild('searchbar') searchbar;
   onUpdate: (daily) => {};
   onDelete: (dailyId) => {};
   user: any;
@@ -25,30 +21,29 @@ export class DailyTenSearchPage {
   timeEnd: string = '';
   searchQuery: string = '';
   selectTimeShowFlag = false;
-
+  showNotFound: boolean=false;
   //原数据
   dailyList: Array<object>;
    /*关键词*/
   selectString: string = '';
+  onceLoad:number = 1;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
-    public dateUtil: DateUtilProvider
+    public dateUtil: DateUtilProvider,
+    public storage: StorageProvider,
+    public loadingCtrl: LoadingController
   ) {
-
-  }
-
-  ionViewDidLoad() {
     this.user = this.navParams.get('user');
     this.onUpdate = this.navParams.get('onUpdate');
     this.onDelete = this.navParams.get('onDelete');
+    this.dailyList = [];
     this.initLogDailyList();
   }
 
   initLogDailyList() {
-    this.dailyList = [];
-    this.more();
+    this.more(false);
   }
   //返回
   goBack() {
@@ -82,7 +77,7 @@ export class DailyTenSearchPage {
 
   // 跳转详情页面
   goDailyShow(daily) {
-    this.navCtrl.push('DailyMeShowPage', {
+    this.navCtrl.push(DailyMeShowPage, {
       daily: daily,
       onSearchUpdate: this.updateDaily.bind(this),
       onSearchDelete: this.deleteDaily.bind(this),
@@ -97,23 +92,50 @@ export class DailyTenSearchPage {
     this.initLogDailyList();
   }
 
-  more(infinite?: InfiniteScroll) {
+  changeTime(params) {
+    if(params['searchStart']){
+
+      params['searchStart'] = `${params['searchStart']}-01-01`;
+    }
+    if(params['searchEnd']){
+
+      params['searchEnd'] = `${params['searchEnd']}-12-31`;
+    }
+  }
+
+  more(boolSearch=true, infinite?: InfiniteScroll) {
+    let loading = this.loadingCtrl.create({
+      content: '处理中...'
+    });
     this.infinite && this.infinite.enable(true);
     let params = {
       size: this.size,
-      // userCode: this.user.userCode,
+      userCode: this.user.userCode,
       searchKeyword: this.selectString,
       searchStart: this.timeStarts,
       searchEnd: this.timeEnd
     };
-    console.log(params);
+    this.changeTime(params)
+    if (boolSearch && this.dailyList.length) {
+      params['endTime'] = this.dailyList[this.dailyList.length - 1]['publishTime'];
+    }
+    this.onceLoad-->0?loading.present():'';
     this.dailyProvider.getDailyTenList(params).subscribe(
       (data) => {
-        console.log(this.dailyList);
+        if(!boolSearch && !(this.dailyList == data.list && !data.list)){
+          loading.present();
+        };
+        if(!data.list){
+          this.showNotFound = true;
+        };
+        loading.dismiss();
         infinite && infinite.complete();
-        if (data.length) {
+        if(!params['endTime'] && data.list == ''){
+          this.dailyList = [];
+        }
+        if (data.list.length) {
           infinite && infinite.enable(true);
-          this.dailyList = this.dailyList.concat(data);
+          boolSearch? this.dailyList = this.dailyList.concat(data.list): this.dailyList = data.list;
         } else {
           infinite && infinite.enable(false);
         }
@@ -122,15 +144,8 @@ export class DailyTenSearchPage {
 
   }
 
-  // 搜索正则高亮匹配
-  highLight(str, keyword) {
-    //正则替换 
-    //g （全文查找出现的所有 pattern） 
-    if (keyword) {
-      let hlValue = new RegExp(keyword, "g");
-      str = str.replace(hlValue, "<font class='hightBright'>" + keyword + "</font>");
-    }
-    return str;
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
 }

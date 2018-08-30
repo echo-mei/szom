@@ -1,10 +1,14 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Events, InfiniteScroll, PopoverController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
-import { REAL_URL, BASE_URL } from '../../config';
+import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
+import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
+import { DailyMeCreatePage } from '../daily-me-create/daily-me-create';
+import { DailyMeSearchPage } from '../daily-me-search/daily-me-search';
+import { EmojiProvider } from '../../providers/emoji/emoji';
+import { DailyMeLikelistPage } from '../daily-me-likelist/daily-me-likelist';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-me',
   templateUrl: 'daily-me.html',
@@ -25,7 +29,9 @@ export class DailyMePage {
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public emojiProvider: EmojiProvider,
+    public popoverCtrl:PopoverController
   ) {
     this.user = this.navParams.get('user');
     this.getfindSTLike();
@@ -115,7 +121,7 @@ export class DailyMePage {
   }
 
   goDailyShow(daily) {
-    this.navCtrl.push('DailyMeShowPage', {
+    this.navCtrl.push(DailyMeShowPage, {
       daily: daily,
       onUpdate: this.updateDaily.bind(this),
       onDelete: this.deleteDaily.bind(this)
@@ -123,17 +129,27 @@ export class DailyMePage {
   }
 
   goDailyCreate() {
-    this.navCtrl.push('DailyMeCreatePage', {
+    this.navCtrl.push(DailyMeCreatePage, {
       onCreate: this.load.bind(this)
     });
   }
 
   goDailySearch() {
-    this.navCtrl.push('DailyMeSearchPage',{
+    this.navCtrl.push(DailyMeSearchPage,{
       user: this.user,
       onUpdate: this.updateDaily.bind(this),
       onDelete: this.deleteDaily.bind(this)
     });
+  }
+
+  showDetailLike() {
+    let popover = this.popoverCtrl.create(DailyMeLikelistPage,{
+      stlikeList:this.stlikeList,
+      stlikeSum:this.stlikeSum
+    }, {
+      cssClass: 'daily-likelist-pop'
+    });
+    popover.present();
   }
 
 }

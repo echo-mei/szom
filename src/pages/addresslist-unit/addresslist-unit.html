@@ -1,6 +1,6 @@
 <ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title>{{this.org.orgName}}</ion-title>
   </ion-navbar>
 
@@ -8,10 +8,10 @@
 
 
 <ion-content>
-  <!-- <div class="searcher">
+  <div class="searcher" *ngIf="canSearch">
     <ion-icon class="szom" name="sousuo"></ion-icon>
-    <ion-searchbar (click)="goAddresslistSearch()" placeholder="搜索"></ion-searchbar>
-  </div> -->
+    <ion-searchbar (click)="goAddresslistUnitSearch()" placeholder="搜索"></ion-searchbar>
+  </div>
   <ion-list no-lines>
     <div *ngFor="let unit of unitList;">
       <button class="unit" ion-item (click)="goAddresslistUnit(unit)">
@@ -24,7 +24,7 @@
     <div *ngFor="let key of personKeyList;let i = index;">
       <div class="divider">{{key}}</div>
       <ion-item *ngFor="let user of personValueList[i];" (click)="goUserInfo(user)">
-        <img src="assets.jpg" onerror="this.src='assets/imgs/user.jpg'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
         <h2>{{user.name}}</h2>
         <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
       </ion-item>

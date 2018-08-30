@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams,AlertController, Events } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { ImagePickerComponent } from '../../components/image-picker/image-picker';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-me-update',
   templateUrl: 'daily-me-update.html',

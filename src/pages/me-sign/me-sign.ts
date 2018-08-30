@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { DayConfig } from 'ion2-calendar';
 
-@IonicPage()
 @Component({
   selector: 'page-me-sign',
   templateUrl: 'me-sign.html',

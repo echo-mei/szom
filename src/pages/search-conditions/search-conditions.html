@@ -45,10 +45,15 @@
   <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
   <ion-list *ngIf="logDataList" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
-      <h4 *ngIf="selectIndex"
-      >{{log.title.substring(0, selectIndex[i])}}<span class="hightBright">{{selectString.trim()}}</span
-        >{{log.title.substring(selectIndex[i]+selectString.length, log.title.length).trim()}}</h4>
+      <h4 *ngIf="selectIndex">
+        {{log.title.substring(0, selectIndex[i])}}
+        <span class="hightBright">{{selectString.trim()}}</span>
+        {{log.title.substring(selectIndex[i]+selectString.length, log.title.length).trim()}}
+      </h4>
       <h4 *ngIf="!selectIndex">{{log.title}}</h4>
+      <img *ngIf="log.uploadFileDetailDTOList.length"
+        [src]="getImageUrl(log.uploadFileDetailDTOList[0])"
+        onerror="this.src='assets/imgs/no-img.png'">
       <div class="other">
         <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
         <ion-note>
@@ -56,10 +61,6 @@
         <ion-note>
           <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.commentCount}}</ion-note>
       </div>
-      <ion-thumbnail item-end *ngIf="i%2==0">
-        <img src="img/thumbnail-totoro.png">
-        <!-- <img-loader src="img/thumbnail-totoro.png" useImg fallback="assets/imgs/fail.jpg"></img-loader> -->
-      </ion-thumbnail>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="more($event)">

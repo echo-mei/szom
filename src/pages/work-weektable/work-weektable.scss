@@ -1,174 +1,190 @@
 page-work-weektable {
-    *{
-        margin: 0;
-        padding: 0;
+  .statistics{
+    color: color($colors,mainBlueColor)!important;
+    font-size: rem(17);
+  }
+  .time-select{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: rem(44);
+    .time{
+      font-size: rem(18);
+      color: #333333;
+      letter-spacing: -0.22px;
+      position: relative;
+      opacity: 0;
+      z-index: 1;
     }
-    ul,li{
-        list-style-type: none;
+    .time-show{
+      position: absolute;
+      left: 50%;
+      font-size: rem(18);
+      color: #333333;
+      width: rem(150);
+      line-height: rem(44);
+      margin-left: rem(-75);
     }
-    .work-data li>.work button{
-        font-size: 10px;
-        height: 50%;
-        width: 70px;
-        border: 1px solid #10A0FC;
-        color: #10A0FC;
+    .button{
+      margin: 0;
+      font-size: 18px;
+      padding: 0 rem(25);
     }
-    // 头部
-    .header{
-        &::after{
-            height: 0;
-        }
-    }
-    .toolbar{
-        display: flex;
-        align-items: center;
-        .toolbar-background{
-            background: #FFFFFF;
-        }
-        .back-button{
-            position: initial;
-        }
-        .title{
-            padding: 0;
-            position: initial;
-        }
-    }
-    .scroll-content{
-        margin-top: 50px;
-        padding:0px!important;
-        .time-select{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            div{
-                font-size: rem(18);
-                color: #333333;
-                letter-spacing: -0.22px;
-            }
-        }
-    }
-    .toolbar-background-ios{
-        border-color: transparent!important;
-    }
-    .toolbar .back-button{
-        top: 0.5rem;
-    }
-    .toolbar .bar-buttons .bar-button:not(first-child){
-        font-size: 1.5rem;
-    }
-    //内容
-    .data{
-        .week-title{
-            font-size: rem(12);
-            background-color: #FAFAFA;
-            color: #666666;
-            letter-spacing: -0.42px;
-            height: rem(20);
-            line-height: rem(20);
-            padding-left: rem(10);
-        }
-    }
-    .list{
-        padding: rem(0) rem(10);
-        margin: 0;
-        .item {
-            box-sizing: border-box;
-            border-bottom: 2px solid #EEEEEE;
-            height: rem(83);
-            .item-inner{
-                padding-right: 11px;
-            }
-            .label{
-                margin: 8px 0;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                .work-box{
-                    width: 90%;
-                    .work-title{
-                        p{
-                            color: #333333;
-                            font-size: rem(15);
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            margin-bottom: rem(10);
-                        }
-                    }
-                    .work-data{
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        
-                        p{
-                            letter-spacing: -0.08px;
-                            font-size: rem(13);
-                            color: #AFAFAF;
-                            display: block;
-                            height: rem(15);
-                            line-height: rem(15);
-                            margin: 0;
-                            margin-right: rem(10);
-                        }
-                        button{
-                            padding: 0 rem(5);
-                            font-size: rem(10);
-                            border: none;
-                            outline: none;
-                            box-shadow: none;
-                            border-radius: 0;
-                            height: rem(16);
-                            line-height: rem(16);
-                        }
-                        button.blue{
-                            color: #488aff;
-                            background-color: rgba(72,138,255, 0.3);;
-                        }
-                        button.green{
-                            color: #3FA60C;
-                            background-color: rgba(63,166,12, 0.3);
-                        }
-                        button.yellow{
-                            color: #FF7A45;
-                            background-color: rgba(255,122,69, 0.3);
-                        }
-                        button.purple{
-                            color: #B031CA;
-                            background-color: rgba(176,49,202, 0.3);
-                        }
-                    }
-                }
-                ion-icon{
-                    color: #CCCCCC;
-                }
-                
-            }
-        }
+  }
 
-        .item:after{
-            content: '';
-            height: 1px;  //控制边框宽度
-            width: 200%;  //控制边框长度
-            position: absolute;
-            left: 0px;
-            top: auto;
-            right: auto;
-            bottom: 0px;
-            background-color: #eeeeee;
-            border: 0px solid transparent;
-            border-radius: 0px;
-            -webkit-border-radius: 0px;
-            transform: scale(0.5);  //缩放宽度，达到0.5px的效果
-            -webkit-transform: scale(0.5);
-            -moz-transform: scale(0.5);
-            -ms-transform: scale(0.5);
-            -o-transform: scale(0.5);
-            transform-origin: top left;  //定义缩放基点
-            -webkit-transform-origin: top left;
-            -moz-transform-origin: top left;
-            -ms-transform-origin: top left;
-            -o-transform-origin: top left;
-        }
+  .add-new{
+    position: fixed;
+    right: rem(20);
+    bottom: rem(45);
+    width: rem(50);
+    height: rem(50);
+    line-height: rem(50);
+    background-color:color($colors,mainBlueColor);
+    border-radius: 50%;
+    text-align: center;
+    z-index: 3;
+
+    ion-icon{
+      color:#fff;
+      height: rem(50);
+      line-height: rem(50);
+      font-size: rem(22);
     }
+  }
+
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+    button{
+      font-size: rem(18);
+      color: #FFFFFF;
+      height: rem(46);
+      width: rem(208);
+    }
+  }
+
+  .time-tabs{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: rem(44);
+    padding: 0 rem(12);
+    border-bottom: .5px solid #e8e8e8;
+
+    .button{
+      width: rem(37);
+      height: rem(27);
+      line-height: rem(27);
+      font-size: rem(14);
+      margin: 0;
+      padding: 0;
+      color: #999999;
+      border-radius: rem(1);
+      &.active{
+        background: color($colors,mainBlueColor);
+        color: #ffffff;
+      }
+    }
+  }
+
+  .weektable-list{
+
+    .title{
+      font-size: rem(12);
+      background-color: #FAFAFA;
+      color: #999999;
+      letter-spacing: -0.42px;
+      height: rem(20);
+      line-height: rem(20);
+      padding-left: rem(15);
+    }
+
+    .item{
+      .item-inner{
+        padding: rem(18) rem(15) rem(18) 0;
+        margin-left: rem(15);
+        border-bottom: .5px solid color($colors,boderColor)!important;
+        .label {
+          margin: 0;
+          display: flex;
+        }
+      }
+      @mixin color-bg($color, $alpha) {
+        color: $color;
+        background:rgba($color: $color, $alpha: $alpha);
+      }
+      .type{
+        width: rem(42);
+        height: rem(42);
+        line-height: rem(42);
+        margin-right: rem(14);
+        @include color-bg(#4D74EB, 0.3);
+        &.type1{
+          @include color-bg(#4d74eb, 0.3);
+        }
+        &.type2{
+          @include color-bg(#3FA60C, 0.3);
+        }
+        &.type3{
+          @include color-bg(#FF7A45, 0.3);
+        }
+        &.type4{
+          @include color-bg(#B031CA, 0.3);
+        }
+        &.type5{
+          @include color-bg(#C98600, 0.3);
+        }
+        &.type6{
+          @include color-bg(#79888b, 0.3);
+        }
+        .text{
+          display: inline-block;
+          width: rem(28);
+          font-size: rem(12);
+          line-height:rem(14);
+          letter-spacing: 1.63px;
+          white-space: initial;
+          margin: rem(7);
+        }
+      }
+      .content{
+        width: 100%;
+        padding-left: rem(56);
+        margin-left: rem(-56);
+        .text{
+          font-size: rem(15);
+          color: #333333;
+          height: rem(21);
+          line-height: rem(21);
+          margin: 0 0 rem(4) 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .time{
+          ion-note{
+            color:#afafaf;
+            margin-right: rem(10);
+            font-size: rem(13);
+          }
+        }
+      }
+    }
+
+  }
 
 }

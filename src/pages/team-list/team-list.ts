@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
+import { PersonListTeamPage } from '../person-list-team/person-list-team';
 
 /**
  * Generated class for the TeamListPage page.
@@ -8,7 +9,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-team-list',
   templateUrl: 'team-list.html',
@@ -40,6 +40,6 @@ export class TeamListPage {
   }
 
   getPersonList() {
-    this.navCtrl.push('PersonListTeamPage');
+    this.navCtrl.push(PersonListTeamPage);
   }
 }

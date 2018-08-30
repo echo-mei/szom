@@ -111,4 +111,14 @@ page-addresslist {
       }
     }
   }
+  .group-selector {
+    position: fixed;
+    top: rem(120);
+    right: rem(8);
+    width: rem(10);
+    font-size: rem(10);
+    color: #333333;
+    text-align: center;
+    line-height: rem(16);
+  }
 }

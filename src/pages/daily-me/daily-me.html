@@ -1,14 +1,14 @@
 <ion-header no-border>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="white">
     <ion-title text-center>工作日志</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goDailySearch()">
         <ion-icon class="szom" name="md-sousuo"></ion-icon>
       </button>
-      <button ion-button (click)="goDailyCreate()">
+      <!-- <button ion-button (click)="goDailyCreate()">
         <ion-icon class="szom" name="md-xierizhi"></ion-icon>
-      </button>
+      </button> -->
     </ion-buttons>
   </ion-navbar>
 
@@ -16,34 +16,23 @@
 
 
 <ion-content>
-  <div class="like-main">
-    <div class="total">
-      {{stlikeSum}}
-      <p class="des">总赞数</p>
-    </div>
-    <ion-row text-center padding-vertical *ngIf="stlikeList" class="like-classify">
-      <ion-col *ngFor="let stlike of stlikeList;let i=index;">
-        <p class="num">{{stlike.likeCounts}}</p>
-        <p class="des">{{stlike.operatorTypeName}}
-          <p>
-      </ion-col>
-    </ion-row>
+  <div class="add-new" (click)="goDailyCreate()">
+    <ion-icon class="szom" name="md-bianjixian"></ion-icon>
+  </div>
+  <div class="noDailyList" *ngIf="!logDataList">
+    <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
+    <p>您还没有发布过日志
+      <br>快去<a (click)="goDailyCreate()">发布</a>吧~</p>
+  </div>
+  <div class="like-main" *ngIf="logDataList" (click)="showDetailLike()">
+    <h1>{{stlikeSum}}</h1>
+    <span class="des">总赞数
+      <ion-icon class="szom" name="md-right"></ion-icon>
+    </span>
   </div>
   <ion-list *ngIf="logDataList" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
-      <h4>{{log.content}}</h4>
-      <div class="other">
-        <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
-        <ion-note>
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
-        </ion-note>
-        <ion-note>
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
-        </ion-note>
-      </div>
-      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList.length">
-        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
-      </ion-thumbnail>
+      <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="more($event)">

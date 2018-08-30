@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="28px" viewBox="0 0 25 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>班子信息库</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="01工作台-签到" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01002首页-签到" transform="translate(-168.000000, -450.000000)">
+            <g id="Group-10" transform="translate(0.000000, 159.000000)">
+                <g id="Group-4" transform="translate(142.000000, 290.000000)">
+                    <g id="工作日志" transform="translate(25.000000, 0.000000)">
+                        <g id="班子信息库">
+                            <rect id="Rectangle-4" fill="#D8D8D8" opacity="0" x="0" y="0" width="28" height="28"></rect>
+                            <path d="M23.3075692,20.7169943 L23.3075692,26.0125802 L16.3089497,26.0125802 L16.3089497,20.5599763 C14.9588683,19.4814403 14.0972494,17.8047121 14.0972494,15.9090544 C14.0972494,12.6262464 16.6812128,10 19.911167,10 C23.1411212,10 25.7250846,12.6262464 25.7250846,15.9090544 C25.7250846,17.8993531 24.7752852,19.6483164 23.3075692,20.7169943 Z" id="Combined-Shape" fill="#95C4FF" fill-rule="nonzero"></path>
+                            <path d="M18.0972494,20.0189314 L18.0972494,27.0125802 L6.21897636,27.0125802 L6.21897636,20.1084337 C3.6531398,18.253207 2.09724941,15.2704961 2.09724941,12 C2.09724941,6.44771528 6.54496469,2 12.0972494,2 C17.6495341,2 22.0972494,6.44771525 22.0972494,12 C22.0972494,15.2163621 20.5926713,18.1562274 18.0972494,20.0189314 Z" id="Combined-Shape" stroke="#FFFFFF" stroke-width="2" fill="#2C8AFF" fill-rule="nonzero"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

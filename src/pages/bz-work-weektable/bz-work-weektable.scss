@@ -1,0 +1,112 @@
+page-bz-work-weektable {
+  .week-selector {
+    position: relative;
+    height: rem(44);
+    line-height: rem(44);
+    text-align: center;
+    display: flex;
+    button {
+      font-size: rem(16);
+      color: #545454;
+    }
+    ion-multi-picker {
+      flex-grow: 1;
+      position: relative;
+      button {
+        width: 100%;
+        color: #333333;
+      }
+    }
+  }
+  .day-selector {
+    display: flex;
+    button {
+      padding: 0 rem(5);
+      flex-grow: 1;
+      height: rem(27);
+      &.active {
+        background: #4D74EB;
+        border-radius: 1px;
+        color: #fff;
+      }
+    }
+  }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+    button{
+      font-size: rem(18);
+      color: #FFFFFF;
+      height: rem(46);
+      width: rem(208);
+    }
+  }
+  .add-new{
+    position: fixed;
+    right: rem(20);
+    bottom: rem(45);
+    width: rem(50);
+    height: rem(50);
+    line-height: rem(50);
+    background-color:color($colors,mainBlueColor);
+    border-radius: 50%;
+    text-align: center;
+    z-index: 3;
+
+    ion-icon{
+      color:#fff;
+      height: rem(50);
+      line-height: rem(50);
+      font-size: rem(22);
+    }
+  }
+  .item-divider {
+    height: rem(20);
+    font-size: rem(12);
+    color: #999999;
+    line-height: rem(20);
+    padding: 0 rem(15);
+  }
+  .item-block {
+    height: rem(78);
+    ion-thumbnail {
+      margin: 0 rem(15)!important;
+      min-height: initial!important;
+      min-width: initial!important;
+      background: #C9D5F9;
+      border-radius: 1px;
+      height: rem(42);
+      width: rem(42);
+      text-align: center;
+      font-size: rem(12);
+      color: #4D74EB;
+      line-height: rem(14);
+      padding: rem(8) rem(5);
+    }
+    h2 {
+      font-size: rem(15);
+      color: #333333;
+      font-weight: 700;
+      margin: rem(5) 0;
+    }
+    p {
+      font-size: rem(13);
+      color: #AFAFAF;
+      line-height: rem(15);
+      margin: rem(5) 0;
+    }
+  }
+}

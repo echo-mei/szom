@@ -1,7 +1,8 @@
 <ul class="squared" no-padding>
-  <li *ngFor="let img of images">
+  <li *ngFor="let img of images;let i=index;">
     <div>
       <img [src]="img.safeUrl">
+      <ion-icon class="szom" name="guanbi" (click)="removeImage(i)"></ion-icon>
     </div>
   </li>
   <li *ngIf="images.length<max">

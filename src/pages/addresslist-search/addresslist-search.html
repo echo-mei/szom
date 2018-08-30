@@ -1,8 +1,8 @@
-<ion-header>
+<ion-header no-border>
   <ion-toolbar>
     <div class="input-box">
-      <ion-icon class="szom" name="md-sousuo"></ion-icon>
-      <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..."></ion-searchbar>
+      <ion-icon class="szom" name="sousuo"></ion-icon>
+      <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..." #searchEle></ion-searchbar>
       <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';search()"></ion-icon>
     </div>
     <button ion-button (click)="goBack()" clear float-right>取消</button>
@@ -11,18 +11,19 @@
 
 
 <ion-content>
-  <ion-list no-lines>
+  <!-- <ion-list no-lines>
     <div *ngFor="let unit of unitList;">
       <button class="unit" ion-item (click)="goAddresslistUnit(unit)">
         {{unit.orgName}}
         <ion-icon item-end class="szom" name="you"></ion-icon>
       </button>
     </div>
-  </ion-list>
+  </ion-list> -->
   <ion-list class="type-list" no-lines>
-    <div *ngFor="let user of personList;">
-      <ion-item (click)="goUserInfo(user)">
-        <img src="assets/imgs/user.jpg">
+    <div *ngFor="let key of friendKeyList;let i = index;">
+      <div class="divider" [id]="key">{{key}}</div>
+      <ion-item *ngFor="let user of friendValueList[i];" (click)="goUserInfo(user)">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
         <h2>{{user.name}}</h2>
         <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
       </ion-item>

@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EvaluateProvider } from '../../providers/evaluate/evaluate';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-/**
- * Generated class for the EvaluteCreatePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { EvaluteCreateSearchPage } from '../evalute-create-search/evalute-create-search';
 
-@IonicPage()
 @Component({
   selector: 'page-evalute-create',
   templateUrl: 'evalute-create.html',
@@ -45,7 +38,7 @@ export class EvaluteCreatePage {
   }
 
   goEvaluteCreateSearch(){
-    this.navCtrl.push("EvaluteCreateSearchPage");
+    this.navCtrl.push(EvaluteCreateSearchPage);
   }
 
   postEvaluteCreate(){

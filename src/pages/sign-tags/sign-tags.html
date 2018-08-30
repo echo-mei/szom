@@ -1,4 +1,6 @@
-<h2>今日签到</h2>
+<ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
+<h2>{{ date | date:'yyyy年MM月dd日' }}</h2>
 <div class="impression">
-  <ion-badge *ngFor="let tag of tags" (click)="sign(tag)">{{tag.dicItemName}}</ion-badge>
+  <ion-badge *ngFor="let tag of tags" (click)="selectTag(tag)" [class]="selectedTag&&selectedTag.dicItemCode==tag.dicItemCode?'selected':''">{{tag.dicItemName}}</ion-badge>
 </div>
+<!-- <button (click)="sign()">确定</button> -->

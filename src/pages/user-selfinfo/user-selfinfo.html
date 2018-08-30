@@ -1,9 +1,7 @@
-<ion-header>
-
-  <ion-navbar>
+<ion-header no-border>
+  <ion-navbar color="white">
     <ion-title>个人自述</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>
@@ -24,17 +22,21 @@
       <ion-note>人生感悟</ion-note>
       <h4>{{userSelfInfo.lifeInspiration}}</h4>
     </ion-item>
+    <ion-item>
+      <ion-note>岗位描述</ion-note>
+      <h4>{{userSelfInfo.positionDesc}}</h4>
+    </ion-item>
   </ion-list>
   <ion-list no-lines class="type-list">
     <ion-item>
       <ion-note>做过什么</ion-note>
-      <h4>{{userSelfInfo.motto}}</h4>
+      <h4>{{userSelfInfo.mainJobs}}</h4>
     </ion-item>
   </ion-list>
   <ion-list no-lines class="type-list">
     <ion-item>
       <ion-note>做成过什么</ion-note>
-      <h4>{{userSelfInfo.motto}}</h4>
+      <h4>{{userSelfInfo.mainAchievements}}</h4>
     </ion-item>
   </ion-list>
 </ion-content>

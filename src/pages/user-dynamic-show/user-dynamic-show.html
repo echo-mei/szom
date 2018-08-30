@@ -7,7 +7,13 @@
 <ion-content>
   <div *ngIf="dynamic" class="dynamic-detail-main" (click)="placeholder=originalPlaceholder;commentId='';">
     <!-- <h2 class="title">《{{dynamic.title}}》</h2> -->
-    <pre class="content">{{dynamic.content}}</pre>
+    <h4 class="content">
+      <!-- QC上提的BUG (通过通讯录查看人员的工作日志列表界面，每季三励文字前面还是显示的【季报】) -->
+      <span class="tag" *ngIf="dynamic.dataSource==2">周</span>
+      <span class="tag" *ngIf="dynamic.dataSource==3">季</span>
+      <span class="tag" *ngIf="dynamic.dataSource==4">年</span>
+      {{dynamic.content}}
+    </h4>
     <ul class="squared" no-padding *ngIf="dynamic.uploadFileDetailDTOList.length">
       <li *ngFor="let img of dynamic.uploadFileDetailDTOList">
         <div>
@@ -16,11 +22,14 @@
       </li>
     </ul>
     <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd HH:mm:ss'}}</ion-note>
-    <ion-row class="like-wrap">
+    <ion-row class="like-wrap" *ngIf="dynamic.sbLikeList.length">
       <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
       <ion-note class="like-names">
-        <a (click)="goLikeList()" *ngFor="let user of dynamic.sbLikeList" class="zanName">{{user.likeUserName}}、</a>
-        <span class="andSoOn" [hidden]="dynamic.sbLikeList.length<11">等{{dynamic.sbLikeList.length}}人觉得很赞</span>
+        <a (click)="goLikeList()" *ngFor="let user of dynamic.sbLikeList.slice(0, 9);let i=index;" class="zanName">
+          {{user.likeUserName}}<span *ngIf="i<9&&i<dynamic.sbLikeList.length-1">、</span>
+        </a>
+        <span class="andSoOn" *ngIf="dynamic.sbLikeList>9">等{{dynamic.sbLikeList.length}}人</span>
+        <span class="andSoOn">觉得很赞</span>
       </ion-note>
     </ion-row>
     <ion-list class="comment-list">

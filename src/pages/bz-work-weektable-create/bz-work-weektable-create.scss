@@ -1,0 +1,39 @@
+page-bz-work-weektable-create {
+
+  button.item-block {
+    height: rem(44);
+    ion-label {
+      font-size: rem(16);
+      color: #000000!important;
+      letter-spacing: 0;
+      text-align: left;
+      line-height: rem(20);
+      &[ion-start] {
+        padding-left: rem(15)!important;
+      }
+      &[ion-end] {
+        text-align: right;
+      }
+      &.no-value {
+        color: #999999!important;
+      }
+    }
+    ion-icon {
+      margin: 0!important;
+      font-size: rem(16);
+      color: #D9D9D9;
+    }
+  }
+  ion-textarea {
+    textarea {
+      margin: rem(8) rem(15)!important;
+    }
+  }
+  ion-footer {
+    padding: rem(15);
+    button {
+      background: #4D74EB!important;
+      height: rem(46)!important;
+    }
+  }
+}

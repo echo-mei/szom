@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { SignProvider } from '../../providers/sign/sign';
 import { StorageProvider } from '../../providers/storage/storage';
 
-@IonicPage()
 @Component({
   selector: 'page-sign-tags',
   templateUrl: 'sign-tags.html',
@@ -14,6 +13,10 @@ export class SignTagsPage {
 
   onSign: () => {};
 
+  date;
+
+  selectedTag;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -21,21 +24,23 @@ export class SignTagsPage {
     public viewCtrl: ViewController,
     public storage: StorageProvider
   ) {
+    this.date = new Date();
+    this.tags = this.navParams.get('tags');
     this.onSign = this.navParams.get('onSign');
-    this.getTags();
+    this.selectedTag = this.navParams.get('selectedTag');
   }
 
-  getTags() {
-    this.signProvider.signInTypeList().subscribe(
-      (tags) => {
-        this.tags = tags;
-      }
-    );
+  selectTag(tag) {
+    this.selectedTag = tag;
+    this.sign();
   }
 
-  sign(tag) {
+  sign() {
+    if(!this.selectedTag) {
+      return;
+    }
     let sign = {
-      signInType: tag.dicItemCode
+      signInType: this.selectedTag.dicItemCode
     };
     this.signProvider.signIn(sign).subscribe(
       () => {
@@ -43,6 +48,10 @@ export class SignTagsPage {
         this.onSign();
       }
     );
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 
 }

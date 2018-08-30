@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { IonicPage, Events, Platform } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Events, Platform, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { UserProvider } from '../../providers/user/user';
 import { StorageProvider } from '../../providers/storage/storage';
+import { MenuProvider } from '../../providers/menu/menu';
+import { TabsPage } from '../tabs/tabs';
 
-@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -22,14 +23,10 @@ export class LoginPage {
     public formBuilder: FormBuilder,
     public userProvider: UserProvider,
     public storage: StorageProvider,
-    public events: Events
+    public events: Events,
+    public navCtrl: NavController,
+    public menuProvider: MenuProvider
   ) {
-    this.platform.ready().then(
-      () => {
-        this.statusBar.overlaysWebView(true);
-        this.statusBar.backgroundColorByHexString('#ffffff');
-      }
-    );
     this.loginForm = formBuilder.group({
       userCode: ['', Validators.compose([Validators.required])],
       password: [''],
@@ -53,7 +50,7 @@ export class LoginPage {
   }
 
   getSMSCode() {
-    this.userProvider.getSMSCode({accountNo: this.loginForm.value.userCode}).subscribe(
+    this.userProvider.getSMSCode({mobilePhone: this.loginForm.value.userCode}).subscribe(
       () => {
         this.second = 60;
         let interval = setInterval(() => {
@@ -69,7 +66,7 @@ export class LoginPage {
   login() {
     let params = {
       accountNo: this.loginForm.value.userCode,
-      channel: /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 'MOBILE' : 'PC'
+      channel: /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent) ? 'MOBILE' : 'PC'
     };
     let fn = 'login';
     if(this.isPhone()) {
@@ -82,6 +79,12 @@ export class LoginPage {
       (data) => {
         this.storage.set('token', data.authorization);
         this.storage.set('user', JSON.stringify(data));
+        this.menuProvider.listMenuTree().subscribe(
+          (menus) => {
+            this.menuProvider.storeMenu(menus);
+            this.navCtrl.setRoot(TabsPage);
+          }
+        );
       }
     );
   }

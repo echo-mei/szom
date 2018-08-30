@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title text-center>{{title}}</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="save()">
+      <button ion-button (click)="save()" [disabled]="value&&value.length>maxLength">
         完成
       </button>
     </ion-buttons>
@@ -10,8 +10,9 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding (click)="focus(textarea)">
   <form>
-    <ion-textarea autosize [placeholder]="title+'...'" [(ngModel)]="value" [name]="attr"></ion-textarea>
+    <ion-textarea autosize #textarea [placeholder]="title+'...'" [(ngModel)]="value" [name]="attr"></ion-textarea>
+    <ion-label>{{value?maxLength-value.length:''}}</ion-label>
   </form>
 </ion-content>

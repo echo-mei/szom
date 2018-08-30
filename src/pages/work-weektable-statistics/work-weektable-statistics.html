@@ -1,0 +1,57 @@
+<!--
+  Generated template for the WorkWeektableStatisticsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>工作周表统计</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="conditions">
+    <div class="select-btn" (click)="selectTimeShowFlag = !selectTimeShowFlag">
+      <ion-icon [class.color-blue]="stratDateStr||endDateStr" class="szom" [name]="(stratDateStr||endDateStr)?'md-shaixuan-active':'md-shaixuan'"></ion-icon>
+      <span class="title">筛选:</span>
+      <span class="color-blue" *ngIf="stratDateStr || endDateStr">{{stratDateStr}}至{{endDateStr}}</span>
+      <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
+    </div>
+
+    <ion-list class="select-time" [hidden]="!selectTimeShowFlag">
+      <div class="date-select">
+        <div class="title">起始时间：</div>
+        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" [(ngModel)]="stratDateStr"
+          placeholder="请选择"></ion-datetime>
+        <ion-icon class="szom" name="md-you"></ion-icon>
+      </div>
+      <div class="date-select">
+        <div class="title">结束时间：</div>
+        <ion-datetime displayFormat="YYYY年MM月DD日" doneText="确定" cancelText="取消" pickerFormat="YYYY MM DD" [(ngModel)]="endDateStr"
+          placeholder="请选择"></ion-datetime>
+        <ion-icon class="szom" name="md-you"></ion-icon>
+      </div>
+      <div class="btn">
+        <button ion-button color="light" (click)="reset()">重置</button>
+        <button ion-button (click)="goSelcet($event)">确定</button>
+      </div>
+    </ion-list>
+  </div>
+  <div class="shade" [hidden]="!selectTimeShowFlag" (click)="goSelcet($event)"></div>
+
+  <div class="separate"></div>
+  <div *ngIf="dynamicList" [class.setDiv]="!dynamicList.length">
+    <not-found *ngIf="!dynamicList.length && showNotFound"></not-found>
+  </div>
+  <ion-list *ngIf="weektableTypeList" class="like-classify">
+    <ion-item *ngFor="let weektableType of weektableTypeList;let i=index;">
+      <span class="li-type"></span>
+      <p class="des">{{weektableType.typeName}}</p>
+      <p class="num" item-end>{{weektableType.typeCounts}}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,26 @@
+page-bz-work-weektable-statistic {
+  button.condition {
+    height: rem(38);
+    ion-label {
+      margin: 0 rem(15)!important;
+      height: rem(38);
+      line-height: rem(38);
+      ion-icon {
+        font-size: rem(16);
+        color: #4D74EB;
+      }
+      .displayer {
+        font-size: rem(15);
+        color: #AFAFAF;
+        letter-spacing: 0;
+        text-align: left;
+      }
+      .value {
+        font-size: rem(15);
+        color: #4D74EB;
+        letter-spacing: 0;
+        text-align: left;
+      }
+    }
+  }
+}

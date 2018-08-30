@@ -3,7 +3,7 @@
   <ion-navbar>
     <ion-title>自定义标签</ion-title>
     <ion-buttons end>
-      <button (click)="addImpression()" ion-button clear>完成</button>
+      <button (click)="addImpression()" ion-button clear [disabled]="!tagName||tagName.length>8">完成</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -11,4 +11,5 @@
 
 <ion-content>
   <ion-input placeholder="请输入标签" [(ngModel)]="tagName"></ion-input>
+  <span class="error-info" [hidden]="!tagName||tagName.length<=8">标签过长，已超过8个字</span>
 </ion-content>

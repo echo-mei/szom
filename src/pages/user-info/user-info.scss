@@ -30,8 +30,13 @@ page-user-info {
           font-size: rem(18);
           color: #FFFFFF;
           letter-spacing: rem(-0.63);
-          ion-badge {
+          span{
+            font-size: rem(14);
             margin-left: rem(7);
+          }
+          ion-badge {
+            margin-right: rem(15);
+            margin-top: rem(4);
             padding: rem(1) rem(5);
             font-size: 10px;
             color: #FFFFFF;
@@ -48,9 +53,13 @@ page-user-info {
     }
   }
   ion-list.type-list {
+    &.margin-bottom {
+      margin-bottom: 80px;
+    }
     button.item {
       padding-top: rem(18);
       .item-inner {
+        border-bottom: initial;
         padding-right: 0;
         padding-left: rem(15);
         ion-label {
@@ -72,7 +81,7 @@ page-user-info {
       }
     }
     ion-item.item {
-      height: rem(54);
+      min-height: rem(54);
       .item-inner {
         padding-left: rem(15);
         padding-right: 0;
@@ -86,6 +95,12 @@ page-user-info {
           font-size: rem(15);
           color: #333333;
           letter-spacing: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
         }
         img-loader {
           width: rem(36);
@@ -119,9 +134,21 @@ page-user-info {
     height: rem(56);
     width: rem(360);
     padding: 0 rem(15);
+    &.cancel-follow {
+      position: initial;
+    }
     button {
+      font-size:rem(16);
       border-radius: 1px;
       height: rem(40);
+      box-shadow: none;
+      &#cancel-follow{
+        color: #333333;
+      }
+      &#follow{
+        background-color: color($colors,mainBlueColor);
+        color: #fff;
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { ImagePickerComponent } from '../../components/image-picker/image-picker';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-me-create',
   templateUrl: 'daily-me-create.html',
@@ -16,10 +15,11 @@ export class DailyMeCreatePage {
 
   @ViewChild('imagePicker') imagePicker: ImagePickerComponent;
 
+  maxLength: number = 196;
+
   dailyForm: FormGroup;
 
   onCreate: () => {};
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -27,7 +27,8 @@ export class DailyMeCreatePage {
     public alertController: AlertController,
     public formBuilder: FormBuilder,
     public events: Events,
-    public dateUtil: DateUtilProvider
+    public dateUtil: DateUtilProvider,
+    public toastCtrl: ToastController,
   ) {
     this.onCreate = this.navParams.get('onCreate');
     this.dailyForm = formBuilder.group({
@@ -35,10 +36,9 @@ export class DailyMeCreatePage {
       content: ['', Validators.compose([Validators.required])]
     });
   }
-
   postDailyCreate(){
     let params = {
-      ...this.dailyForm.value
+      ...this.dailyForm.value,
     };
     let files;
     if(this.imagePicker.images.length) {
@@ -48,6 +48,12 @@ export class DailyMeCreatePage {
     }
     this.dailyProvider.createDaily(params, files).subscribe(
       () => {
+        this.toastCtrl.create({
+          cssClass: 'mini',
+          position: 'middle',
+          message: '发布成功',
+          duration: 1000
+        }).present();
         this.navCtrl.pop();
         this.onCreate && this.onCreate();
       }

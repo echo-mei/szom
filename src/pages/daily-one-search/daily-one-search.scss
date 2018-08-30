@@ -1,4 +1,7 @@
 page-daily-one-search {
+  .setDiv{
+    height: calc(100% - 48px);
+  }
   .scroll-content {
     background: #fafafa;
   }
@@ -7,161 +10,152 @@ page-daily-one-search {
     .toolbar-background{
       background-color: #fff;
     }
-    .input{
-      ion-icon{
-        position: absolute;
-
-      }
+    .toolbar-content {
+      padding-left: rem(15);
+      display: flex;
     }
   }
-
-  .toolbar{
-    box-sizing: border-box;
-    padding: 0 rem(15);
-    height: rem(48);
-    background-color: #fff;
-    .toolbar-content{
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-
-      .input-box{
-        width: 100%;
-        padding: 0;
+  ion-content{
+    overflow: hidden;
+    .setDiv{
+      height: calc(100% - 48px);
+    }
+    // 搜索框部分
+    .conditions{
+      z-index: 10;
+      position: relative;
+      height: rem(38);
+      line-height: rem(38);
+      background: #FFF;
+      color: #AFAFAF;
+      position: relative;
+      margin-bottom: rem(5);
+      margin-top: 1px;
+      .select-btn{
         position: relative;
-        display: flex;
-        align-items: center;
-        ion-icon{
-          position: absolute;
-          top: rem(8);
-          left: rem(10);
-          z-index: 3;
-          color: #AFAFAF;
-          &[name="guanbi"] {
-            left: initial;
-            right: rem(5);
-          }
+        padding: 0 rem(15);
+        z-index: 3;
+        span{
+            white-space: nowrap;
+            padding-right: rem(5);
         }
+        span.title{
+            padding: 0 rem(8);
+        }
+        .color-blue{
+            color: #4D74EB;
+        }
+        .szom{
+            line-height: rem(38);
+        }
+      }
+      .select-time{
+        position: absolute;
+        left: 0;
+        top: 100%;
+        width: 100%;
+        color: #000;
+        z-index: 3;
 
-        .searchbar{
-          display: inline-block;
-          width: 100%;
-          height: rem(32);
-          min-height: auto;
-          padding: 0;
-          .searchbar-input-container{
-              height: 100%;
+        .date-select{
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          // height: rem(44);
+          background-color: #fff;
+          border-top: .5px solid color($colors,boderColor);
+          position: relative;
+          padding-right: rem(10);
+          .title{padding-left: rem(10);}
+          .times{
+            margin: 13px;
+            font-size: rem(14);
+            color: #000;
+          }
+          ion-datetime{
+            height: 100%;
+            background-color: transparent;
+            width: 70%;
+            z-index: 2;
+            button{
+                display: none;
+            }
+            .datetime-text{
               display: flex;
               align-items: center;
+              justify-content: flex-end;
+              // padding: 0 rem(10);
+            }
+            
           }
-          .searchbar-input{
-            height: 100%;
-            line-height: normal;
-            background-color: #F4F4F4;
-            border-radius: .2rem;
-            color: #333;
-            font-size: rem(14);
-            padding-left: rem(30);
-            box-shadow: none;
-            background-color: #F4F4F4;
-            border-radius: rem(2);
-          }
-          .searchbar-search-icon{
-            top: initial;
-            display: none;
+          ion-icon{
+              color: #AFAFAF;
           }
         }
-      }
-      button {
-        font-size: 17px;
-        color: #545454;
-        text-align: center;
-        height: initial;
-        padding: 0 rem(16);
-      }
-    }
-  }
-  time-select {
-    position: fixed;
-    width: 100%;
-    top: rem(48);
-    z-index: 2;
-  }
-  .modal-shadow {
-    position: fixed;
-    bottom: 0;
-    top: 0;
-    width: 100%;
-    z-index: 1;
-    background: rgba(0,0,0,.5);
-  }
-  ion-list.daily-list {
-    margin-top: rem(38);
-    padding: 0 rem(15);
-    ion-item.item {
-      border-bottom: rem(1) solid #F1F1F1;
-      height: rem(121);
-      padding: rem(18) 0;
-      align-items: inherit;
-      ion-note[item-start] {
-        margin: 0;
-        width: rem(26);
-        height: rem(26);
-        line-height: rem(26);
-        text-align: center;
-        opacity: 0.3;
-        background: #4D74EB;
-      }
-      .item-inner {
-        padding-left: rem(20);
-        ion-label{
-          margin: 0;
-          div {
-            &.text {
-              background: #F4F4F4;
-              border-radius: 1px;
-              padding: rem(9) rem(7);
-              height: rem(64);
-              font-size: rem(15);
-              color: #AFAFAF;
-              letter-spacing: rem(-0.15);
-              line-height: rem(16);
-            }
-            &.content {
-              height: rem(64);
-              font-size: 15px;
-              color: #333333;
-              display: flex;
-              h3 {
-                flex-grow: 1;
-                padding-right: rem(16);
-                .hightBright{
-                  color: #4D74EB ;
-                  font-weight: bold;
-                }
-              }
-              img {
-                width: rem(36);
-                height: rem(36);
-                border-radius: rem(5);
-              }
-            }
-            span {
-              font-size: rem(13);
-              color: #AFAFAF;
-              letter-spacing: rem(-0.08);
-              line-height: rem(15);
-              &.icons {
-                float: right;
-                ion-icon {
-                  margin-left: rem(13);
-                  font-size: rem(13);
-                }
-              }
-            }
+
+        .btn{
+          background-color: #fff;
+          display: flex;
+          justify-content: space-between;
+          padding: rem(10) rem(15);
+          button{
+              border-radius: rem(2);
+              width: rem(160);
+              height: rem(28);
+              font-size: rem(14);
+              box-shadow: none;
+              margin: 0;
           }
         }
       }
     }
+
+    .shade{
+      position: fixed;
+      top: rem(91);
+      bottom:0;
+      opacity: 0.5;
+      background: #000000;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .item-multi-picker{
+      // border-top: 1px solid #F1F1F1 !important;
+      font-size: rem(14);
+      .item-inner{
+        border-bottom: 0 !important;
+      }
+    }
+    // 列表部分
+    .daily-list {
+      margin: 0;
+      overflow: auto;
+      position: relative;
+      background: #fff;
+      &.listDiv{
+        height: calc(100% - 48px);
+      }
+      ion-item{
+        background-color: transparent;
+        box-shadow: 0 1px 1px #cecece;
+      }
+      .item{
+        min-height: auto;
+        box-shadow:none;
+        .item-inner{
+          padding: rem(16) rem(15);
+          min-height: auto;
+          border-bottom: .5px solid #f9f9f9;
+        }
+        .label{margin: 0;}
+        .bottom{
+          padding-left: 0 !important;
+        }
+      }
+    }
   }
+
 }

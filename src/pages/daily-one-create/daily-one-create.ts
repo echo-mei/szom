@@ -1,13 +1,16 @@
 import { Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { ImagePickerComponent } from '../../components/image-picker/image-picker';
+import { DailyListRadioPage } from '../daily-list-radio/daily-list-radio';
 
-@IonicPage()
+import { BASE_URL } from '../../config';
+import { StorageProvider } from '../../providers/storage/storage';
+
 @Component({
   selector: 'page-daily-one-create',
   templateUrl: 'daily-one-create.html',
@@ -15,6 +18,9 @@ import { ImagePickerComponent } from '../../components/image-picker/image-picker
 export class DailyOneCreatePage {
 
   @ViewChild('imagePicker') imagePicker: ImagePickerComponent;
+  user:any;
+  one = '每周一励';
+  maxLength: number = 196;
 
   year: number; // 当前年
   week:{
@@ -25,7 +31,7 @@ export class DailyOneCreatePage {
     }
   } = {};  // 当前周
   dailyOneForm: FormGroup;
-
+  count: any;
   onCreate: ()=>{};
 
   constructor(
@@ -35,15 +41,20 @@ export class DailyOneCreatePage {
     public alertController: AlertController,
     public formBuilder: FormBuilder,
     public events: Events,
-    public dateUtil: DateUtilProvider
+    public dateUtil: DateUtilProvider,
+    public toastCtrl: ToastController,
+    public storage: StorageProvider
   ) {
     this.year = this.navParams.get('year');
     this.week = this.navParams.get('week');
+    this.user = this.navParams.get('user');
     this.onCreate = this.navParams.get('onCreate');
+    this.count = this.navParams.get('count');
     this.dailyOneForm = formBuilder.group({
       // title: ['', Validators.compose([Validators.required])],
       content: ['', Validators.compose([Validators.required])]
     });
+    // console.log(this.user)
   }
 
   postDailyCreate(){
@@ -62,6 +73,12 @@ export class DailyOneCreatePage {
     }
     this.dailyProvider.createDailyOne(params, files).subscribe(
       () => {
+        this.toastCtrl.create({
+          cssClass: 'mini',
+          position: 'middle',
+          message: '发布成功',
+          duration: 1000
+        }).present();
         this.navCtrl.pop();
         this.onCreate && this.onCreate();
       }
@@ -69,11 +86,23 @@ export class DailyOneCreatePage {
   }
 
   goDailyList() {
-    this.navCtrl.push('DailyListRadioPage', {
+
+    this.navCtrl.push(DailyListRadioPage, {
+      writeThing: this.dailyOneForm.value['content'],
+      user: this.user,
+      witch: this.one,
       onDone: (daily) => {
-        this.dailyOneForm.controls['content'].setValue(daily.content)
+        this.dailyOneForm.controls['content'].setValue(daily.content);
+        this.imagePicker.images = [];
+        daily.uploadFileDetailDTOList.forEach((img) => {
+          this.imagePicker.images.push({
+            img: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`,
+            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`
+          });
+        });
       }
     });
+
   }
 
 }

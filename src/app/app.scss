@@ -14,7 +14,7 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-@import '../assets/font/iconfont.css';
+
 ion-icon{
   // font-family:"szom" !important;
   min-width: auto;
@@ -47,7 +47,8 @@ html {
 
 .toolbar{
   min-height: auto;
-  padding: rem(12) 0;
+  padding: rem(30) 0 rem(8);
+  // padding: 0 0 rem(8);
   margin: 0;
 
 
@@ -55,50 +56,65 @@ html {
     .toolbar-title{
       color: #333;
     }
+    .back-button{
+      ion-icon{
+        color:color($colors,mainBlueColor);
+      }
+    }
+    .bar-buttons{
+      .bar-button{
+        ion-icon{
+          color:color($colors,mainBlueColor);
+        }
+      }
+    }
   }
 
   .toolbar-title{
-    height: rem(24);
-    line-height: rem(24);
+    height: rem(32);
+    line-height: rem(32);
     font-size: rem(17);
     letter-spacing: 0;
     font-weight: bold;
+    // font-family: PingFangSC-Medium;
     text-align: center;
   }
 
   .back-button{
     position: absolute;
-    top: rem(12);
+    top: rem(30);
     left: rem(10);
     z-index: 3;
     margin: 0;
     padding: 0;
     min-width: auto;
-    height: rem(24);
-    line-height: rem(24);
+    height: rem(32);
+    line-height: rem(32);
 
     ion-icon{
-      height: rem(24);
-      line-height: rem(24);
-      font-size: rem(20);
+      font-size: rem(22);
       padding: 0;
+      color:#fff;
     }
   }
 
   .bar-buttons{
     position: absolute;
-    top: rem(12);
+    top: rem(30);
     right: rem(15);
     margin: 0;
     font-size: 0;
     z-index: 3;
     .bar-button{
-      height: rem(24);
-      line-height: rem(24);
-      font-size: rem(20);
+      height: rem(32);
+      line-height: rem(32);
       margin: 0;
       padding: 0;
 
+      ion-icon{
+        color:#fff;
+        font-size: rem(20);
+      }
       &:not(first-child){
         margin-left: rem(14);
       }
@@ -109,7 +125,7 @@ html {
 
 .list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
 .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
-.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, 
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
 .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner{
   border-bottom-color: #488aff;
   box-shadow: inset 0 -1px 0 0 #488aff;
@@ -157,7 +173,45 @@ html {
   }
 }
 
+.highlight{
+  color:#4D74EB;
+  font-weight:bold;
+}
 
+.loading-new{
+  .loading-wrapper{
+      box-shadow: none;
+      background: #fff;
+  }
+}
+.szom-search {
+  position: relative;
+  flex-grow: 1;
+  ion-icon.szom {
+    position: absolute;
+    z-index: 1;
+    top: rem(8);
+    color: #AFAFAF;
+    &[name="md-sousuo"] {
+      left: rem(10);
+    }
+    &[name="md-guanbi"] {
+      right: rem(10);
+    }
+  }
+  ion-searchbar.searchbar {
+    padding: 0;
+    margin-bottom: 0;
+    .searchbar-search-icon, .searchbar-clear-icon {
+      display: none;
+    }
+  }
+}
+.szom-search+.cancel-btn {
+  height: rem(32);
+  line-height: rem(32);
+  margin: 0;
+}
 
 
 * {
@@ -176,7 +230,23 @@ ul,li {
   margin: 0;
   padding: 0;
 }
-
+ion-action-sheet {
+  .action-sheet-title {
+    font-size: rem(13)!important;
+    color: #999999!important;
+    text-align: center!important;
+  }
+  button {
+    .button-inner {
+      justify-content: center!important;
+      font-size: rem(16)!important;
+      color: #F5222D!important;
+    }
+  }
+}
+ion-popover.backdrop ion-backdrop {
+  opacity: 0.6;
+}
 ion-popover.auto .popover-content {
   top: 0!important;
   bottom: 0!important;
@@ -187,6 +257,9 @@ ion-popover.auto .popover-content {
 ion-popover.short .popover-content {
   height: 200px;
 }
+ion-popover.height-300 .popover-content {
+  height: 300px;
+}
 ion-popover.tall .popover-content {
   height: 400px;
 }
@@ -196,7 +269,7 @@ ion-popover.mini .popover-arrow{
   overflow: hidden;
   width: 20px;
   height: 10px;
-  top: rem(30);
+  top: rem(52);
   right: rem(15);
 }
 ion-popover.mini .popover-arrow:after {
@@ -217,7 +290,7 @@ ion-popover.mini .popover-content {
   width: auto;
   background-color: #000;
   opacity: 0.8;
-  top: rem(35)!important;
+  top: rem(60)!important;
 }
 @media (max-width: 760px) {
   ion-popover.small .popover-content {
@@ -239,7 +312,6 @@ ion-popover.mini .popover-content {
     left: 10%!important;
   }
 }
-
 ion-toast.mini {
   .toast-wrapper {
     background: initial;
@@ -296,20 +368,30 @@ ion-toast.mini {
 }
 
 .picker-wrapper{
-  .picker-toolbar{
-
-  }
   .picker-columns{
-
     .picker-col{
-
-      .picker-opts{
-        top: 30%;
-        button{
-          height: 33%!important;
-        }
-      }
+      flex: 0 0 40%;
+      width: 40%;
     }
+    // .picker-col{
+
+    //   .picker-opts{
+    //     top: 30%;
+    //     button{
+    //       height: 33%!important;
+    //     }
+    //   }
+    // }
   }
+}
+
+.mask {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0);
 }
 

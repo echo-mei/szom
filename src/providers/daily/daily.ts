@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpProvider } from '../http/http';
-import { BASE_URL,REAL_URL} from '../../config';
+import { BASE_URL } from '../../config';
 
 
 @Injectable()
@@ -82,7 +82,6 @@ export class DailyProvider {
 
   // 创建每周一励
   createDailyOne(logWeekly, files?): Observable<any> {
-    console.log(logWeekly, files);
     return this.http.upload(`${BASE_URL}/logWeekly`, logWeekly, files);
   }
 

@@ -13,6 +13,6 @@
 <ion-content>
   <time-select #timeSelect (onChange)="getImpressionList()"></time-select>
   <div class="impression">
-    <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count}}</ion-badge>
+    <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count>999 ? '999+' : tag.count}}</ion-badge>
   </div>
 </ion-content>

@@ -1,4 +1,10 @@
 page-sign-tags {
+  ion-icon {
+    position: absolute;
+    font-size: rem(12);
+    padding: rem(10);
+    right: 0;
+  }
   h2 {
     font-size: rem(18);
     color: #242732;
@@ -6,6 +12,7 @@ page-sign-tags {
     text-align: center;
     line-height: rem(24);
     margin-top: rem(25);
+    font-weight: bold;
   }
   .impression {
     padding: rem(10);
@@ -23,6 +30,22 @@ page-sign-tags {
       font-size: rem(16);
       letter-spacing: 0;
       font-weight: normal;
+      &.selected {
+        background: #4D74EB;
+        color: #fff;
+      }
     }
+  }
+  button {
+    position: absolute;
+    bottom: 0;
+    height: rem(50);
+    line-height: rem(50);
+    font-size: rem(18);
+    color: #4D74EB;
+    text-align: center;
+    border-top: rem(1) solid #F0F0F0;
+    width: 100%;
+    background: #fff;
   }
 }

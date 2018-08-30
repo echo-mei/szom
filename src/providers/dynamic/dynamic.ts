@@ -21,8 +21,8 @@ export class DynamicProvider {
   }
 
   // 获取推荐动态信息列表
-  getRecommendDynamicList(): Observable<any> {
-    return this.http.get(`${BASE_URL}/sbDynamic/listRecommendDynamicMessage`);
+  getRecommendDynamicList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/sbDynamic/listRecommendDynamicMessage`, params);
   }
 
   // 获取领导批赞动态信息列表

@@ -1,7 +1,4 @@
 page-login {
-  .scroll-content {
-    padding: 0 30px!important;
-  }
   .toolbar-title {
     font-size: 17px;
     color: #333333;
@@ -26,7 +23,7 @@ page-login {
       padding: 0;
     }
     ion-icon {
-      font-size: rem(15);
+      font-size: rem(14);
       margin: 0;
       min-height: initial;
       color: #ccc;
@@ -35,9 +32,6 @@ page-login {
   .text-input {
     height: 50px;
     margin: 0;
-  }
-  .input-cover {
-    display: none;
   }
   .button-block {
     margin-top: 34px;

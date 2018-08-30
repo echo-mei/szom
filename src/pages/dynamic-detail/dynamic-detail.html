@@ -11,31 +11,40 @@
   <div *ngIf="dynamic" class="daily-detail-main">
     <ion-item no-padding class="img-name">
       <ion-avatar item-start>
-        <img src="dynamic.soaPersonInfoDTO.photoBlob" *ngIf="dynamic.soaPersonInfoDTO.photoBlob;else elseBlock">
-        <ng-template #elseBlock>
-          <img src="assets/imgs/user.jpg">
-        </ng-template>
+        <img [src]="userProvider.getHeadImageUrl(dynamic.soaPersonInfoDTO.personId)" onerror="this.src='assets/imgs/user.png'">
       </ion-avatar>
       <h3>{{dynamic.soaPersonInfoDTO.name}}</h3>
     </ion-item>
     <pre class="content">{{dynamic.content}}</pre>
-    <ul class="squared" no-padding *ngIf="dynamic.uploadFileDetailDTOList.length">
-      <li *ngFor="let img of dynamic.uploadFileDetailDTOList">
-        <div>
-          <img [src]="getImageUrl(img)">
-        </div>
-      </li>
-    </ul>
-    <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd hh:mm:ss'}}</ion-note>
-    <ion-row class="like-wrap">
+    <img-show [uploadFileDetailDTOList]="dynamic.uploadFileDetailDTOList"></img-show>
+    <div class="other">
+      <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd hh:mm:ss'}}</ion-note>
+      <button class="dianzan" *ngIf="!dynamic.hasMeLike" ion-button clear float-right (click)="sendLike()">
+        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+      </button>
+      <button class="dianzan dianji" *ngIf="dynamic.hasMeLike" ion-button clear float-right>
+        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      </button>
+    </div>
+    <div [hidden]="!dynamic.sbLikeList.length && !dynamic.sbCommentList.length" class="line"></div>
+    <ion-row class="like-wrap" *ngIf="dynamic.sbLikeList.length" (click)="goLikeList()">
       <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-      <ion-note class="like-names" *ngIf="dynamic.sbLikeList">
-        <a (click)="goLikeList()" *ngFor="let user of dynamic.sbLikeList" class="zanName">{{user.likeUserName}}、</a>
-        <span class="andSoOn" [hidden]="dynamic.sbLikeList.length<11">等{{dynamic.sbLikeList.length}}人觉得很赞</span>
+      <ion-note class="like-names" *ngIf="dynamic.sbLikeList.length<=13">
+        <span *ngFor="let user of dynamic.sbLikeList.slice(0, 13);let i=index;" class="zanName">
+          <a class="zan-name">{{user.likeUserName}}</a>
+          <span class="zan-name" *ngIf="i<12&&i<dynamic.sbLikeList.length-1">、</span>
+        </span>
+      </ion-note>
+      <ion-note class="like-names" *ngIf="dynamic.sbLikeList.length>13">
+        <span *ngFor="let user of dynamic.sbLikeList.slice(0, 12);let i=index;" class="zanName">
+          <a class="zan-name">{{user.likeUserName}}</a>
+          <span class="zan-name" *ngIf="i<11&&i<dynamic.sbLikeList.length-1">、</span>
+        </span>
+        <span>等{{dynamic.sbLikeList.length}}人觉得很赞</span>
       </ion-note>
     </ion-row>
     <ion-list class="comment-list" *ngIf="dynamic.sbCommentList">
-      <p *ngFor="let comment of dynamic.sbCommentList" class="comment-item" (click)="commentId=comment.sbCommentId;placeholder='回复'+comment.commentUserName+':';">
+      <p (click)="goLikeList()" *ngFor="let comment of dynamic.sbCommentList" class="comment-item" (click)="commentId=comment.sbCommentId;placeholder='回复'+comment.commentUserName+':';">
         <a>{{comment.commentUserName}}</a>
         <span *ngIf="comment.beCommentUserName">回复
           <a>{{comment.beCommentUserName}}</a>
@@ -49,14 +58,6 @@
 <ion-footer no-border>
   <ion-item class="publish-comment" no-lines>
     <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment"></ion-textarea>
-    <div item-end>
-      <button ion-button (click)="sendComment()">发送</button>
-      <button *ngIf="!hasMeLike()" ion-button clear (click)="sendLike()">
-        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
-      </button>
-      <button *ngIf="hasMeLike()" ion-button clear>
-        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
-      </button>
-    </div>
+    <button item-end ion-button (click)="sendComment()">发送</button>
   </ion-item>
 </ion-footer>

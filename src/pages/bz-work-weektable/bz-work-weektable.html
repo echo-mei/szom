@@ -1,0 +1,46 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>工作周表</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="goBzWorkWeektableStatistic()">统计</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div class="add-new" (click)="goBzWorkWeektable()">
+    <ion-icon class="szom" name="md-bianjixian"></ion-icon>
+  </div>
+  <div class="week-selector">
+    <button ion-button clear (click)="prevWeek()"><ion-icon name="md-arrow-dropleft"></ion-icon></button>
+    <ion-multi-picker [(ngModel)]="week" [multiPickerColumns]="timeColumns"
+      placeholder="请选择"
+      doneText="确定"
+      cancelText="取消"></ion-multi-picker>
+    <button ion-button clear (click)="nextWeek()"><ion-icon name="md-arrow-dropright"></ion-icon></button>
+  </div>
+  <div class="day-selector">
+    <button ion-button clear *ngFor="let week of weekDays" [class.active]="selectedWeekDay==week.key" (click)="goWeekDay(week.key)">{{week.name}}</button>
+  </div>
+  <div class="noDailyList" *ngIf="!weektableList.length">
+    <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
+    <p>您还没有发布周表
+      <br>快去<a>创建</a>吧~</p>
+  </div>
+  <!-- <ion-list> -->
+    <div *ngFor="let weektable of weektableList">
+      <div *ngIf="weektable.children">
+        <ion-item-divider color="light">{{weektable.name}}</ion-item-divider>
+        <div *ngFor="let w of weektable.children">
+          <ion-item>
+            <ion-thumbnail item-start>{{w}}</ion-thumbnail>
+            <h2>{{w.content}}</h2>
+            <p>2018.08.08 {{w.week}} {{w}}</p>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  <!-- </ion-list> -->
+</ion-content>

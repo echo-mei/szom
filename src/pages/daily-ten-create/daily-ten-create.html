@@ -1,7 +1,7 @@
 <ion-header no-border>
 
-    <ion-navbar>
-      <ion-title>每年十励</ion-title>
+    <ion-navbar color="white">
+      <ion-title>创建每年{{ count | digitalChineseConversion }}励</ion-title>
       <ion-buttons right>
         <button ion-button (click)="goDailyList()">
           <ion-icon class="szom" name="md-daoru"></ion-icon>
@@ -19,10 +19,15 @@
           <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
         </ion-item> -->
         <ion-item>
-          <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
+          <ion-label>{{maxLength-dailyTenForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
+          <ion-textarea autosize formControlName="content" name="content" placeholder="本年完成最满意的一件事..."></ion-textarea>
         </ion-item>
       </ion-list>
       <image-picker #imagePicker></image-picker>
-      <button class="post-button" ion-button block (click)="postDailyCreate()" [disabled]="dailyTenForm.invalid">发布</button>
+      <button class="post-button" ion-button block (click)="postDailyCreate()"
+        [disabled]="
+          (dailyTenForm.invalid&&!imagePicker.images.length)
+          || dailyTenForm.controls['content'].value.length>maxLength
+          || (dailyTenForm.controls['content'].value&&dailyTenForm.controls['content'].value.trim()==='')">发布</button>
     </form>
   </ion-content>

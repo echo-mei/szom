@@ -1,25 +1,96 @@
 page-sign-date {
-  .impression {
-    padding: rem(10);
-    background: #fff;
-    ion-badge {
-      height: rem(40);
-      width: 28%;
-      border-radius: 1px;
-      padding: 0 rem(8);
-      line-height: rem(40);
-      margin: rem(8) 2%;
-      color: #545454;
-      background: #F4F4F4;
-      border-radius: rem(1);
-      font-size: rem(16);
-      letter-spacing: 0;
-      font-weight: normal;
-      span {
-        font-size: rem(14);
+  ion-icon.szom {
+    float: right;
+    margin: rem(10);
+    font-size: rem(12);
+  }
+  ion-calendar {
+    padding: 0;
+    .switch-btn {
+      font-size: rem(16)!important;
+      color: #333333!important;
+      letter-spacing: rem(-0.19);
+      line-height: 40px!important;
+    }
+    ion-toolbar {
+      height: rem(27)!important;
+      min-height: initial!important;
+      .toolbar-background {
+        background: #FAFAFA;
+        border-radius: rem(1);
+        height: rem(27)!important;
+      }
+      .week-title {
+        height: rem(27)!important;
+        line-height: rem(27);
+        padding: 0!important;
+        font-size: rem(10);
         color: #AFAFAF;
         text-align: center;
       }
     }
+    .days {
+      font-size: rem(16);
+    }
+  }
+  .impression {
+    padding: rem(20) rem(10);
+    background: #fff;
+    ion-badge {
+      &.tag-1:before {
+        background: #4D74EB;
+      }
+      &.tag-2:before {
+        background: #0DB6B6;
+      }
+      &.tag-3:before {
+        background: #F759AB;
+      }
+      &.tag-4:before {
+        background: #9254DE;
+      }
+      &.tag-5:before {
+        background: #3FA60C;
+      }
+      &.tag-6:before {
+        background: #C98600;
+      }
+      &:before {
+        content: '';
+        display: inline-block;
+        width: rem(8.5);
+        height: rem(8.5);
+        transform: rotate(45deg);
+        border-radius: rem(1);
+        margin-right: rem(10);
+      }
+      border-radius: 0;
+      background: initial;
+      font-size: rem(14);
+      color: #545454;
+    }
+  }
+  .days-btn small {
+    font-size: rem(10);
+    line-height: rem(10);
+    overflow: initial!important;
+  }
+  .sign-date-1 p, .sign-date-1 small {
+    color: #4D74EB!important;
+  }
+  .sign-date-2 p, .sign-date-2 small {
+    color: #0DB6B6!important;
+  }
+  .sign-date-3 p, .sign-date-3 small {
+    color: #F759AB!important;
+  }
+  .sign-date-4 p, .sign-date-4 small {
+    color: #9254DE!important;
+  }
+  .sign-date-5 p, .sign-date-5 small {
+    color: #3FA60C!important;
+  }
+  .sign-date-6 p, .sign-date-6 small {
+    color: #C98600!important;
   }
 }

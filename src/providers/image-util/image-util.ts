@@ -5,6 +5,7 @@ import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Base64 } from '@ionic-native/base64';
 import { Observable } from 'rxjs';
+import { StorageProvider } from '../storage/storage';
 
 @Injectable()
 export class ImageUtilProvider {
@@ -14,7 +15,8 @@ export class ImageUtilProvider {
     public camera: Camera,
     public imagePicker: ImagePicker,
     public base64: Base64,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public storage: StorageProvider
   ) {
   }
 
@@ -46,7 +48,9 @@ export class ImageUtilProvider {
                 callback(imgs);
               }
             ).catch(
-              (err) => {}
+              (err) => {
+
+              }
             );
           }else {
             this.camera.getPicture(Object.assign({}, cameraOpt, {sourceType: 0})).then(
@@ -54,7 +58,9 @@ export class ImageUtilProvider {
                 callback([img]);
               }
             ).catch(
-              (err) => {}
+              (err) => {
+
+              }
             );
           }
         } },
@@ -70,16 +76,44 @@ export class ImageUtilProvider {
         return Observable.create(observer => observer.next(this.sanitizer.bypassSecurityTrustResourceUrl(base64File)));
       }
     );
+  }
 
-    // this.base64.encodeFile(img).then((base64File: string) => {
-    //   let safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(base64File);
-    //   this.imgs.push({
-    //     name: 'file',
-    //     path: img,
-    //     safeUrl: safeUrl
-    //   });
-    // }, (err) => {})
+  canvasToDataURL(canvas, format='image/jpeg', quality=1){
+    return canvas.toDataURL(format, quality);
+  }
 
+  dataURLToBlob(dataurl){
+    var arr = dataurl.split(',');
+    var mime = arr[0].match(/:(.*?);/)[1];
+    var bstr = atob(arr[1]);
+    var n = bstr.length;
+    var u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+  }
+
+  imageToCanvas(src): Observable<any> {
+    return new Observable((ob) => {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      var img = new Image();
+      img.onload = function (){
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        ob.next(canvas);
+      };
+      img.src = src;
+    });
+  }
+
+  imageToBlob(src){
+    return this.imageToCanvas(src).mergeMap((canvas) => {
+      let blob: Blob = this.dataURLToBlob(this.canvasToDataURL(canvas));
+      return Observable.create(observable => observable.next(blob));
+    });
   }
 
 }

@@ -4,85 +4,14 @@ page-dynamic-search {
     }
 
     ion-header{
-        .toolbar-background{
-            background-color: #fff;
-        }
-        .input{
-            ion-icon{
-                position: absolute;
-
-            }
+        .toolbar-content {
+            padding-left: rem(15);
+            display: flex;
         }
     }
 
-    
-    .toolbar{
-        box-sizing: border-box;
-        padding: 0 rem(15);
-        height: rem(48);
-        background-color: #fff;
-        .toolbar-content{
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-
-            .input-box{
-                width: 100%;
-                padding: 0;
-                position: relative;
-                display: flex;
-                align-items: center;
-                ion-icon{
-                    position: absolute;
-                    top: rem(8);
-                    left: rem(10);
-                    z-index: 3;
-                    color: #AFAFAF;
-                }
-
-                .searchbar{
-                    display: inline-block;
-                    width: 100%;
-                    height: rem(32);
-                    min-height: auto;
-                    padding: 0;
-                    .searchbar-input-container{
-                        height: 100%;
-                        display: flex;
-                        align-items: center;
-                    }
-                    .searchbar-input{
-                        height: 100%;
-                        line-height: normal;
-                        background-color: #F4F4F4;
-                        border-radius: .2rem;
-                        color: #333;
-                        font-size: rem(14);
-                        padding-left: rem(30);
-                        box-shadow: none;
-                        background-color: #F4F4F4;
-                        border-radius: rem(2);
-                    }
-                    .searchbar-search-icon{
-                        top: initial;
-                        display: none;
-                    }
-                }
-            }
-
-            button{
-                width: rem(40);
-                height: rem(32);
-                line-height: rem(32);
-                padding: 0;
-                margin: 0 0 0 rem(15);
-                color: #545454;
-                font-size: rem(17);
-            }
-            
-        }
-
-  
+    .setDiv{
+        height: calc(100% - 48px);
     }
 
     ion-content{
@@ -90,40 +19,31 @@ page-dynamic-search {
         
         // 搜索框部分
         .conditions{
+            z-index: 10;
             position: relative;
             height: rem(38);
+            line-height: rem(38);
             background: #FFF;
             color: #AFAFAF;
             position: relative;
             margin-bottom: rem(5);
+            margin-top: 1px;
             .select-btn{
+                position: relative;
                 padding: 0 rem(15);
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
                 z-index: 3;
-                p{
+                span{
                     white-space: nowrap;
                     padding-right: rem(5);
                 }
-                p.title{
-                    
+                span.title{
                     padding: 0 rem(8);
                 }
                 .color-blue{
                     color: #4D74EB;
                 }
-            }
-            .left{
-                display: flex;
-                align-items: center;
-                font-size: 15px;
-                justify-content: space-between;
-                width: 50px;
-                p{
-                    margin: 0!important;
-                    letter-spacing: 0;
+                .szom{
+                    line-height: rem(38);
                 }
             }
             .select-time{
@@ -139,9 +59,9 @@ page-dynamic-search {
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
-                    height: rem(44);
+                    // height: rem(44);
                     background-color: #fff;
-                    border-top: 1px solid #F1F1F1;
+                    border-top: .5px solid color($colors,boderColor);
                     position: relative;
                     padding-right: rem(10);
                     .title{
@@ -159,7 +79,6 @@ page-dynamic-search {
                             display: flex;
                             align-items: center;
                             justify-content: flex-end;
-                            // padding: 0 rem(10);
                         }
                     }
                     ion-icon{
@@ -170,17 +89,15 @@ page-dynamic-search {
                 .btn{
                     background-color: #fff;
                     display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: rem(5);
+                    justify-content: space-between;
+                    padding: rem(10) rem(15);
                     button{
-                        // border: 1px solid #DDDDDD;
-                        border-radius: 2px;
-                        width: 160px;
-                        height: 29px;
-                        margin-right: rem(10);
+                        border-radius: rem(2);
+                        width: rem(160);
+                        height: rem(28);
                         font-size: rem(14);
                         box-shadow: none;
+                        margin: 0;
                     }
                 }
             }
@@ -200,11 +117,12 @@ page-dynamic-search {
         // 列表部分
         .daily-list {
             margin: 0;
-            height: calc(100% - 48px);
             overflow: auto;
             position: relative;
             background: #fff;
-
+            &.listDiv{
+                height: calc(100% - 48px);
+            }   
             ion-item{
                 background-color: transparent;
                 box-shadow: 0 1px 1px #cecece;
@@ -243,10 +161,6 @@ page-dynamic-search {
                 text-overflow: ellipsis;
                 white-space: normal;
                 margin: 0 0 rem(15) 0;
-                .hightBright{
-                    color: #4D74EB ;
-                    font-weight: bold;
-                }
               }
               .other{
                 color: #AFAFAF;
@@ -267,13 +181,7 @@ page-dynamic-search {
                     margin-right: rem(12);
                   }
         
-                  ion-icon{
-                    width: rem(12);
-                    height: rem(12);
-                    line-height: rem(12);
-                    color: #AFAFAF;
-                    font-size: rem(12);
-                  }
+                  
                 }
               }
             }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
+import { WorkProvider } from '../../providers/work/work';
 
 /**
  * Generated class for the TypeCustomPage page.
@@ -8,22 +9,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-type-custom',
   templateUrl: 'type-custom.html',
 })
 export class TypeCustomPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  typeName:string;
+
+  onUpdateWeektableTypeList: () => {};
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public workProvider: WorkProvider) {
+    this.onUpdateWeektableTypeList = this.navParams.get('onUpdateWeektableTypeList');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TypeCustomPage');
   }
 
-  goBack(){
-    this.navCtrl.pop();
+  addWeektableType() {
+    let params={
+      typeName:this.typeName
+    }
+    this.workProvider.createWeektableType(params).subscribe(
+      () => {
+        this.navCtrl.pop();
+        this.onUpdateWeektableTypeList();
+      }
+    );
   }
-
 }
+

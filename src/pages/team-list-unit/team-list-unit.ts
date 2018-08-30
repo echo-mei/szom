@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
-/**
- * Generated class for the TeamListUnitPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { UserProvider } from '../../providers/user/user';
+import { PersonListTeamPage } from '../person-list-team/person-list-team';
 
-@IonicPage()
 @Component({
   selector: 'page-team-list-unit',
   templateUrl: 'team-list-unit.html',
@@ -20,7 +15,12 @@ export class TeamListUnitPage {
   public personList: any;
   showDetail:boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public addresslistProvider: AddresslistProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public addresslistProvider: AddresslistProvider,
+    public userProvider: UserProvider
+  ) {
   }
 
   ionViewDidLoad() {
@@ -49,12 +49,12 @@ export class TeamListUnitPage {
     this.addresslistProvider.getPersonList(uid).subscribe(
       (obj) => {
         this.personList = obj
-        this.navCtrl.push('PersonListTeamPage', {
+        this.navCtrl.push(PersonListTeamPage, {
           personList: this.personList
         });
       }
     );
-    
+
   }
 
 }

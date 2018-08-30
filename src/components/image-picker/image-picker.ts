@@ -28,7 +28,14 @@ export class ImagePickerComponent {
           }
         );
       });
-    }, true, {quality: 70});
+    }, true, {
+      maximumImagesCount: this.max - this.images.length,
+      quality: 70
+    });
+  }
+
+  removeImage(index) {
+    this.images.splice(index, 1);
   }
 
 }

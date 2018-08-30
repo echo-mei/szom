@@ -16,4 +16,24 @@ page-me-update-zs {
       letter-spacing: 0;
     }
   }
+  form {
+    position: relative;
+    ion-textarea {
+      overflow: auto!important;
+      textarea {
+        margin: 0!important;
+        width: 100%!important;
+        max-height: rem(200);
+      }
+      .input-cover {
+        display: none;
+      }
+    }
+    ion-label {
+      position: absolute;
+      bottom: rem(-12);
+      right: 0;
+      margin: 0!important;
+    }
+  }
 }

@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 import { UserProvider } from '../../providers/user/user';
 import { ImpressionProvider } from '../../providers/impression/impression';
 import { StorageProvider } from '../../providers/storage/storage';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
+import { BASE_URL } from '../../config';
+import { DailyMePage } from '../daily-me/daily-me';
+import { UserBaseinfoPage } from '../user-baseinfo/user-baseinfo';
+import { UserSelfinfoPage } from '../user-selfinfo/user-selfinfo';
+import { UserDynamicListPage } from '../user-dynamic-list/user-dynamic-list';
+import { UserImpressionPage } from '../user-impression/user-impression';
 
-@IonicPage()
 @Component({
   selector: 'page-user-info',
   templateUrl: 'user-info.html',
@@ -43,7 +48,8 @@ export class UserInfoPage {
     public storage: StorageProvider,
     public dynamicProvider: DynamicProvider,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public actionSheetCtrl: ActionSheetController
   ) {
     this.showBaseInfo = this.navParams.get('showBaseInfo');
     this.showSelfInfo = this.navParams.get('showSelfInfo');
@@ -103,30 +109,34 @@ export class UserInfoPage {
     );
   }
 
+  getHeadImageUrl(personId) {
+    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.get('token')}&personId=${personId}`;
+  }
+
   goDailyList() {
-    this.navCtrl.push('DailyMePage');
+    this.navCtrl.push(DailyMePage);
   }
 
   goBaseInfo() {
-    this.navCtrl.push('UserBaseinfoPage', {
+    this.navCtrl.push(UserBaseinfoPage, {
       user: this.user
     });
   }
 
   goUserSelfInfo() {
-    this.navCtrl.push('UserSelfinfoPage', {
+    this.navCtrl.push(UserSelfinfoPage, {
       user: this.user
     });
   }
 
   goUserDynamicList() {
-    this.navCtrl.push('UserDynamicListPage', {
+    this.navCtrl.push(UserDynamicListPage, {
       user: this.user
     });
   }
 
   goUserImpression() {
-    this.navCtrl.push('UserImpressionPage', {
+    this.navCtrl.push(UserImpressionPage, {
       user: this.user
     });
   }
@@ -151,12 +161,11 @@ export class UserInfoPage {
   }
 
   cancelFollow() {
-    let alert = this.alertCtrl.create({
-      message: '确认删除？',
+    this.actionSheetCtrl.create({
+      title: '确定不再关注此人？',
       buttons: [
-        { text: '取消', role: 'cancel' },
         {
-          text: '确认', handler: () => {
+          text: '确定', handler: () => {
             this.userProvider.postFollow({
               attentedUserCode: this.user.userCode,
               userCode: JSON.parse(this.storage.get('user')).userCode,
@@ -168,10 +177,10 @@ export class UserInfoPage {
               }
             );
           }
-        }
+        },
+        { text: '取消', role: 'cancel' }
       ]
-    });
-    alert.present();
+    }).present();
   }
 
   agree() {

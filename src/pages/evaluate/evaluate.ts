@@ -1,8 +1,9 @@
 import { Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EvaluateProvider } from '../../providers/evaluate/evaluate';
+import { EvaluteCreatePage } from '../evalute-create/evalute-create';
+import { SearchConditionsPage } from '../search-conditions/search-conditions';
 
-@IonicPage()
 @Component({
   selector: 'page-leaderevaluate',
   templateUrl: 'evaluate.html',
@@ -16,15 +17,15 @@ export class EvaluatePage {
   }
 
   ionViewDidLoad() {
-   
+
   }
   //干部评价新增跳转
   goEvaluateCreate(){
-    this.navCtrl.push('EvaluteCreatePage');
+    this.navCtrl.push(EvaluteCreatePage);
   }
   //干部评价搜索调整
   goEvaluatSearch(){
-    this.navCtrl.push('SearchConditionsPage');
+    this.navCtrl.push(SearchConditionsPage);
   }
 
   getZzbmInitDatas(){

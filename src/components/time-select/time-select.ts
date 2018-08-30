@@ -18,7 +18,7 @@ export class TimeSelectComponent {
   @Output('onSure') onSure = new EventEmitter();
 
   constructor() {
-    this.startTime = '请选择';
+
   }
 
   onChangeStart() {

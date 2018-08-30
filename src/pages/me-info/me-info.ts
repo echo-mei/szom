@@ -1,17 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, ActionSheetController, DateTime, PopoverController, NavParams } from 'ionic-angular';
+import { NavController, ActionSheetController, PopoverController, NavParams, Slides } from 'ionic-angular';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserProvider } from '../../providers/user/user';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { ImpressionProvider } from '../../providers/impression/impression';
 import { SignProvider } from '../../providers/sign/sign';
+import { MeUpdateZsPage } from '../me-update-zs/me-update-zs';
+import { DailyMePage } from '../daily-me/daily-me';
+import { SignTagsPage } from '../sign-tags/sign-tags';
+import { SignDatePage } from '../sign-date/sign-date';
 
-@IonicPage()
 @Component({
   selector: 'page-me-info',
   templateUrl: 'me-info.html',
 })
 export class MeInfoPage {
+  @ViewChild('mySlider') slides: Slides;
 
   onSign: () => {};
 
@@ -22,6 +26,7 @@ export class MeInfoPage {
   startDate: any;
   endDate: any;
   tagList: any[] = [];
+  isActive = 0;
 
   startTime: string;
   endTime: string;
@@ -55,6 +60,15 @@ export class MeInfoPage {
     );
   }
 
+  goInfoList(index) {
+    this.isActive = index;
+    this.slides.slideTo(index, 500);
+  }
+  onSlideChanged($event) {
+    let currentIndex = this.slides.getActiveIndex();
+    this.isActive = currentIndex;
+  }
+
   getTodaySign() {
     let params = {
       userCode: JSON.parse(this.storage.get('user')).userCode
@@ -67,7 +81,7 @@ export class MeInfoPage {
   }
 
   goSignTags() {
-    let popover = this.popoverCtrl.create('SignTagsPage', {
+    let popover = this.popoverCtrl.create(SignTagsPage, {
       onSign: () => {
         this.getTodaySign();
         this.onSign && this.onSign();
@@ -79,7 +93,7 @@ export class MeInfoPage {
   }
 
   goMeSign() {
-    let popover = this.popoverCtrl.create('SignDatePage', {
+    let popover = this.popoverCtrl.create(SignDatePage, {
       onSign: () => {
         this.getTodaySign();
         this.onSign && this.onSign();
@@ -105,23 +119,31 @@ export class MeInfoPage {
     this.endTime && (params['endDate'] = this.endTime);
     this.impressionProvider.statistics(params).subscribe(
       (list) => {
-        this.tagList = list;
+        var a = list;
+        list.forEach((item, index, list) => {
+          if(index < 9){
+            this.tagList.push(item);
+          }else{
+            return;
+          }
+        })
       }
     );
   }
 
-  goMeUpdateZS(title, attr, user) {
-    this.navCtrl.push('MeUpdateZsPage', {
+  goMeUpdateZS(title, attr, maxLength) {
+    this.navCtrl.push(MeUpdateZsPage, {
       title: title,
       attr: attr,
       user: this.me,
       selfInfo: this.selfInfo,
-      onUpdate: this.getSelfInfo.bind(this)
+      onUpdate: this.getSelfInfo.bind(this),
+      maxLength: maxLength
     });
   }
 
   goDailyList() {
-    this.navCtrl.push('DailyMePage');
+    this.navCtrl.push(DailyMePage);
   }
 
 }

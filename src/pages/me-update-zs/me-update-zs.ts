@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 
-@IonicPage()
 @Component({
   selector: 'page-me-update-zs',
   templateUrl: 'me-update-zs.html',
@@ -14,6 +13,8 @@ export class MeUpdateZsPage {
   user: any;
   selfInfo: any;
   value: any;
+
+  maxLength: number = 196;
 
   onUpdate: () => {}
 
@@ -28,7 +29,12 @@ export class MeUpdateZsPage {
     this.user = navParams.get('user');
     this.selfInfo = navParams.get('selfInfo');
     this.onUpdate = navParams.get('onUpdate');
+    this.maxLength = navParams.get('maxLength');
     this.value = this.selfInfo[this.attr];
+  }
+
+  focus(ele) {
+    ele.setFocus();
   }
 
   save() {

@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController, AlertController, ViewController, Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, PopoverController, AlertController, ViewController, Events, Footer } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
+import { PopSelectComponent } from '../../components/pop-select/pop-select';
+import { Keyboard } from '@ionic-native/keyboard';
+import { LikeListPage } from '../like-list/like-list';
+import { EmojiProvider } from '../../providers/emoji/emoji';
+import { MeInfoPage } from '../me-info/me-info';
+import { UserInfoPage } from '../user-info/user-info';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-me-show',
   templateUrl: 'daily-me-show.html',
 })
 export class DailyMeShowPage {
 
+  @ViewChild('footer') footer: Footer;
+
   daily: any;
   comment: any; // 评论
 
   onUpdate: (daily) => {};
   onDelete: (dailyId) => {};
+  dailyTemp:any;
 
 
   //回复评论的那条评论的ID
@@ -35,20 +43,33 @@ export class DailyMeShowPage {
     public dailyProvider: DailyProvider,
     public viewCtrl: ViewController,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public keyboard: Keyboard,
+    public emojiProvider: EmojiProvider
   ) {
     this.placeholder = this.originalPlaceholder;
-    this.daily = this.navParams.get('daily');
+    this.dailyTemp = this.navParams.get('daily');
     this.onUpdate = this.navParams.get('onUpdate');
     this.onDelete = this.navParams.get('onDelete');
-    // this.getDaily();
+    this.getDaily();
+    this.keyboard.onKeyboardShow().subscribe(
+      (e) => {
+        this.footer['nativeElement'].style.bottom = e.keyboardHeight+'px';
+      }
+    );
+    this.keyboard.onKeyboardHide().subscribe(
+      (e) => {
+        this.footer['nativeElement'].style.bottom = '0px';
+      }
+    );
   }
 
   getDaily(isUpdate?: boolean) {
-    this.dailyProvider.getDaily(this.daily.dailyId).subscribe(
+    this.dailyProvider.getDaily(this.dailyTemp.dailyId).subscribe(
       (daily) => {
         this.daily = daily;
         isUpdate && this.onUpdate && this.onUpdate(daily);
+        this.hasMeLike();
       }
     );
   }
@@ -57,60 +78,33 @@ export class DailyMeShowPage {
     return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
-  hasMeLike(): boolean {
+  hasMeLike() {
     let me = JSON.parse(this.storage.get('user'));
-    return this.daily && this.daily.listStLike && this.daily.listStLike.find((user) => {
+    this.daily.hasMeLike = this.daily && this.daily.listStLike && this.daily.listStLike.find((user) => {
       return user.operator == me.userCode;
     }) ? true : false;
   }
 
   popover(event) {
-    const popover = this.popoverCtrl.create('PopSelectComponent', {
+    let alert = this.alertCtrl.create({
+      message: '删除后，当前工作日志对应的点赞及评论将一并删除，确认删除吗？',
       buttons: [
-        // {
-        //   text: '修改',
-        //   handler: () => {
-        //     this.navCtrl.push('DailyMeUpdatePage', {
-        //       daily: this.daily,
-        //       onUpdate: this.getDaily.bind(this, true)
-        //     });
-        //     popover.dismiss();
-        //   }
-        // },
-        {
-          text: '删除',
-          handler: () => {
-            let alert = this.alertCtrl.create({
-              message: '确认删除？',
-              buttons: [
-                { text: '取消', role: 'cancel' },
-                {
-                  text: '确认', handler: () => {
-                    this.dailyProvider.deleteDaily(this.daily.dailyId).subscribe(
-                      () => {
-                        this.navCtrl.pop();
-                        this.onDelete && this.onDelete(this.daily.dailyId);
-                      }
-                    );
-                  }
-                }
-              ]
-            });
-            alert.present();
-            popover.dismiss();
-          }
-        }
+        {text: '取消', role: 'cancel'},
+        {text: '确认', handler: () => {
+          this.dailyProvider.deleteDaily(this.daily.dailyId).subscribe(
+            () => {
+              this.navCtrl.pop();
+              this.onDelete && this.onDelete(this.daily.dailyId);
+            }
+          );
+        }}
       ]
-    }, {
-      cssClass: 'mini'
     });
-    popover.present({
-      ev: event
-    });
+    alert.present();
   }
 
   goLikeList() {
-    this.navCtrl.push("LikeListPage", {
+    this.navCtrl.push(LikeListPage, {
       likerList: this.daily.soaUnitAndAttentionDTO
     });
   }
@@ -149,5 +143,4 @@ export class DailyMeShowPage {
       }
     );
   }
-
 }

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar  color="white">
     <ion-title text-center>点赞列表</ion-title>
@@ -6,13 +6,13 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-item-group>
     <ion-item-divider color="light">关注</ion-item-divider>
     <div *ngFor="let item of likerList.listAttention;">
       <ion-item (click)="goUserInfo(item)">
         <ion-thumbnail item-start>
-          <img src="assets/imgs/user.jpg">
+          <img [src]="userProvider.getHeadImageUrl(item.personId)" onerror="this.src='assets/imgs/user.png'">
         </ion-thumbnail>
         <h2>{{ item.name }}</h2>
         <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>
@@ -22,7 +22,7 @@
     <div *ngFor="let item of likerList.listMyUnit">
       <ion-item (click)="goUserInfo(item)">
         <ion-thumbnail item-start>
-          <img src="assets/imgs/user.jpg">
+          <img [src]="userProvider.getHeadImageUrl(item.personId)" onerror="this.src='assets/imgs/user.png'">
         </ion-thumbnail>
         <h2>{{ item.name }}</h2>
         <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>
@@ -32,7 +32,7 @@
     <div *ngFor="let item of likerList.listOtherUnit">
       <ion-item (click)="goUserInfo(item)">
         <ion-thumbnail item-start>
-          <img src="assets/imgs/user.jpg">
+          <img [src]="userProvider.getHeadImageUrl(item.personId)" onerror="this.src='assets/imgs/user.png'">
         </ion-thumbnail>
         <h2>{{ item.name }}</h2>
         <p>{{ item.unitName }} 丨 {{ item.dutyName }}</p>

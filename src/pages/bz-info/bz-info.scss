@@ -1,0 +1,90 @@
+page-bz-info {
+    ion-list{
+        padding: rem(16);
+        h2{
+            font-size: rem(18);
+            color: #333333;
+            margin-bottom: rem(8);
+            margin-top: rem(8);
+            font-weight: bold;
+            span{
+                font-size: rem(14);
+            }
+        }
+        ion-item{
+            ion-thumbnail{
+                min-width: rem(50) !important;
+                min-height: rem(50) !important;
+                width: rem(50) !important;
+                height: rem(50) !important;
+                img{
+                    min-width: rem(50) !important;
+                    min-height: rem(50) !important;
+                    width: rem(50) !important;
+                    height: rem(50) !important;
+                }
+            }
+            h2{
+                font-size: rem(15) !important;
+            }
+            p{
+                font-size: rem(12) !important;
+                color: #999999 !important;
+            }
+            ion-icon{
+                margin-right: 0;
+                color: #D9D9D9;
+                font-size: rem(5) !important;
+            }
+        }
+    }
+    .toolbar{
+        .toolbar-background{
+            background-color: #fff;
+        }
+        ion-icon{
+            color: #4D74EB !important;
+        }       
+    }
+    .topDivider{
+        height: rem(5);
+        background-color: #fafafa;
+        border: 0;
+    }
+    .twoDivider{
+        height: rem(10);
+        background-color: #fafafa;
+        border: 0;
+    }
+    .bzIntro{
+        padding-top: rem(15);
+        padding: rem(16);
+        h2{
+            font-size: rem(18);
+            color: #333333;
+            margin-bottom: rem(8);
+            margin-top: rem(8);
+            font-weight: bold;
+        }
+        .item{
+            .item-inner{
+                border-bottom: 0 !important;
+                padding-right: 0;
+                ion-icon{
+                    margin-right: 0;
+                    color: #D9D9D9;
+                    font-size: rem(5);
+                }
+                .label{
+                    white-space: normal;
+                    padding-right: rem(8);
+                    color: #595959;
+                    font-size: rem(15);
+                }
+            }
+        }
+    }
+    .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
+        background: none;
+    }
+}

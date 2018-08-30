@@ -1,0 +1,71 @@
+page-me-update-phone {
+    .toolbar .back-button ion-icon{
+        color: #4D74EB;
+    }
+    .scroll-content{
+        padding-top: 0 !important;
+        ion-list{
+            .tips{
+                display: inline-block;
+                color: #868686;
+                padding-left: rem(20);
+                height: 3rem;
+                font-size: rem(12);
+                line-height: rem(25);
+            }
+            ion-input{
+                font-size: rem(16);
+            }
+            .item .item-button{
+                padding: 0 rem(10) 0 0.6rem;
+                margin: 0;
+            }
+            .telNum{
+                // width: calc(100% - 200px - 8px) !important;
+                text-align: right;
+                padding-right: rem(10);
+            }
+            .telFont{
+                color: #868686;
+                padding-left: rem(20);
+            }
+            .text-input{
+                padding-left: rem(20);
+                margin-left: 0;
+                width: calc(100% - 100px - 8px);
+            }
+            .item.item-block .item-inner{
+                padding-right: 0px;
+            }
+            .verify{
+                height: rem(50);
+                background-color: #4D74EB;
+                font-size: rem(16);
+                width: 90%;
+                margin: rem(30) auto 0;
+            }
+        }
+    }
+    .toolbar .toolbar-title{
+        font-size: rem(17);
+        color: #333333;
+    }
+    .toolbar-background{
+        background-color: #ffffff;
+        // background-image: 0;
+    }
+    .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
+        background-image: none;
+    }
+    .p{
+        text-align: center;
+        font-size: rem(14);
+        color: #cccccc;
+    }
+    p{
+        height: rem(10);
+        background-color: #fafafa;
+        margin: 0;
+        width: 100%;
+    }
+}

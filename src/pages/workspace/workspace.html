@@ -1,60 +1,76 @@
 <ion-header no-border>
-  <ion-navbar color="primary">
-    <ion-title text-center></ion-title>
-    <ion-buttons right>
-      <button ion-button>
-        <ion-icon name="md-shezhi" class="szom"></ion-icon>
-      </button>
-    </ion-buttons>
+  <ion-navbar>
+
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-  <ion-item no-lines class="my-info">
-    <ion-avatar item-start>
-      <img src="assets/imgs/user.jpg">
-    </ion-avatar>
-    <h2 class="name">{{me.name}}
-      <!-- <ion-note float-right (click)="goSignTags()">
-        <ion-badge color="dark">签到</ion-badge>
-      </ion-note>
-      <ion-note float-right (click)="goMeSign()">
-        <ion-badge color="dark">在岗</ion-badge>
-      </ion-note> -->
-      <div *ngIf="todaySign&&todaySign.signInId" class="sign" (click)="goMeSign()">{{todaySign.signInTypeName}}</div>
-      <div *ngIf="!todaySign||!todaySign.signInId" class="sign" (click)="goSignTags()">签到</div>
-    </h2>
-    <p class="desc">单位：{{me.unitName}}</p>
-    <p class="desc">职位：{{me.dutyName}}</p>
-  </ion-item>
-  <div class="gzt-main">
-    <div class="gzt-item gzrz" (click)="goDailyMe()">
-      <ion-icon name="md-gongzuorizhi" class="szom"></ion-icon>
+  <div class="my-info">
+    <ion-item no-lines>
+      <h2 class="name">{{me.name}}
+        <ion-note class="not-sign" *ngIf="!todaySign||!todaySign.signInId" (click)="goSignTags()">
+          <embed width=12 height=12 src="assets/imgs/sign-circle.svg" type="image/svg+xml">签到
+        </ion-note>
+        <ion-note class="has-sign" *ngIf="todaySign&&todaySign.signInId" (click)="goSignTags()">
+          {{todaySign.signInTypeName}}
+        </ion-note>
+      </h2>
+      <p class="desc">{{me.unitName}} | {{me.dutyName}}</p>
+      <ion-avatar item-end>
+        <img *ngIf="me.personId" [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+    </ion-item>
+  </div>
+  <div class="gzt-main {{ 'col'+cols }}">
+    <div *ngIf="menuProvider.hasMenu('workspace-daily')" class="gzt-item gzrz" (click)="goDailyMe()">
+      <embed width=30 height=30 src="assets/imgs/daily.svg" type="image/svg+xml">
+      <!-- <ion-icon name="md-gongzuorizhi" class="szom"></ion-icon> -->
+      <!-- <svg class="icon" aria-hidden="true">
+        <use xlink:href="#ion-md-dianzandianji1"></use>
+      </svg> -->
       <p>工作日志</p>
     </div>
-    <div class="gzt-item gzzb" (click)="goWorkWeektable()">
-        <ion-icon name="md-gongzuozhoubiao" class="szom"></ion-icon>
+    <!-- <div *ngIf="menuProvider.hasMenu('workspace-work')" class="gzt-item gzzb" (click)="goWorkWeektable()"> -->
+    <div *ngIf="menuProvider.hasMenu('workspace-work')" class="gzt-item gzzb" (click)="goWorkWeektable()">
+      <!-- <ion-icon name="md-gongzuozhoubiao" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/work-weeklist.svg" type="image/svg+xml">
       <p>工作周表</p>
     </div>
-    <div class="gzt-item grxx" (click)="goMeInfo()">
-        <ion-icon name="md-gerenxinxi" class="szom"></ion-icon>
+    <div *ngIf="menuProvider.hasMenu('workspace-meinfo')" class="gzt-item grxx" (click)="goMeInfo()">
+      <!-- <ion-icon name="md-gerenxinxi" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/me-info.svg" type="image/svg+xml">
       <p>个人信息</p>
     </div>
-    <div class="gzt-item mzyl" (click)="goDailyOnePage()">
-        <ion-icon name="md-meizhouyili" class="szom"></ion-icon>
+    <div *ngIf="menuProvider.hasMenu('workspace-one')" class="gzt-item mzyl" (click)="goDailyOnePage()">
+      <!-- <ion-icon name="md-meizhouyili" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/daily-one.svg" type="image/svg+xml">
       <p>每周一励</p>
     </div>
-    <div class="gzt-item mjsl" (click)="goDailyThreePage()">
-        <ion-icon name="md-meijisanli" class="szom"></ion-icon>
+    <div *ngIf="menuProvider.hasMenu('workspace-three')" class="gzt-item mjsl" (click)="goDailyThreePage()">
+      <!-- <ion-icon name="md-meijisanli" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/daily-three.svg" type="image/svg+xml">
       <p>每季三励</p>
     </div>
-    <div class="gzt-item mnsl" (click)="goDailyTenPage()">
-        <ion-icon name="md-meiniansanli" class="szom"></ion-icon>
+    <div *ngIf="menuProvider.hasMenu('workspace-ten')" class="gzt-item mnsl" (click)="goDailyTenPage()">
+      <!-- <ion-icon name="md-meiniansanli" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/daily-ten.svg" type="image/svg+xml">
       <p>每年十励</p>
     </div>
-    <div class="gzt-item gbpj" tappable (click)="goEvalute()">
-        <ion-icon name="md-ganbupingjia" class="szom"></ion-icon>
+    <div *ngIf="menuProvider.hasMenu('workspace-evalute')" class="gzt-item gbpj" tappable (click)="goEvalute()">
+      <!-- <ion-icon name="md-ganbupingjia" class="szom"></ion-icon> -->
+      <embed width=30 height=30 src="assets/imgs/ganbu-info.svg" type="image/svg+xml">
       <p>干部评价</p>
     </div>
+    <button ion-button block (click)="goBanzi()">班子信息</button>
+    <div class="gzt-item" *ngIf="0<cols-personMenus.length%cols"></div>
+    <div class="gzt-item" *ngIf="1<cols-personMenus.length%cols"></div>
+    <div class="gzt-item" *ngIf="2<cols-personMenus.length%cols"></div>
   </div>
+
+  <!--<div class="gzt-main">
+    <div class="gzt-item gzrz" (click)="goBzWorkWeektable()">
+      <embed width=30 height=30 src="assets/imgs/daily.svg" type="image/svg+xml">
+      <p>工作周表</p>
+    </div>
+  </div>-->
+
 </ion-content>

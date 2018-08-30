@@ -2,32 +2,32 @@
 
   <ion-navbar color="white">
     <ion-title text-center>通讯录</ion-title>
-    <ion-buttons right>
+    <!-- <ion-buttons right>
       <button ion-button>
         <ion-icon class="szom" name="md-jiahaoyou"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
 
 </ion-header>
 
-<ion-content>
+<ion-content #content>
   <div class="searcher">
     <ion-icon class="szom" name="sousuo"></ion-icon>
     <ion-searchbar (click)="goAddresslistSearch()" placeholder="搜索"></ion-searchbar>
   </div>
   <ion-list class="type-list" no-lines>
-    <ion-item (click)="goAddresslistNew()">
+    <ion-item *ngIf="menuProvider.hasMenu('addresslist-new')" (click)="goAddresslistNew()">
       <ion-icon class="szom" name="md-yanjing"></ion-icon>
       <h2>新的关注</h2>
       <!-- <ion-note>我是高豪仁</ion-note>
       <ion-badge item-end></ion-badge> -->
     </ion-item>
-    <ion-item (click)="goAddresslistUnit()">
+    <ion-item *ngIf="menuProvider.hasMenu('adresslist-unit')" (click)="goAddresslistUnit()">
       <ion-icon class="szom" name="md-yanjing"></ion-icon>
       <h2>本单位</h2>
     </ion-item>
-    <ion-item (click)="goAddresslistOther()">
+    <ion-item *ngIf="menuProvider.hasMenu('addresslist-org')" (click)="goAddresslistOther()">
       <ion-icon class="szom" name="md-yanjing"></ion-icon>
       <h2>其他组织</h2>
     </ion-item>
@@ -35,13 +35,15 @@
 
   <ion-list class="type-list" no-lines>
     <div *ngFor="let key of friendKeyList;let i = index;">
-      <div class="divider">{{key}}</div>
+      <div class="divider" [id]="key">{{key}}</div>
       <ion-item *ngFor="let user of friendValueList[i];" (click)="goUserInfo(user)">
-        <img src="assets.jpg" onerror="this.src='assets/imgs/user.jpg'">
-        <!-- <img-loader useImg=true src="assets.jpg" fallback="assets/imgs/user.jpg"></img-loader> -->
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
         <h2>{{user.name}}</h2>
         <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
       </ion-item>
     </div>
   </ion-list>
+  <div class="group-selector">
+    <div *ngFor="let key of groups" (click)="goGroup(key)">{{key}}</div>
+  </div>
 </ion-content>

@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { UnitProvider } from '../../providers/unit/unit';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserProvider } from '../../providers/user/user';
+import { MeInfoPage } from '../me-info/me-info';
+import { UserInfoPage } from '../user-info/user-info';
+import { AddresslistUnitSearchPage } from '../addresslist-unit-search/addresslist-unit-search';
 
-@IonicPage()
 @Component({
   selector: 'page-addresslist-unit',
   templateUrl: 'addresslist-unit.html',
 })
 export class AddresslistUnitPage {
+
+  canSearch: boolean;
 
   org: any;
 
@@ -24,6 +28,7 @@ export class AddresslistUnitPage {
     public storage: StorageProvider,
     public userProvider: UserProvider
   ) {
+    this.canSearch = this.navParams.get('canSearch');
     this.org = this.navParams.get('org');
     this.getUnitList();
     this.getPersonList();
@@ -54,16 +59,16 @@ export class AddresslistUnitPage {
   }
 
   goAddresslistUnit(unit) {
-    this.navCtrl.push('AddresslistUnitPage', {
+    this.navCtrl.push(AddresslistUnitPage, {
       org: unit
     });
   }
 
   goUserInfo(user): any {
     if(user.userCode==JSON.parse(this.storage.get('user')).userCode) {
-      this.navCtrl.push('MeInfoPage');
+      this.navCtrl.push(MeInfoPage);
     }else {
-      this.navCtrl.push('UserInfoPage', {
+      this.navCtrl.push(UserInfoPage, {
         user: user,
         followOrCancel: true,
         showSelfInfo: true,
@@ -71,5 +76,9 @@ export class AddresslistUnitPage {
         showTags: true
       });
     }
+  }
+
+  goAddresslistUnitSearch() {
+    this.navCtrl.push(AddresslistUnitSearchPage);
   }
 }

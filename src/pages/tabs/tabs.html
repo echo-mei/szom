@@ -1,6 +1,6 @@
 <ion-tabs>
-  <ion-tab [root]="workspace" tabUrlPath="workspace" tabTitle="工作台" class="szom" tabIcon="md-gongzuotai" tabsHideOnSubPages></ion-tab>
-  <ion-tab [root]="addresslist" tabUrlPath="addresslist" tabTitle="通讯录" class="szom" tabIcon="md-tongxunlu" tabBadge=" " tabsHideOnSubPages></ion-tab>
-  <ion-tab [root]="dynamic" tabUrlPath="dynamic" tabTitle="干部动态" class="szom" tabIcon="md-ganbudongtai" tabsHideOnSubPages></ion-tab>
-  <ion-tab [root]="me" tabUrlPath="me" tabTitle="我" class="szom" tabIcon="md-wode" tabsHideOnSubPages></ion-tab>
+  <ion-tab *ngIf="menuProvider.hasMenu('workspace')" [root]="workspace" tabUrlPath="workspace" tabTitle="工作台" class="szom" tabIcon="md-gongzuotai" tabsHideOnSubPages></ion-tab>
+  <ion-tab *ngIf="menuProvider.hasMenu('addresslist')" [root]="addresslist" tabUrlPath="addresslist" tabTitle="通讯录" class="szom" tabIcon="md-tongxunlu" [tabBadge]="hasNewFollow?' ':''" tabsHideOnSubPages (ionSelect)="onSelectAddresslistTab()"></ion-tab>
+  <ion-tab *ngIf="menuProvider.hasMenu('dynamic')" [root]="dynamic" tabUrlPath="dynamic" tabTitle="干部动态" class="szom" tabIcon="md-ganbudongtai" [tabBadge]="hasNewDynamic?' ':''" tabsHideOnSubPages (ionSelect)="initData()"></ion-tab>
+  <ion-tab *ngIf="menuProvider.hasMenu('me')" [root]="me" tabUrlPath="me" tabTitle="我" class="szom" tabIcon="md-wode" tabsHideOnSubPages></ion-tab>
 </ion-tabs>

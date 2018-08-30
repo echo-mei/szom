@@ -1,20 +1,20 @@
 <ion-header no-border>
   <ion-navbar color="white">
-    <ion-title>干部动态</ion-title>
+    <ion-title (click)="goTop()">干部动态</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goDynamicSearch()" class="searchBtn">
+      <button ion-button (click)="goDynamicSearch();$event.stopPropagation();" class="searchBtn">
         <ion-icon class="szom" name="md-sousuo"></ion-icon>
       </button>
-      <button ion-button (click)="popover($event)">
+      <button ion-button (click)="popover($event);$event.stopPropagation();">
         <ion-icon class="szom" name="md-xierizhi"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
   <ion-buttons class="sildes-btns">
-    <button ion-button clear (click)="goDynamicList(0)" [class.active]="isActive === 0">关注</button>
-    <button ion-button clear (click)="goDynamicList(1)" [class.active]="isActive === 1">本单位</button>
-    <button ion-button clear (click)="goDynamicList(2)" [class.active]="isActive === 2">推荐</button>
-    <button ion-button clear (click)="goDynamicList(3)" [class.active]="isActive === 3">领导批赞</button>
+    <button *ngIf="menuProvider.hasMenu('dynamic-follow')" ion-button clear (click)="goDynamicList(0)" [class.active]="isActive === 0">关注</button>
+    <button *ngIf="menuProvider.hasMenu('dynamic-unit')" ion-button clear (click)="goDynamicList(1)" [class.active]="isActive === 1">本单位</button>
+    <button *ngIf="menuProvider.hasMenu('dynamic-recommend')" ion-button clear (click)="goDynamicList(2)" [class.active]="isActive === 2">推荐</button>
+    <button *ngIf="menuProvider.hasMenu('dynamic-leader')" ion-button clear (click)="goDynamicList(3)" [class.active]="isActive === 3">领导批赞</button>
   </ion-buttons>
 </ion-header>
 

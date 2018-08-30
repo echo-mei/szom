@@ -1,7 +1,7 @@
 <ion-header no-border>
 
   <ion-navbar color="white">
-    <ion-title>每周一励</ion-title>
+    <ion-title *ngIf="count">每周{{ count | digitalChineseConversion }}励</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goDailySearch()">
         <ion-icon class="szom" name="md-sousuo"></ion-icon>
@@ -12,31 +12,30 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list *ngIf="dailyOneList" no-lines>
-    <ion-item *ngIf="canCreate()">
-      <ion-note item-start>{{week.index}}</ion-note>
-      <div class="text" (click)="goDailyCreate()">本周完成最满意的一件事...</div>
-      <div>
-        <span>{{week.week.firstDate | date:'yyyy.MM.dd'}}-{{week.week.lastDate | date:'yyyy.MM.dd'}}</span>
+    <ion-item *ngIf="canCreate" class="addItemInput">
+      <ion-note class="now-daily" item-start style="opacity: 0.3;">{{week.index+1}}</ion-note>
+      <div class="oneInput">
+        <div class="text" (click)="goDailyCreate()">本周完成最满意的一件事...</div>
+        <div>
+          <span>{{week.week.firstDate | date:'yyyy.MM.dd'}}-{{week.week.lastDate | date:'yyyy.MM.dd'}}</span>
+        </div>
       </div>
     </ion-item>
-    <ion-item *ngFor="let log of dailyOneList;" (click)="goDailyShow(log)" tappable>
-      <ion-note item-start>{{log.weekNums}}</ion-note>
-      <div class="content">
-        <h3>{{log.content}}</h3>
-        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
-      </div>
-      <div>
-        <span>{{log.startDate | date:'yyyy.MM.dd'}}-{{log.endDate | date:'yyyy.MM.dd'}}</span>
-        <span class="icons">
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.listStLike.length}}
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.listStComment.length}}
-        </span>
-      </div>
-    </ion-item>
+
+    <div *ngFor="let log of dailyOneList;let i = index;">
+      <div class="yearWeek" *ngIf="boolShow[i]">{{ log.year }}年第{{ log.weekNums+1 }}周</div>
+      <ion-item (click)="goDailyShow(log)">
+        <div class="inaa">
+          <ion-note [class.now-daily]="dateFormat(week.week.firstDate) + '-' + dateFormat(week.week.lastDate) == log.startDate.split('T')[0].replace('-','.').replace('-','.') +'-'+log.endDate.split('T')[0].replace('-','.').replace('-','.')">{{log.weekNums + 1}}</ion-note>
+          <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
+        </div>
+      </ion-item>
+    </div>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="more($event)">
-    <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingText="正在加载...">
+    </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

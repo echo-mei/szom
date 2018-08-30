@@ -1,21 +1,26 @@
-import { Component} from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
+import { Component, ViewChild} from '@angular/core';
+import { NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
+import { DailyOneCreatePage } from '../daily-one-create/daily-one-create';
+import { DailyOneSearchPage } from '../daily-one-search/daily-one-search';
+import { DailyOneShowPage } from '../daily-one-show/daily-one-show';
 
-@IonicPage()
 @Component({
   selector: 'page-daily-one',
   templateUrl: 'daily-one.html',
 })
 export class DailyOnePage {
+  canCreate: boolean;
   user: any;
   size:number = 10;
   dailyOneList: any[] = []; // 每周一励列表
   year:number;  // 当前年
+  count:number; //每周日志数配置
+  noInShow: boolean = true;
   week:{
     index?: number,
     week?: {
@@ -23,7 +28,7 @@ export class DailyOnePage {
       lastDate: Date
     }
   } = {};  // 当前周
-
+  boolShow = {};
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -44,38 +49,36 @@ export class DailyOnePage {
     this.more();
   }
 
-  load() {
-    let params = {
-      size: this.size
-    };
-    if(this.dailyOneList.length) {
-      params['startTime'] = this.dailyOneList[0]['publishTime'];
-    }
-    this.dailyProvider.getDailyOneList(params).subscribe(
-      (data) => {
-        if(data.length) {
-          for(let i = data.length-1; i >= 0; i--) {
-            this.dailyOneList.unshift(data[i]);
-          }
-        }
+  showTopTime(list) {
+    for(var i=list.length-1; i>=0; i--){
+      if((i-1<0?true: list[i].weekNums != list[i-1].weekNums)){
+        this.boolShow[i] = true;
+      }else{
+        this.boolShow[i] = false;
       }
-    );
+    }
   }
 
   more(infinite?: InfiniteScroll) {
-    let params = {size: this.size};
+    let params = {
+      size: this.size,
+      userCode: this.user.userCode
+    };
     if(this.dailyOneList.length) {
       params['endTime'] = this.dailyOneList[this.dailyOneList.length-1].publishTime;
     }
     this.dailyProvider.getDailyOneList(params).subscribe(
       (data) => {
+        this.count = data.count;
         infinite && infinite.complete();
-        if(data.length) {
+        if(data.list.length) {
           infinite && infinite.enable(true);
-          this.dailyOneList = this.dailyOneList.concat(data);
+          this.dailyOneList = this.dailyOneList.concat(data.list);
         }else {
           infinite && infinite.enable(false);
         }
+        this.showTopTime(this.dailyOneList);
+        this.resetCanCreate();
       }
     );
   }
@@ -84,32 +87,48 @@ export class DailyOnePage {
     return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
-  canCreate() {
-    return this.dailyOneList.find((one) => {
-      return one.weekNums == this.week.index;
-    }) ? false : true;
+  resetCanCreate() {
+    let count = 0;
+    this.dailyOneList.forEach((daily) => {
+      if(daily.year == this.year && daily.weekNums == this.week.index) {
+        count++;
+      }
+    })
+    this.canCreate = count>=this.count ? false : true;
   }
 
   goDailyCreate() {
-    this.navCtrl.push('DailyOneCreatePage', {
+    this.navCtrl.push(DailyOneCreatePage, {
       year: this.year,
       week: this.week,
+      user: this.user,
+      count: this.count,
       onCreate: this.initList.bind(this)
     });
   }
 
   goDailyShow(one) {
-    this.navCtrl.push('DailyOneShowPage', {
+    this.navCtrl.push(DailyOneShowPage, {
       dailyOne: one,
+      count: this.count,
       onDelete: this.initList.bind(this),
       onUpdate: this.initList.bind(this)
     });
   }
 
   goDailySearch(){
-    this.navCtrl.push('DailyOneSearchPage',{
+    this.navCtrl.push(DailyOneSearchPage,{
       user: this.user,
     });
   }
 
+  dateFormat(date):string{
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    month<10?month = '0' + month:month;
+    let day = date.getDate();
+    day<10?day = '0' + day:day;
+    date = year + '.' + month + '.' +day;
+    return date;
+  }
 }

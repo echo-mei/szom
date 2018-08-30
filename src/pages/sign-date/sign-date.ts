@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
-import { DayConfig, CalendarComponent } from 'ion2-calendar';
+import { NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
+import { DayConfig, CalendarComponent, CalendarComponentOptions } from 'ion2-calendar';
 import { SignProvider } from '../../providers/sign/sign';
 import { CalendarService } from 'ion2-calendar/dist/services/calendar.service';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 
-@IonicPage()
 @Component({
   selector: 'page-sign-date',
   templateUrl: 'sign-date.html',
@@ -16,12 +15,13 @@ export class SignDatePage {
 
   month: any;
 
-  calendarOptions = {
+  calendarOptions : CalendarComponentOptions = {
     monthFormat: 'YYYY年MM月',
     showMonthPicker: false,
-    weekdays: ['日', '一', '二', '三', '四', '五', '六'],
     monthPickerFormat: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    daysConfig: []
+    weekdays: ['日', '一', '二', '三', '四', '五', '六'],
+    daysConfig: [],
+    from: new Date(1991, 0, 1)
   };
 
   tags: any[] = [];
@@ -34,7 +34,8 @@ export class SignDatePage {
     public signProvider: SignProvider,
     public calendarService: CalendarService,
     public dateUtil: DateUtilProvider,
-    public popoverCtrl: PopoverController
+    public popoverCtrl: PopoverController,
+    public viewCtrl: ViewController
   ) {
     this.onSign = this.navParams.get('onSign');
     this.goMonth();
@@ -57,7 +58,8 @@ export class SignDatePage {
           for(let key in data) {
             _daysConfig.push({
               date: new Date(key),
-              subTitle: data[key].dicItemName
+              subTitle: data[key].signInTypeName,
+              cssClass: 'sign-date-'+data[key].signInType
             });
           }
         };
@@ -73,6 +75,7 @@ export class SignDatePage {
     let params = {
       month: this.month
     };
+    this.tags = [];
     this.signProvider.signInCount(params).subscribe(
       (tags) => {
         this.tags = tags;
@@ -80,18 +83,8 @@ export class SignDatePage {
     );
   }
 
-  goSign(event) {
-    if(this.dateUtil.isSameDay(new Date(), new Date(event.time))) {
-      let popover = this.popoverCtrl.create('SignTagsPage', {
-        onSign: () => {
-          this.onSign && this.onSign();
-          this.goMonth();
-        }
-      }, {
-        cssClass: 'auto'
-      });
-      popover.present();
-    }
+  close() {
+    this.viewCtrl.dismiss();
   }
 
 }

@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>修改用户名</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <!-- <form [formGroup]="loginForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>密码</ion-label>
+        <ion-input formControlName="uname" placeholder="用户名" type="text"></ion-input>
+      </ion-item>
+      <div *ngIf="(uname.touched && uname.hasError('required'))" class="error-message">* 请输入用户名</div>
+      <div *ngIf="(uname.hasError('minlength') || uname.hasError('maxlength')) && uname.touched" class="error-message">*密码长度应大于8， 小于16， 请检查</div>
+      <div *ngIf="uname.hasError('pattern') && uname.touched && (!pwd.hasError('minlength') && !uname.hasError('maxlength'))" class="error-message">*包含三种， 请检查</div>
+      <ion-item>
+        <ion-label>确认密码</ion-label>
+        <ion-input formControlName="reuname" type="password"></ion-input>
+      </ion-item>
+      <div *ngIf="(reuname.touched && reuname.hasError('required'))" class="error-message">* 请输入用户名</div>
+      <div *ngIf="(reuname.hasError('minlength') || reuname.hasError('maxlength')) && reuname.touched" class="error-message">*密码长度应大于8， 小于16， 请检查</div>
+      <div *ngIf="reuname.hasError('pattern') && reuname.touched && (!reuname.hasError('minlength') && !reuname.hasError('maxlength'))" class="error-message">*包含三种， 请检查</div>
+      <button ion-button block class="verify" (click)="consolesom()" [disabled]="loginForm.invalid">验证</button>
+    </ion-list>
+  </form> -->
+</ion-content>

@@ -8,33 +8,33 @@
 
 
 <ion-content>
-  <div class="like-main">
-    <div class="total">
-      {{stlikeSum}}
-      <p class="des">总赞数</p>
-    </div>
-    <ion-row text-center padding-vertical *ngIf="stlikeList" class="like-classify">
-      <ion-col *ngFor="let stlike of stlikeList;let i=index;">
-        <p class="num">{{stlike.likeCounts}}</p>
-        <p class="des">{{stlike.operatorTypeName}}
-          <p>
-      </ion-col>
-    </ion-row>
+  <div class="like-main" *ngIf="logDataList" (click)="showDetailLike()">
+    <h1>{{stlikeSum}}</h1>
+    <span class="des">总赞数
+      <ion-icon class="szom" name="md-right"></ion-icon>
+    </span>
   </div>
   <ion-list *ngIf="logDataList" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
-      <h4>{{log.content}}</h4>
+      <h4>
+        <span class="tag" *ngIf="log.dataSource==2">周</span>
+        <span class="tag" *ngIf="log.dataSource==3">季</span>
+        <span class="tag" *ngIf="log.dataSource==4">年</span>
+        {{log.content}}
+      </h4>
       <div class="other">
         <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd' }}</ion-note>
         <ion-note>
-          <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.sbLikeList.length}}
+          <ion-icon class="szom" name="md-dianzandianji"></ion-icon> {{log.sbLikeList.length}}
         </ion-note>
         <ion-note>
-          <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.sbCommentList.length}}
+          <ion-icon class="szom" name="md-xiaoxi1"></ion-icon> {{log.sbCommentList.length}}
         </ion-note>
       </div>
-      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList&&log.uploadFileDetailDTOList.length">
-        <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])">
+      <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList.length">
+        <img *ngIf="log.uploadFileDetailDTOList.length"
+          [src]="getImageUrl(log.uploadFileDetailDTOList[0])"
+          onerror="this.src='assets/imgs/no-img.png'">
       </ion-thumbnail>
     </ion-item>
   </ion-list>

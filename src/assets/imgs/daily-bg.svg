@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="330px" height="93px" viewBox="0 0 330 93" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>工作日志-总赞数背景</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="99.5457623%" y1="0.471854205%" x2="-8.74204282%" y2="112.959346%" id="linearGradient-1">
+            <stop stop-color="#628FF7" offset="0%"></stop>
+            <stop stop-color="#3555DE" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="330" height="93"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.428272192" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="总结导出" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01001工作日志" transform="translate(-15.000000, -83.000000)">
+            <g id="1" transform="translate(0.000000, 75.000000)">
+                <g id="工作日志-总赞数背景" transform="translate(15.000000, 8.000000)">
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <use id="Mask" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                    <rect id="Rectangle-3" fill="url(#linearGradient-4)" opacity="0.209988839" mask="url(#mask-3)" transform="translate(98.425015, 68.425015) rotate(45.000000) translate(-98.425015, -68.425015) " x="76.7750151" y="20.1774882" width="43.2999992" height="96.4950529" rx="2"></rect>
+                    <rect id="Rectangle-3" fill="url(#linearGradient-4)" opacity="0.154185268" mask="url(#mask-3)" transform="translate(49.252089, 0.252089) rotate(45.000000) translate(-49.252089, -0.252089) " x="45.3274042" y="-21.6355778" width="7.84937027" height="43.7753342" rx="2"></rect>
+                    <rect id="Rectangle-3" fill="url(#linearGradient-4)" opacity="0.150669643" mask="url(#mask-3)" transform="translate(282.281496, 8.281496) rotate(45.000000) translate(-282.281496, -8.281496) " x="277.060328" y="-20.8365569" width="10.4423364" height="58.2361068" rx="2"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,7 +1,7 @@
 page-user-selfinfo {
   ion-list.type-list {
     ion-item.item {
-      height: rem(54);
+      min-height: rem(54);
       .item-inner {
         padding-left: rem(15);
         padding-right: 0;
@@ -15,6 +15,7 @@ page-user-selfinfo {
           font-size: rem(15);
           color: #333333;
           letter-spacing: 0;
+          white-space: normal;
         }
         img-loader {
           width: rem(36);

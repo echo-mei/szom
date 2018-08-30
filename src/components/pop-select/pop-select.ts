@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
-@IonicPage()
 @Component({
   selector: 'pop-select',
   templateUrl: 'pop-select.html'

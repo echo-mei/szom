@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EvaluateProvider } from '../../providers/evaluate/evaluate';
 
 /**
@@ -9,7 +9,6 @@ import { EvaluateProvider } from '../../providers/evaluate/evaluate';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-evalute-update',
   templateUrl: 'evalute-update.html',

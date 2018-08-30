@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { StorageProvider } from '../../providers/storage/storage';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { BASE_URL } from '../../config';
+import { UserProvider } from '../../providers/user/user';
+import { LikeListPage } from '../like-list/like-list';
 
-@IonicPage()
 @Component({
   selector: 'page-dynamic-detail',
   templateUrl: 'dynamic-detail.html',
@@ -20,11 +21,13 @@ export class DynamicDetailPage {
   // 评论区显示的提示
   placeholder: string = "";
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public storage: StorageProvider,
     public dynamicProvider: DynamicProvider,
-    public events: Events
+    public events: Events,
+    public userProvider: UserProvider
   ) {
     this.type = this.navParams.get("type");
     this.dynamic = this.navParams.get("dynamic");
@@ -37,8 +40,8 @@ export class DynamicDetailPage {
   }
 
   goLikeList() {
-    this.navCtrl.push("LikeListPage", {
-      likerList: this.dynamic.soaUnitAndAttentionDTO
+    this.navCtrl.push(LikeListPage, {
+      likerList: this.dynamic.sbLikePersonInfoDTO
     });
   }
 
@@ -50,6 +53,7 @@ export class DynamicDetailPage {
         this.events.publish(this.dynamicSearchListSus, this.dynamic);
         // 列表更新
         this.events.publish(this.dynamicListSus, this.dynamic);
+        this.hasMeLike();
       }
     );
   }
@@ -58,9 +62,9 @@ export class DynamicDetailPage {
     return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 
-  hasMeLike(): boolean {
+  hasMeLike() {
     let me = JSON.parse(this.storage.get('user'));
-    return this.dynamic && this.dynamic.sbLikeList && this.dynamic.sbLikeList.find((user) => {
+    this.dynamic.hasMeLike = this.dynamic && this.dynamic.sbLikeList && this.dynamic.sbLikeList.find((user) => {
       return user.likeUserName == me.personName;
     }) ? true : false;
   }
