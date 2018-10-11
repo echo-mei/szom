@@ -13,6 +13,11 @@ export class UserProvider {
   ) {
   }
 
+  // 获取登陆密钥
+  getRSAPublicKey(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/base/getRSAPublicKey`, params);
+  }
+
   // 登录
   login(params): Observable<any> {
     return this.http.post(`${BASE_URL}/base/login`, params);
@@ -80,7 +85,7 @@ export class UserProvider {
   }
 
   // 账户安全-修改密码
-  updatePassword(params): Observable<any>{
+  updatePassword(params): Observable<any> {
     return this.http.post(`${BASE_URL}/users/updateUsersPassword`, params);
   }
 
@@ -148,6 +153,11 @@ export class UserProvider {
   // 申请关注
   postFollow(params): Observable<any> {
     return this.http.post(`${BASE_URL}/contactList/stAttentionRelation`, params);
+  }
+
+  // 申请重点关注
+  postAttentedFollow(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/empAttention/addEmpAttentionRelation`, params);
   }
 
   // 接受关注

@@ -13,6 +13,7 @@ export class SignDatePage {
 
   @ViewChild('calendar') calendar: CalendarComponent;
 
+  user:any;
   month: any;
 
   calendarOptions : CalendarComponentOptions = {
@@ -37,6 +38,7 @@ export class SignDatePage {
     public popoverCtrl: PopoverController,
     public viewCtrl: ViewController
   ) {
+    this.user = this.navParams.get('user');
     this.onSign = this.navParams.get('onSign');
     this.goMonth();
   }
@@ -50,6 +52,7 @@ export class SignDatePage {
   getDaysInfo() {
     let _daysConfig: DayConfig[] = [];
     let params = {
+      userCode:this.user.userCode,
       month: this.month
     };
     this.signProvider.signInList(params).subscribe(
@@ -73,6 +76,7 @@ export class SignDatePage {
 
   getTags() {
     let params = {
+      userCode:this.user.userCode,
       month: this.month
     };
     this.tags = [];

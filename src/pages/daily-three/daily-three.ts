@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, Events } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, Events, LoadingController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -16,6 +16,7 @@ export class DailyThreePage {
 
   canCreate: boolean;
   user: any;
+  newFlag:any;
   size:number = 10;
   dailyThreeList: any[] = []; // 每季三励列表
   year: number;  // 当前年
@@ -28,16 +29,24 @@ export class DailyThreePage {
     }
   } = {};  // 当前季
   boolShow = {};
-  
+  dataLoadOver = false; //数据加载完成标志
+  loading = this.loadingCtrl.create({
+    content: '处理中...',
+    // showBackdrop:false,
+    cssClass: 'loading-new'
+  });
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public loadingCtrl:LoadingController
   ) {
     this.user = this.navParams.get('user');
+    this.newFlag = this.navParams.get('newFlag');
     let date = new Date();
     this.year = date.getFullYear();
     this.quarter = this.dateUtil.getQuarterOfDay(date);
@@ -87,8 +96,15 @@ export class DailyThreePage {
     if(this.dailyThreeList.length) {
       params['endTime'] = this.dailyThreeList[this.dailyThreeList.length-1].publishTime;
     }
+    if (!infinite) {
+      this.loading.present();
+    }
     this.dailyProvider.getDailyThreeList(params).subscribe(
       (data) => {
+        if (!infinite) {
+          this.dataLoadOver = true;
+          this.loading.dismiss();
+        }
         this.count = data.count;
         infinite && infinite.complete();
         if(data.list.length) {
@@ -96,7 +112,7 @@ export class DailyThreePage {
           this.dailyThreeList = this.dailyThreeList.concat(data.list);
         }else {
           infinite && infinite.enable(false);
-        }        
+        }
         this.showTopTime(this.dailyThreeList);
         this.resetCanCreate();
       }

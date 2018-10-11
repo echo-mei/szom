@@ -1,5 +1,5 @@
 import { Component, ViewChild} from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
+import { NavController, NavParams, Events, InfiniteScroll, LoadingController } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
@@ -16,6 +16,7 @@ import { DailyOneShowPage } from '../daily-one-show/daily-one-show';
 export class DailyOnePage {
   canCreate: boolean;
   user: any;
+  newFlag:any;
   size:number = 10;
   dailyOneList: any[] = []; // 每周一励列表
   year:number;  // 当前年
@@ -29,15 +30,23 @@ export class DailyOnePage {
     }
   } = {};  // 当前周
   boolShow = {};
+  dataLoadOver = false; //数据加载完成标志
+  loading = this.loadingCtrl.create({
+    content: '处理中...',
+    // showBackdrop:false,
+    cssClass: 'loading-new'
+  });
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public loadingCtrl:LoadingController
   ) {
     this.user = this.navParams.get('user');
+    this.newFlag = this.navParams.get('newFlag');
     let date = new Date();
     this.year = date.getFullYear();
     this.week = this.dateUtil.getWeekOfDay(date);
@@ -67,8 +76,15 @@ export class DailyOnePage {
     if(this.dailyOneList.length) {
       params['endTime'] = this.dailyOneList[this.dailyOneList.length-1].publishTime;
     }
+    if (!infinite) {
+      this.loading.present();
+    }
     this.dailyProvider.getDailyOneList(params).subscribe(
       (data) => {
+        if (!infinite) {
+          this.dataLoadOver = true;
+          this.loading.dismiss();
+        }
         this.count = data.count;
         infinite && infinite.complete();
         if(data.list.length) {

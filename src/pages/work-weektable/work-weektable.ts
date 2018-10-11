@@ -5,6 +5,7 @@ import { WorkProvider } from '../../providers/work/work';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { DatePipe } from '@angular/common';
 import { WorkWeektableStatisticsPage } from '../work-weektable-statistics/work-weektable-statistics';
+import { WorkWeektableShowPage } from '../work-weektable-show/work-weektable-show';
 
 /**
  * Generated class for the WorkWeektablePage page.
@@ -23,10 +24,12 @@ import { WorkWeektableStatisticsPage } from '../work-weektable-statistics/work-w
 export class WorkWeektablePage {
   @ViewChild('content') content: Content;
 
+  user: any;
+  newFlag: any;
+
   // 一天毫秒数
   private DAY_MILLISECOND = 1 * 24 * 60 * 60 * 1000;
 
-  showOneFlag=true;
   anchorFlag = 1;
   weektableList = [];
   weekName = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
@@ -42,19 +45,21 @@ export class WorkWeektablePage {
   nowDate = new Date;
   nowYear = this.nowDate.getFullYear();
   weekdate: any;
-  tempDate = this.nowDate;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public workProvider: WorkProvider,
     public dateUtil: DateUtilProvider,
     public datePipe: DatePipe) {
+    this.user = this.navParams.get('user');
+    console.log(this.user)
   }
 
   ionViewDidLoad() {
     this.weekdate = this.mergeYearAndWeek(this.nowDate);
     this.getTime();
     this.getWeektableList();
+    this.newFlag = this.navParams.get("newFlag");
   }
 
   //获取日期控件值
@@ -75,33 +80,44 @@ export class WorkWeektablePage {
   //跳到对应锚点
   goAnchor(id) {
     this.anchorFlag = id;
-    if(document.getElementById(id)) {
+    if (document.getElementById(id)) {
       this.content.scrollTo(0, document.getElementById(id).offsetTop, 20);
     }
   }
 
   goCreate() {
     this.navCtrl.push(WorkWeektableCreatePage, {
-      onUpdateWeektableList: this.getWeektableList.bind(this)
+      onUpdate:  this.goSpecWeektable.bind(this)
     });
   }
 
   goStatitics() {
-    this.navCtrl.push(WorkWeektableStatisticsPage, {
-      onUpdateWeektableList: this.getWeektableList.bind(this)
+    this.navCtrl.push(WorkWeektableStatisticsPage);
+  }
+
+  goWeektableShow(weektable) {
+    this.navCtrl.push(WorkWeektableShowPage, {
+      weektable: weektable,
+      onUpdate: this.getWeektableList.bind(this)
     });
   }
 
-  getWeektableList(weekdate=this.weekdate) {
-    let year =  weekdate.split(" ")[0];
+  getWeektableList(weekdate = this.weekdate,week = 0) {
+    let year = weekdate.split(" ")[0];
     let weeknum = weekdate.split(" ")[1];
     let params = {
-      Year:year,
+      userCode: this.user.userCode,
+      Year: year,
       weekNums: weeknum
     }
     this.workProvider.getWeektableList(params).subscribe(
       data => {
         this.weektableList = data;
+        if(week){
+          setTimeout(() => {
+            this.goAnchor(week);
+          }, 200);
+        }
       }
     );
   }
@@ -112,24 +128,37 @@ export class WorkWeektablePage {
     return year + " " + (this.dateUtil.getWeekOfDay(date).index + 1);
   }
 
+  //根据日期跳到具体的年周显示周表列表
+  goSpecWeektable(date: Date) {
+    let week = date.getDay();
+    week = week === 0?7:week;
+    this.weekdate = this.mergeYearAndWeek(date);
+    this.getWeektableList(this.weekdate,week);
+  }
+
   updateList(flag) {
-    this.showOneFlag = false;
-    if(!flag){
-      let year = this.weekdate.split(" ")[0];
-      let weeknum = this.weekdate.split(" ")[1];
-      let weeks = this.dateUtil.getWeeksOfYear(parseInt(year));
-      this.tempDate = weeks[weeknum-1].firstDate;
+    // this.showOneFlag = false;
+    if (!flag) {
+      //选则日期的时候切换
       this.getWeektableList();
-    }else{
-      let updateDate = new Date(this.tempDate.getTime() + flag * 7 * this.DAY_MILLISECOND);
+    } else {
+      //上下周切换  flag=-1代表切换上周   1代表切换下周
+      let updateDate = this.getNearWeek(flag);
       if (updateDate.getFullYear() <= this.nowYear) {
         let weekDateTemp = this.mergeYearAndWeek(updateDate);
-        this.tempDate = updateDate;
         this.weekdate = weekDateTemp
         this.getWeektableList(weekDateTemp);
       }
     }
+  }
 
+  getNearWeek(flag) {
+    let year = this.weekdate.split(" ")[0];
+    let weeknum = this.weekdate.split(" ")[1];
+    let weeks = this.dateUtil.getWeeksOfYear(parseInt(year));
+    let tempDate = weeks[weeknum - 1].firstDate;
+    let updateDate = new Date(tempDate.getTime() + flag * 7 * this.DAY_MILLISECOND);
+    return updateDate;
   }
 
 }

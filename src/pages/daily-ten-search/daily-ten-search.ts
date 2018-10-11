@@ -1,62 +1,107 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
 import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
+import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
 
 @Component({
   selector: 'page-daily-ten-search',
   templateUrl: 'daily-ten-search.html',
 })
 export class DailyTenSearchPage {
-  @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('searchbar') searchbar;
+
   onUpdate: (daily) => {};
   onDelete: (dailyId) => {};
+
+  // 当前用户
   user: any;
+  // 每页显示条数
   size: number = 10;
+  // 开始时间
   timeStarts: string = '';
+  // 结束时间
   timeEnd: string = '';
-  searchQuery: string = '';
-  selectTimeShowFlag = false;
-  showNotFound: boolean=false;
-  //原数据
-  dailyList: Array<object>;
-   /*关键词*/
+  // 原数据
+  dailyList: Array<object> = [];
+  // 搜索关键字
   selectString: string = '';
-  onceLoad:number = 1;
+  // 是否正在加载
+  isLoading: boolean = true;
+  // 是否有更多数据
+  hasMore: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public storage: StorageProvider,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController
   ) {
     this.user = this.navParams.get('user');
     this.onUpdate = this.navParams.get('onUpdate');
     this.onDelete = this.navParams.get('onDelete');
-    this.dailyList = [];
-    this.initLogDailyList();
+    this.resetList();
   }
 
-  initLogDailyList() {
-    this.more(false);
+  // 获取数据
+  getLogDailyList(params?) {
+    let p = {
+      size: this.size,
+      userCode: this.user.userCode,
+      searchKeyword: this.selectString,
+      searchStart: this.timeStarts,
+      searchEnd: this.timeEnd,
+      ...params
+    };
+    this.isLoading = true;
+    return this.dailyProvider.getLogDailyList(p).do(list => {
+      this.hasMore = list.length ? true : false;
+      this.isLoading = false;
+    });
   }
-  //返回
+
+  // 重置列表
+  resetList() {
+    this.getLogDailyList().subscribe((list) => {
+      this.dailyList = list;
+    });
+  }
+
+  // 搜索
+  search() {
+    this.resetList();
+  }
+
+  // 加载更多
+  more(infinite?: InfiniteScroll) {
+    this.getLogDailyList({endTime: this.dailyList[this.dailyList.length - 1]['publishTime']}).subscribe((list) => {
+      list && (this.dailyList = this.dailyList.concat(list));
+      infinite.complete();
+    });
+  }
+
+  // 选择时间跨度
+  goSelectDate() {
+    this.modalCtrl.create(BetweenDatePickerComponent, {
+      afterSure: (start, end) => {
+        this.timeStarts = this.dateUtil.format(start, 'yyyy-MM-dd');
+        this.timeEnd = this.dateUtil.format(end, 'yyyy-MM-dd');
+        this.search();
+      }
+    }).present();
+  }
+
+  // 返回
   goBack() {
     this.navCtrl.pop();
   }
 
-  // 重置
-  reset() {
-    this.timeStarts = '';
-    this.timeEnd = '';
-    this.selectTimeShowFlag = true;
-  }
-
+  // 更新日志
   updateDaily(daily) {
     for (let i = 0; i < this.dailyList.length; i++) {
       if (this.dailyList[i]['dailyId'] === daily.dailyId) {
@@ -66,6 +111,7 @@ export class DailyTenSearchPage {
     }
   }
 
+  // 删除日志
   deleteDaily(dailyId) {
     for (let i = 0; i < this.dailyList.length; i++) {
       if (this.dailyList[i]['dailyId'] === dailyId) {
@@ -84,64 +130,6 @@ export class DailyTenSearchPage {
       onUpdate: this.onUpdate,
       onDelete: this.onDelete
     });
-  }
-
-  // 搜索确定按钮实现
-  goSelcet(event: any) {
-    this.selectTimeShowFlag = false;
-    this.initLogDailyList();
-  }
-
-  changeTime(params) {
-    if(params['searchStart']){
-
-      params['searchStart'] = `${params['searchStart']}-01-01`;
-    }
-    if(params['searchEnd']){
-
-      params['searchEnd'] = `${params['searchEnd']}-12-31`;
-    }
-  }
-
-  more(boolSearch=true, infinite?: InfiniteScroll) {
-    let loading = this.loadingCtrl.create({
-      content: '处理中...'
-    });
-    this.infinite && this.infinite.enable(true);
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode,
-      searchKeyword: this.selectString,
-      searchStart: this.timeStarts,
-      searchEnd: this.timeEnd
-    };
-    this.changeTime(params)
-    if (boolSearch && this.dailyList.length) {
-      params['endTime'] = this.dailyList[this.dailyList.length - 1]['publishTime'];
-    }
-    this.onceLoad-->0?loading.present():'';
-    this.dailyProvider.getDailyTenList(params).subscribe(
-      (data) => {
-        if(!boolSearch && !(this.dailyList == data.list && !data.list)){
-          loading.present();
-        };
-        if(!data.list){
-          this.showNotFound = true;
-        };
-        loading.dismiss();
-        infinite && infinite.complete();
-        if(!params['endTime'] && data.list == ''){
-          this.dailyList = [];
-        }
-        if (data.list.length) {
-          infinite && infinite.enable(true);
-          boolSearch? this.dailyList = this.dailyList.concat(data.list): this.dailyList = data.list;
-        } else {
-          infinite && infinite.enable(false);
-        }
-      }
-    );
-
   }
 
   getImageUrl(img) {

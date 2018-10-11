@@ -16,6 +16,7 @@ import { SignDatePage } from '../sign-date/sign-date';
 import { SignTagsPage } from '../sign-tags/sign-tags';
 import { BzWorkWeektablePage } from '../bz-work-weektable/bz-work-weektable';
 import { BzInfoPage } from '../bz-info/bz-info';
+import { LeaderInfoLibPage } from '../leader-info-lib/leader-info-lib';
 
 @Component({
   selector: 'page-workspace',
@@ -126,7 +127,9 @@ export class WorkspacePage {
   }
 
   goWorkWeektable() {
-    this.navCtrl.push(WorkWeektablePage);
+    this.navCtrl.push(WorkWeektablePage,{
+      user: this.me
+    });
   }
 
   goMeInfo() {
@@ -141,5 +144,9 @@ export class WorkspacePage {
 
   goBanzi() {
     this.navCtrl.push(BzInfoPage);
+  }
+
+  goLeaderInfoLib(){
+    this.navCtrl.push(LeaderInfoLibPage);
   }
 }

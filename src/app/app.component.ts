@@ -11,7 +11,6 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { WebsocketProvider } from '../providers/websocket/websocket';
-import { WEBSOCKET_URL } from '../config';
 
 
 @Component({
@@ -47,7 +46,7 @@ export class MyApp {
   ) {
     if(this.storage.get('token')) {
       this.rootPage = TabsPage;
-      this.connectWebsocket();
+      this.websocketProvider.connectWebsocket();
     }else {
       this.rootPage = LoginPage;
     }
@@ -104,94 +103,6 @@ export class MyApp {
     });
     this.keyboard.onKeyboardHide().subscribe(() => {
       this.keyboardIsShow = false;
-    });
-  }
-
-  connectWebsocket() {
-    this.websocketProvider.connect(WEBSOCKET_URL, () => {
-      // 新的关注
-      this.websocketProvider.subscribe(
-        `/attention/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            this.events.publish('ws-addresslist');
-          }
-        }
-      );
-      // 干部动态-关注
-      this.websocketProvider.subscribe(
-        `/attentionDynamicMessage/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-关注');
-            this.events.publish('ws-dynamic-attention');
-          }
-        }
-      );
-      // 干部动态-本单位
-      this.websocketProvider.subscribe(
-        `/unitDynamicMessage/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-本单位');
-            this.events.publish('ws-dynamic-unit');
-          }
-        }
-      );
-      // 干部动态-领导批赞-单位领导
-      this.websocketProvider.subscribe(
-        `/leaderLikeDynamicMessage/notifications/unitId/${JSON.parse(this.storage.get('user')).orgCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-领导批赞-单位领导');
-            this.events.publish('ws-dynamic-leader-unit');
-          }
-        }
-      );
-      // 干部动态-领导批赞-市领导
-      this.websocketProvider.subscribe(
-        `/leaderLikeDynamicMessage/notifications/all`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-领导批赞-市领导');
-            this.events.publish('ws-dynamic-leader-all');
-          }
-        }
-      );
-      // 干部动态
-      this.websocketProvider.subscribe(
-        `/dynamicMessage/notifications/userCode/${JSON.parse(this.storage.get('user')).userCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-用户');
-            this.events.publish('ws-dynamic');
-          }
-        }
-      );
-      // 干部动态
-      this.websocketProvider.subscribe(
-        `/dynamicMessage/notifications/unitId/${JSON.parse(this.storage.get('user')).orgCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-单位');
-            this.events.publish('ws-dynamic');
-          }
-        }
-      );
-      // 干部动态
-      this.websocketProvider.subscribe(
-        `/dynamicMessage/notifications/all`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('有新的干部动态-所有');
-            this.events.publish('ws-dynamic');
-          }
-        }
-      );
-    }, () => {
-      setTimeout(() => {
-        this.connectWebsocket();
-      }, 1000);
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
+import { NavController, NavParams, Events, InfiniteScroll, LoadingController } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
@@ -16,21 +16,29 @@ import { DailyTenSearchPage } from '../daily-ten-search/daily-ten-search';
 export class DailyTenPage {
   canCreate: boolean;
   user: any;
+  newFlag:any;
   size:number = 10;
   dailyTenList: any[] = []; // 每年十励列表
   year:number;  // 当前年
   count:number; //每周日志数配置
   boolShow = {};
-
+  dataLoadOver = false; //数据加载完成标志
+  loading = this.loadingCtrl.create({
+    content: '处理中...',
+    // showBackdrop:false,
+    cssClass: 'loading-new'
+  });
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public events: Events,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public loadingCtrl:LoadingController
   ) {
     this.user = this.navParams.get('user');
+    this.newFlag = this.navParams.get('newFlag');
     let date = new Date();
     this.year = date.getFullYear();
     this.initList();
@@ -79,8 +87,15 @@ export class DailyTenPage {
     if(this.dailyTenList.length) {
       params['endTime'] = this.dailyTenList[this.dailyTenList.length-1].publishTime;
     }
+    if (!infinite) {
+      this.loading.present();
+    }
     this.dailyProvider.getDailyTenList(params).subscribe(
       (data) => {
+        if (!infinite) {
+          this.dataLoadOver = true;
+          this.loading.dismiss();
+        }
         this.count = data.count;
         infinite && infinite.complete();
         if(data.list.length) {

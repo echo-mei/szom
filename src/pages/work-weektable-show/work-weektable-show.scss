@@ -1,0 +1,28 @@
+page-work-weektable-show {
+  .separate{
+    background: #fafafa;
+    height: rem(6);
+    width: 100%;
+  }
+
+  .list{
+    margin-left: rem(15);
+    .item{
+      .item-inner{
+        padding-right: rem(15);
+        border-bottom: .5px solid color($colors,boderColor)!important;
+
+        .label{
+          color:#cccccc;
+        }
+        ion-note{
+          color: #000000;
+        }
+      }
+    }
+    h2{
+      font-size: rem(16);
+      padding-right: rem(15);
+    }
+  }
+}

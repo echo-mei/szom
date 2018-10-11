@@ -2,10 +2,10 @@ page-daily-one {
   ion-content{
     background-color: #fafafa !important;
   }
-  .scroll-content{
-    margin-top: rem(70) !important;
-    padding-top: 0 !important;
-  }
+  // .scroll-content{
+  //   margin-top: rem(70) !important;
+  //   padding-top: 0 !important;
+  // }
   .addItemInput{
     display: flex;
     align-items: inherit !important;
@@ -18,6 +18,23 @@ page-daily-one {
         padding-left: rem(20);
         margin-right: rem(20);
       }
+  }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
   }
   ion-list {
     // margin-top: rem(18) !important;
@@ -66,7 +83,7 @@ page-daily-one {
               letter-spacing: rem(-0.15) !important;
               line-height: rem(16) !important;
             }
-            
+
             img {
               width: rem(36);
               height: rem(36);

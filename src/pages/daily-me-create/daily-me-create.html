@@ -14,7 +14,8 @@
         <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
       </ion-item> -->
       <ion-item>
-        <ion-label>{{maxLength-dailyForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
+        <ion-label *ngIf="dailyForm.controls['content'].value.length <= maxLength">{{dailyForm.controls['content'].value.length}}</ion-label>
+        <ion-label class="error" *ngIf="dailyForm.controls['content'].value.length > maxLength">超出{{dailyForm.controls['content'].value.length-maxLength}}字</ion-label>
         <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
       </ion-item>
     </ion-list>

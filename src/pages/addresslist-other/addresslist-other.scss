@@ -1,6 +1,6 @@
 page-addresslist-other {
   .scroll-content {
-    background: #F4F4F4;
+    background: #fafafa;
   }
   .searcher {
     position: relative;
@@ -33,36 +33,33 @@ page-addresslist-other {
   }
 
   .type-list {
+    margin:0;
+    .divider{
+      font-size: rem(12);
+      color: #666666;
+      letter-spacing: rem(-0.42);
+      line-height: rem(12);
+      padding: rem(6) rem(15);
+    }
     ion-item {
-      width: rem(360);
-      height: rem(75);
+      min-height: rem(44);
+      padding-left: rem(15);
       background: #FFFFFF;
+      ion-avatar{
+        margin: rem(15) rem(10) rem(15) 0!important;
+        width: rem(50);
+        height: rem(50);
+        margin-right:rem(15);
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
       .item-inner {
         padding-right: 0!important;
+        border-bottom: .5px solid color($colors,boderColor)!important;
         ion-label.label {
           margin: 0;
-          padding-left: rem(75);
-          img {
-            position: absolute;
-            left: rem(15);
-            top: rem(10);
-            width: rem(50);
-            height: rem(50);
-          }
-          .type-name {
-            position: absolute;
-            left: rem(15);
-            top: rem(10);
-            width: rem(50);
-            height: rem(50);
-            line-height: rem(50);
-            text-align: center;
-            font-size: rem(18);
-            background: #F5A623;
-            color: #fff;
-            border-radius: 2px;
-            letter-spacing: rem(-0.63);
-          }
           h2 {
             font-size: rem(15);
             color: #333333;

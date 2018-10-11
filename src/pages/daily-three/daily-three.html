@@ -14,7 +14,7 @@
 
 <ion-content>
   <ion-list *ngIf="dailyThreeList" no-lines>
-    <ion-item *ngIf="canCreate" class="addItemInput">
+    <ion-item *ngIf="canCreate && !newFlag && dataLoadOver" class="addItemInput">
       <ion-note item-start style="opacity: 0.3;">{{getCurrentIndex()}}</ion-note>
       <div class="oneInput">
         <div class="text" (click)="goDailyCreate()">本季完成最满意的一件事...</div>
@@ -23,12 +23,16 @@
         </div>
       </div>
     </ion-item>
+    <div class="noDailyList" *ngIf="dailyThreeList.length===0 && newFlag && dataLoadOver">
+      <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml" />
+      <p>没有发布过每季三励</p>
+    </div>
     <div *ngFor="let log of dailyThreeList;let i = index;">
       <div class="quaterWeek" *ngIf="boolShow[i]">{{ log.year }}年第{{ log.quarterNums }}季度</div>
       <ion-item (click)="goDailyShow(log)" tappable>
         <div class="inaa">
           <ion-note [class.now-daily]="dateFormat(quarter.quarter.firstDate) + '-' + dateFormat(quarter.quarter.lastDate) == log.startDate.split('T')[0].replace('-','.').replace('-','.') +'-'+log.endDate.split('T')[0].replace('-','.').replace('-','.')">{{getIndex(log)}}</ion-note>
-          <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
+          <list-item [log]="log" [getImageUrl]="getImageUrl"></list-item>
         </div>
       </ion-item>
     </div>

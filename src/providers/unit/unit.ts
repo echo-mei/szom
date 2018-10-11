@@ -49,4 +49,8 @@ export class UnitProvider {
     return this.http.get(`${BASE_URL}/contactList/ownUnit/users`, params);
   }
 
+  // 查询有权限的机构列表
+  getAllUnitOrgsList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/allUnit/orgs`, params);
+  }
 }

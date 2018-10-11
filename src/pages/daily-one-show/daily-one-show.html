@@ -2,11 +2,6 @@
 
   <ion-navbar color="white">
     <ion-title text-center>每周{{ count | digitalChineseConversion }}励详情</ion-title>
-    <ion-buttons right>
-      <button *ngIf="dailyOne?dailyOne.isShowDelete: false" ion-button (click)="popover()">
-        <ion-icon class="szom" name="md-shanchu"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

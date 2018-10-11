@@ -116,7 +116,6 @@ page-work-weektable {
     .item{
       .item-inner{
         padding: rem(18) rem(15) rem(18) 0;
-        margin-left: rem(15);
         border-bottom: .5px solid color($colors,boderColor)!important;
         .label {
           margin: 0;
@@ -131,7 +130,7 @@ page-work-weektable {
         width: rem(42);
         height: rem(42);
         line-height: rem(42);
-        margin-right: rem(14);
+        margin: 0 rem(15);
         @include color-bg(#4D74EB, 0.3);
         &.type1{
           @include color-bg(#4d74eb, 0.3);

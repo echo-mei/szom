@@ -5,7 +5,7 @@ import { BASE_URL } from '../../config';
 import { DailyProvider } from '../../providers/daily/daily';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserDynamicShowPage } from '../user-dynamic-show/user-dynamic-show';
-import { DailyMeLikelistPage } from '../daily-me-likelist/daily-me-likelist';
+import { LikeStatisticsPage } from '../like-statistics/like-statistics';
 
 @Component({
   selector: 'page-user-dynamic-list',
@@ -74,7 +74,6 @@ export class UserDynamicListPage {
         if (data.length) {
           infinite && infinite.enable(true);
           this.logDataList = this.logDataList.concat(data);
-          console.log(this.logDataList)
         } else {
           infinite && infinite.enable(false);
         }
@@ -116,7 +115,7 @@ export class UserDynamicListPage {
   }
 
   showDetailLike() {
-    let popover = this.popoverCtrl.create(DailyMeLikelistPage,{
+    let popover = this.popoverCtrl.create(LikeStatisticsPage,{
       stlikeList:this.stlikeList,
       stlikeSum:this.stlikeSum
     }, {

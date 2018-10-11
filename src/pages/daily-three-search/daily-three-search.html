@@ -56,7 +56,7 @@
 
   <ion-list *ngIf="dailyList" class="daily-list" [class.listDiv]="dailyList.length">
     <ion-item *ngFor="let log of dailyList;let i=index;" tappable (click)="goDailyShow(log)">
-      <list-item [log]="log" [selectString]="selectString"></list-item>
+      <list-item [log]="log" [getImageUrl]="getImageUrl" [selectString]="selectString"></list-item>
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="more(true, $event)">

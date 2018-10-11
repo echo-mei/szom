@@ -1,18 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
 import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
+import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
 
 @Component({
   selector: 'page-daily-me-search',
   templateUrl: 'daily-me-search.html',
 })
 export class DailyMeSearchPage {
-  @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('searchbar') searchbar;
 
   onUpdate: (daily) => {};
   onDelete: (dailyId) => {};
@@ -41,7 +40,8 @@ export class DailyMeSearchPage {
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public storage: StorageProvider,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController
   ) {
   }
 
@@ -77,16 +77,14 @@ export class DailyMeSearchPage {
     });
   }
 
+  // 搜索
+  search() {
+    this.resetList();
+  }
+
   // 返回
   goBack() {
     this.navCtrl.pop();
-  }
-
-  // 重置时间区
-  reset() {
-    this.timeStarts = '';
-    this.timeEnd = '';
-    this.selectTimeShowFlag = true;
   }
 
   // 更新日志
@@ -124,18 +122,24 @@ export class DailyMeSearchPage {
     });
   }
 
-  // 搜索
-  search() {
-    this.selectTimeShowFlag = false;
-    this.resetList();
-  }
-
   // 加载更多
   more(infinite?: InfiniteScroll) {
     this.getLogDailyList({endTime: this.dailyList[this.dailyList.length - 1]['publishTime']}).subscribe((list) => {
       list && (this.dailyList = this.dailyList.concat(list));
       infinite.complete();
     });
+  }
+
+  // 选择时间跨度
+  goSelectDate() {
+    // this.selectTimeShowFlag = !this.selectTimeShowFlag;
+    this.modalCtrl.create(BetweenDatePickerComponent, {
+      afterSure: (start, end) => {
+        this.timeStarts = this.dateUtil.format(start, 'yyyy-MM-dd');
+        this.timeEnd = this.dateUtil.format(end, 'yyyy-MM-dd');
+        this.search();
+      }
+    }).present();
   }
 
   getImageUrl(img) {

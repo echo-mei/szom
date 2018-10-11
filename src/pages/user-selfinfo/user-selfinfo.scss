@@ -1,17 +1,34 @@
 page-user-selfinfo {
+  ion-navbar {
+    .toolbar-background {
+      background: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    }
+    .toolbar-title, ion-icon {
+      color: #fff;
+    }
+  }
+  .scroll-content {
+    background: #fafafa;
+  }
   ion-list.type-list {
     ion-item.item {
-      min-height: rem(54);
+      padding-left: rem(15);
       .item-inner {
-        padding-left: rem(15);
-        padding-right: 0;
+        padding: rem(7) 0;
+        border-bottom: .5px solid color($colors,boderColor);
+
+        .label{
+          margin: 0;
+        }
         ion-note {
           font-size: rem(12);
           color: #CCCCCC;
-          letter-spacing: 0;
           text-align: left;
         }
         h4 {
+          min-height: rem(21);
+          line-height: rem(21);
+          margin: 0;
           font-size: rem(15);
           color: #333333;
           letter-spacing: 0;

@@ -127,6 +127,7 @@ export class DailyMeShowPage {
           this.comment = '';
           this.placeholder = this.originalPlaceholder;
           this.commentObjectType = 1;
+          this.commentId = undefined;
           this.getDaily(true);
         }
       );

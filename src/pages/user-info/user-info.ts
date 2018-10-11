@@ -152,7 +152,7 @@ export class UserInfoPage {
         this.onFollow && this.onFollow();
         this.toastCtrl.create({
           cssClass: 'mini',
-          message: '发送关注申请成功',
+          message: '关注申请已发送',
           duration: 1000,
           position: 'middle'
         }).present();

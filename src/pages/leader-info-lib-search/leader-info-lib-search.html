@@ -1,0 +1,39 @@
+<!--
+  Generated template for the LeaderInfoLibSearchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+    <ion-toolbar color="white">
+      <div class="input-box">
+        <ion-icon class="szom" name="sousuo"></ion-icon>
+        <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..." #searchEle></ion-searchbar>
+        <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';search()"></ion-icon>
+      </div>
+      <button ion-button (click)="goBack()" clear float-right>取消</button>
+    </ion-toolbar>
+  </ion-header>
+
+
+<ion-content>
+  <ion-list no-lines>
+    <div *ngFor="let unit of unitList;">
+      <button class="unit" ion-item (click)="goLeaderInfoLibUnit(unit)">
+        {{unit.orgName}}
+        <ion-icon item-end class="szom" name="you"></ion-icon>
+      </button>
+    </div>
+  </ion-list>
+  <ion-list class="type-list" no-lines>
+    <div *ngFor="let key of personKeyList;let i = index;">
+      <div class="divider">{{key}}</div>
+      <ion-item *ngFor="let user of personValueList[i];" (click)="goUserInfo(user)">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+        <h2>{{user.name}}</h2>
+        <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+      </ion-item>
+    </div>
+  </ion-list>
+
+</ion-content>

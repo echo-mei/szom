@@ -18,7 +18,11 @@
       </button>
     </ion-item>
     <ion-item *ngIf="!isPhone()">
-      <ion-input formControlName="password" [type]="showPassword?'text':'password'" placeholder="密码"></ion-input>
+      <ion-input formControlName="password"
+        (selectstart)="forbidden()"
+        (cut)="forbidden()"
+        (copy)="forbidden()"
+        (paste)="forbidden()" [type]="showPassword?'text':'password'" placeholder="密码"></ion-input>
       <button type="button" ion-button clear item-end *ngIf="loginForm.controls['password'].value" (click)="showPassword=!showPassword">
         <ion-icon class="szom" [name]="showPassword?'yanjing':'eye-close'"></ion-icon>
       </button>

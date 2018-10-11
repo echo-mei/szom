@@ -1,0 +1,15 @@
+<div class="like-main">
+
+  <div class="total">
+    <ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
+    {{stlikeSum}}
+    <p class="des">总赞数</p>
+  </div>
+  <ion-list *ngIf="stlikeList" class="like-classify" no-lines>
+    <ion-item *ngFor="let stlike of stlikeList;let i=index;">
+      <span class="li-type"></span>
+      <p class="des">{{stlike.operatorTypeName}}</p>
+      <p class="num" item-end>{{stlike.likeCounts?stlike.likeCounts:"—"}}</p>
+    </ion-item>
+  </ion-list>
+</div>

@@ -11,6 +11,7 @@ import { UserImpressionCreatePage } from '../user-impression-create/user-impress
 export class UserImpressionPage {
 
   user: any;
+  newFlag:any;
 
   tagList: any[] = [];
 
@@ -22,6 +23,7 @@ export class UserImpressionPage {
     public impressionProvider: ImpressionProvider
   ) {
     this.user = this.navParams.get('user');
+    this.newFlag = this.navParams.get('newFlag');
     this.getImpressionList();
   }
 

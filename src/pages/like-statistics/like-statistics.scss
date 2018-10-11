@@ -1,0 +1,103 @@
+.daily-likelist-pop{
+  ion-backdrop{
+    opacity: 0.6;
+  }
+
+  .popover-content{
+    width: rem(270);
+  }
+}
+page-like-statistics {
+  .like-main {
+    background: #fff;
+    .total{
+      position: relative;
+      background: linear-gradient(to right, #3555DE, #628FF7);
+      font-size: rem(48);
+      color: #FFFFFF;
+      letter-spacing: 0;
+      text-align: center;
+      padding: rem(26) 0;
+      height: rem(135);
+      line-height: rem(75);
+
+      .szom{
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: rem(10);
+        font-size: rem(14);
+        color: #000000;
+        opacity: .6;
+      }
+      .des{
+        opacity: 0.68;
+        font-size: rem(12);
+        color: #FFFFFF;
+        letter-spacing: 0;
+        text-align: center;
+        line-height: rem(14);
+        margin: rem(-7) 0 0 0;
+      }
+    }
+    .like-classify{
+      padding: rem(24) rem(30);
+      margin: 0;
+      .item {
+        .label {
+          margin: 0;
+        }
+        height: rem(30);
+        line-height: rem(30);
+        font-size: 0;
+        &:nth-of-type(2){
+          .li-type{
+            opacity: 0.85;
+          }
+        }
+        &:nth-of-type(3){
+          .li-type{
+            opacity: 0.7;
+          }
+        }
+        &:nth-of-type(4){
+          .li-type{
+            opacity: 0.55;
+          }
+        }
+        &:nth-of-type(5){
+          .li-type{
+            opacity: 0.45;
+          }
+        }
+        .li-type{
+          vertical-align: middle;
+          display: inline-block;
+          width: rem(5);
+          height: rem(5);
+          background:color($colors,mainBlueColor);
+          transform: rotate(-45deg);
+          margin-left: rem(2);
+        }
+        p {
+          display: inline-block;
+          vertical-align: middle;
+          margin: 0;
+          letter-spacing: 0;
+          line-height: rem(25);
+          &.num{
+            font-size: rem(16);
+            color: #545454;
+            font-weight: bold;
+          }
+          &.des{
+            font-size: rem(14);
+            color: #666666;
+            letter-spacing: 0;
+            margin-left: rem(6);
+          }
+        }
+      }
+    }
+  }
+}

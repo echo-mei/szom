@@ -17,7 +17,8 @@
     <button ion-button color="dark" clear (click)="updateList(-1)">
       <ion-icon name="md-arrow-dropleft"></ion-icon>
     </button>
-    <ion-multi-picker class="time" [(ngModel)]="weekdate" item-content [multiPickerColumns]="dateControls" doneText="确定" cancelText="取消" (ionChange)="updateList(0);"></ion-multi-picker>
+    <ion-multi-picker class="time" [(ngModel)]="weekdate" item-content [multiPickerColumns]="dateControls" doneText="确定" cancelText="取消"
+      (ionChange)="updateList(0);"></ion-multi-picker>
     <label class="time-show" *ngIf="weekdate">第{{weekdate.split(" ")[0]}}年 第{{weekdate.split(" ")[1]}}周</label>
     <button ion-button color="dark" clear (click)="updateList(1)">
       <ion-icon name="md-arrow-dropright"></ion-icon>
@@ -36,18 +37,20 @@
 </ion-header>
 
 <ion-content #content>
-  <div class="add-new" (click)="goCreate()">
+  <div class="add-new" (click)="goCreate()" *ngIf="!newFlag">
     <ion-icon class="szom" name="md-bianjixian"></ion-icon>
   </div>
 
-  <div class="noDailyList" *ngIf="weektableList.length<=0 && showOneFlag">
+  <!-- <div class="noDailyList" *ngIf="weektableList.length<=0 && showOneFlag && !newFlag">
     <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml" />
     <p>您还没有发布周表
       <br>快去
       <a (click)="goCreate()">发布</a>吧~</p>
+  </div> -->
+  <div *ngIf="weektableList.length<=0 && newFlag">
+    <not-found></not-found>
   </div>
-
-  <div *ngIf="weektableList.length<=0 && !showOneFlag">
+  <div *ngIf="weektableList.length<=0">
     <not-found></not-found>
   </div>
 
@@ -56,8 +59,8 @@
       <div id="{{weektable.week}}" class="title" *ngIf="i===0 || (i>0 && weektableList[i].week != weektableList[i-1].week)">
         {{weekName[weektable.week-1]}}
       </div>
-      <ion-item>
-        <div class="type" [class]="'type type'+weektable.weektableTypeId"><span class="text">{{weektable.typeName}}</span></div>
+      <ion-item (click)="goWeektableShow(weektable)">
+        <div item-start class="type" [class]="'type type'+weektable.weektableTypeId"><span class="text">{{weektable.typeName}}</span></div>
         <div class="content">
           <p class="text">{{weektable.content}}</p>
           <div class="time">

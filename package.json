@@ -24,6 +24,7 @@
     "@ionic-native/base64": "^4.8.0",
     "@ionic-native/camera": "^4.8.0",
     "@ionic-native/core": "4.7.0",
+    "@ionic-native/device": "^4.12.2",
     "@ionic-native/file": "^4.7.0",
     "@ionic-native/image-picker": "^4.8.0",
     "@ionic-native/keyboard": "^4.10.1",
@@ -60,9 +61,12 @@
     "ionic-plugin-keyboard": "^2.2.1",
     "ionic3-index-list": "^1.0.8",
     "ionicons": "3.0.0",
+    "jsencrypt": "^3.0.0-rc.1",
+    "jsrsasign": "^8.0.12",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "ng2-dragula": "^1.5.0",
+    "node-rsa": "^1.0.1",
     "phonegap-plugin-mobile-accessibility": "git+https://github.com/phonegap/phonegap-mobile-accessibility.git",
     "rxjs": "5.5.11",
     "sockjs-client": "^1.1.5",
@@ -95,7 +99,6 @@
       "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
-      "android",
       "ios"
     ]
   },

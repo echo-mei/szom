@@ -16,21 +16,25 @@
 
 
 <ion-content>
-  <div class="add-new" (click)="goDailyCreate()">
+  <div class="add-new" (click)="goDailyCreate()" *ngIf="!newFlag && dataLoadOver">
     <ion-icon class="szom" name="md-bianjixian"></ion-icon>
   </div>
-  <div class="noDailyList" *ngIf="!logDataList">
+  <div class="noDailyList" *ngIf="logDataList.length===0 && !newFlag && dataLoadOver">
     <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
     <p>您还没有发布过日志
       <br>快去<a (click)="goDailyCreate()">发布</a>吧~</p>
   </div>
-  <div class="like-main" *ngIf="logDataList" (click)="showDetailLike()">
+  <div class="noDailyList" *ngIf="logDataList.length===0 && newFlag  && dataLoadOver">
+    <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
+    <p>没有发布过日志</p>
+  </div>
+  <div class="like-main" *ngIf="logDataList.length>0" (click)="showDetailLike()">
     <h1>{{stlikeSum}}</h1>
     <span class="des">总赞数
       <ion-icon class="szom" name="md-right"></ion-icon>
     </span>
   </div>
-  <ion-list *ngIf="logDataList" class="daily-list">
+  <ion-list *ngIf="logDataList.length>0" class="daily-list">
     <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="goDailyShow(log)">
       <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
     </ion-item>

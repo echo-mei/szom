@@ -19,8 +19,8 @@ export class WorkProvider {
   }
 
   // 修改工作周表
-  public updateWeektable(params) {
-    return this.http.put(`${BASE_URL}/upWeektable`, params);
+  public updateWeektable(weektableId,params) {
+    return this.http.put(`${BASE_URL}/upWeektable/${weektableId}`, params);
   }
 
   // 获取工作周表信息

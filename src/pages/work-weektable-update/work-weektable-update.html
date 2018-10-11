@@ -1,0 +1,49 @@
+<!--
+  Generated template for the WorkWeektableCreatePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>工作周表修改</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="separate"></div>
+  <form [formGroup]="weektableForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>日期</ion-label>
+        <ion-datetime formControlName="workDateStr" displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" placeholder="请选择" cancelText="取消"
+          doneText="确认"></ion-datetime>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>时间</ion-label>
+        <ion-multi-picker formControlName="dayPeriod" placeholder="请选择" item-content [multiPickerColumns]="dayPeriodControls" doneText="确定"
+        cancelText="取消"></ion-multi-picker>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>类型</ion-label>
+        <ion-multi-picker formControlName="weektableTypeCode" placeholder="请选择" item-content [multiPickerColumns]="weektableTypeControls" doneText="确定"
+        cancelText="取消" (ionChange)="goTypeCustom()"></ion-multi-picker>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-item class="textarea">
+      <ion-label>{{maxLength-weektableForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
+      <ion-textarea autosize formControlName="content" name="content" placeholder="请输入您的工作内容..."></ion-textarea>
+    </ion-item>
+    <button class="post-button" ion-button block (click)="postWeektableCreate()"
+    [disabled]="weektableForm.invalid|| weektableForm.controls['content'].value.length>maxLength
+    || (weektableForm.controls['content'].value&&weektableForm.controls['content'].value.trim()==='')">修改</button>
+  </form>
+</ion-content>

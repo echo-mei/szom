@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
+import { Device } from '@ionic-native/device';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Base64 } from '@ionic-native/base64';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -53,6 +54,7 @@ import { PopSelectComponent } from '../components/pop-select/pop-select';
 import { NotFoundComponent } from '../components/not-found/not-found';
 import { ImgShowComponent } from '../components/img-show/img-show';
 import { ListItemComponent } from '../components/list-item/list-item';
+import { BetweenDatePickerComponent } from '../components/between-date-picker/between-date-picker';
 
 import { AddresslistPage } from '../pages/addresslist/addresslist';
 import { AddresslistMinePage } from '../pages/addresslist-mine/addresslist-mine';
@@ -62,7 +64,7 @@ import { AddresslistSearchPage } from '../pages/addresslist-search/addresslist-s
 import { AddresslistUnitPage } from '../pages/addresslist-unit/addresslist-unit';
 import { DailyListRadioPage } from '../pages/daily-list-radio/daily-list-radio';
 import { DailyMePage } from '../pages/daily-me/daily-me';
-import { DailyMeLikelistPage } from '../pages/daily-me-likelist/daily-me-likelist';
+import { LikeStatisticsPage } from '../pages/like-statistics/like-statistics';
 import { DailyMeCreatePage } from '../pages/daily-me-create/daily-me-create';
 import { DailyMeSearchPage } from '../pages/daily-me-search/daily-me-search';
 import { DailyMeUpdatePage } from '../pages/daily-me-update/daily-me-update';
@@ -121,6 +123,8 @@ import { UserSelfinfoPage } from '../pages/user-selfinfo/user-selfinfo';
 import { WorkWeektablePage } from '../pages/work-weektable/work-weektable';
 import { WorkWeektableCreatePage } from '../pages/work-weektable-create/work-weektable-create';
 import { WorkWeektableStatisticsPage } from '../pages/work-weektable-statistics/work-weektable-statistics';
+import { WorkWeektableShowPage } from '../pages/work-weektable-show/work-weektable-show';
+import { WorkWeektableUpdatePage } from '../pages/work-weektable-update/work-weektable-update';
 import { WorkspacePage } from '../pages/workspace/workspace';
 import { DailyMeShowPage } from '../pages/daily-me-show/daily-me-show';
 import { DailyOneShowPage } from '../pages/daily-one-show/daily-one-show';
@@ -135,6 +139,11 @@ import { BzInfoAddUserPage } from '../pages/bz-info-add-user/bz-info-add-user';
 import { BzInfoUpdateIntroPage } from '../pages/bz-info-update-intro/bz-info-update-intro';
 import { BzInfoUserInfoPage } from '../pages/bz-info-user-info/bz-info-user-info';
 import { BzInfoUserUpdateWorkPage } from '../pages/bz-info-user-update-work/bz-info-user-update-work';
+import { LeaderInfoLibPage } from '../pages/leader-info-lib/leader-info-lib';
+import { LeaderInfoLibUnitPage } from '../pages/leader-info-lib-unit/leader-info-lib-unit';
+import { LeaderInfoLibSearchPage } from '../pages/leader-info-lib-search/leader-info-lib-search';
+import { LeaderInfoPage } from '../pages/leader-info/leader-info';
+import { UserSignPage } from '../pages/user-sign/user-sign';
 
 import * as VConsole from 'vconsole';
 new VConsole();
@@ -153,7 +162,7 @@ new VConsole();
     AddresslistUnitSearchPage,
     DailyListRadioPage,
     DailyMePage,
-    DailyMeLikelistPage,
+    LikeStatisticsPage,
     DailyMeCreatePage,
     DailyMeSearchPage,
     DailyMeShowPage,
@@ -214,6 +223,8 @@ new VConsole();
     WorkWeektablePage,
     WorkWeektableCreatePage,
     WorkWeektableStatisticsPage,
+    WorkWeektableShowPage,
+    WorkWeektableUpdatePage,
     WorkspacePage,
     BzWorkWeektablePage,
     BzWorkWeektableCreatePage,
@@ -223,6 +234,11 @@ new VConsole();
     BzInfoUpdateIntroPage,
     BzInfoUserInfoPage,
     BzInfoUserUpdateWorkPage,
+    LeaderInfoLibPage,
+    LeaderInfoLibUnitPage,
+    LeaderInfoLibSearchPage,
+    LeaderInfoPage,
+    UserSignPage,
 
     ImagePickerComponent,
     NotFoundComponent,
@@ -230,6 +246,7 @@ new VConsole();
     PopSelectComponent,
     TimeSelectComponent,
     ListItemComponent,
+    BetweenDatePickerComponent
   ],
   imports: [
     BrowserModule,
@@ -261,7 +278,7 @@ new VConsole();
     AddresslistUnitSearchPage,
     DailyListRadioPage,
     DailyMePage,
-    DailyMeLikelistPage,
+    LikeStatisticsPage,
     DailyMeCreatePage,
     DailyMeSearchPage,
     DailyMeShowPage,
@@ -322,6 +339,8 @@ new VConsole();
     WorkWeektablePage,
     WorkWeektableCreatePage,
     WorkWeektableStatisticsPage,
+    WorkWeektableShowPage,
+    WorkWeektableUpdatePage,
     WorkspacePage,
     BzWorkWeektablePage,
     BzWorkWeektableCreatePage,
@@ -331,6 +350,11 @@ new VConsole();
     BzInfoUpdateIntroPage,
     BzInfoUserInfoPage,
     BzInfoUserUpdateWorkPage,
+    LeaderInfoLibPage,
+    LeaderInfoLibUnitPage,
+    LeaderInfoLibSearchPage,
+    LeaderInfoPage,
+    UserSignPage,
 
     ImagePickerComponent,
     NotFoundComponent,
@@ -338,11 +362,13 @@ new VConsole();
     PopSelectComponent,
     TimeSelectComponent,
     ListItemComponent,
-    
+    BetweenDatePickerComponent
+
   ],
   providers: [
     File,
     Camera,
+    Device,
     ImagePicker,
     Base64,
     StatusBar,

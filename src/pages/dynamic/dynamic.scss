@@ -22,23 +22,36 @@ page-dynamic {
             font-size: rem(15);
             padding: 0;
             &.active{
-                background-color: transparent;
-                .button-inner{
-                  font-family: PingFangSC-Medium;
-                  color: #4D74EB;
+              background-color: transparent;
+              .button-inner{
+                font-family: PingFangSC-Medium;
+                color: #4D74EB;
 
-                  &:before{
-                      content: '';
-                      position: absolute;
-                      left: 50%;
-                      bottom: 0;
-                      height: rem(2);
-                      width: rem(30);
-                      margin-left: rem(-15);
-                      background: #4D74EB;
-                  }
+                &:before{
+                  content: '';
+                  position: absolute;
+                  left: 50%;
+                  bottom: 0;
+                  height: rem(2);
+                  width: rem(30);
+                  margin-left: rem(-15);
+                  background: #4D74EB;
                 }
               }
+            }
+            &.has-badge {
+              .button-inner {
+                &:after {
+                  content: '';
+                  background: #F5222D;
+                  border-radius: rem(100);
+                  padding: rem(4);
+                  position: absolute;
+                  right: 4%;
+                  top: 6%;
+                }
+              }
+            }
         }
     }
     .swiper-slide{

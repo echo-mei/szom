@@ -14,7 +14,7 @@
 
 <ion-content>
   <ion-list *ngIf="dailyTenList" no-lines>
-    <ion-item *ngIf="canCreate" class="addItemInput">
+    <ion-item *ngIf="canCreate && !newFlag && dataLoadOver" class="addItemInput">
       <ion-note class="now-daily" item-start style="opacity: 0.3;">{{getCurrentIndex()}}</ion-note>
       <div  class="oneInput">
         <div class="text" (click)="goDailyCreate()">本年完成最满意的一件事...</div>
@@ -23,7 +23,10 @@
         </div>
       </div>
     </ion-item>
-
+    <div class="noDailyList" *ngIf="dailyTenList.length===0 && newFlag && dataLoadOver">
+      <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
+      <p>没有发布过每年十励</p>
+    </div>
     <div *ngFor="let log of dailyTenList;let i = index;">
       <div class="quaterWeek" *ngIf="boolShow[i]">{{ log.year }}年</div>
       <ion-item (click)="goDailyShow(log)" tappable>

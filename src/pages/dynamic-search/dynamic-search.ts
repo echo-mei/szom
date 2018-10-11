@@ -1,91 +1,72 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, Events, ViewController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, Events, ViewController, LoadingController, ModalController } from 'ionic-angular';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
 import { DynamicDetailPage } from '../dynamic-detail/dynamic-detail';
+import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
 
 @Component({
   selector: 'page-dynamic-search',
   templateUrl: 'dynamic-search.html',
 })
 export class DynamicSearchPage {
-  @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('searchbar') searchbar;
+  // 列表数据
   dynamicList: Array<object>;
+  // 每页展示条数
   size = 10;
+  // 类型
   type: string = '';
+  // 搜索关键字
   selectString: string = '';
+  // 开始时间
   timeStarts: string = "";
+  // 结束时间
   timeEnd: string = "";
-  selectTimeShowFlag = false;
+  //
   dynamicSearchListSus: string = '';
-  dynamic: any;
-  onceLoad: number = 1;
-  showNotFound: boolean = false;
+  // 是否正在加载
+  isLoading: boolean = true;
+  // 是否有更多数据
+  hasMore: boolean = true;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public dateUtil: DateUtilProvider,
     public dynamicProvider: DynamicProvider,
     public events: Events,
     public storage: StorageProvider,
     public viewCtrl: ViewController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController
   ) {
     this.type = this.navParams.get("type");
     this.selectString = this.navParams.get("selectString");
     this.timeStarts = this.navParams.get("timeStarts");
     this.timeEnd = this.navParams.get("timeEnd");
     this.dynamicList = [];
-    this.initDynamicList();
+    this.resetList();
   }
 
   ionViewDidLoad() {
     this.dynamicSearchListSus = this.type + "-dynamicSearchList:change";
     this.events.subscribe(this.dynamicSearchListSus, (dynamic) => {
-      console.log(this.dynamicSearchListSus+"订阅成功");
-      this.getDynamic(dynamic);
+      this.updateOneDynamic(dynamic);
     })
   }
 
   goBack() {
     this.events.unsubscribe(this.dynamicSearchListSus);
     this.viewCtrl.dismiss({
-      selectString:this.selectString,
-      timeStarts:this.timeStarts,
-      timeEnd:this.timeEnd
+      selectString: this.selectString,
+      timeStarts: this.timeStarts,
+      timeEnd: this.timeEnd
     });
   }
 
-  // 重置
-  reset() {
-    this.timeStarts = '';
-    this.timeEnd = '';
-    this.selectTimeShowFlag = true;
-  }
-
-  // 跳转详情页面
-  goDynamicShow(dynamic) {
-    this.navCtrl.push(DynamicDetailPage, {
-      type: this.type,
-      dynamic: dynamic
-    });
-  }
-
-  initDynamicList() {
-    // this.dynamicList = [];
-    this.more(false);
-  }
-
-  // 搜索确定按钮实现
-  goSelcet(event) {
-    this.selectTimeShowFlag = false;
-    this.initDynamicList();
-  }
-
-  getDynamicList(params, type) {
+  witchProvider(params, type) {
     switch (type) {
       case "attention":
         return this.dynamicProvider.getAttentionDynamicList(params);
@@ -98,47 +79,64 @@ export class DynamicSearchPage {
     }
   }
 
-  more(boolSearch=true, infinite?: InfiniteScroll) {
-    let loading = this.loadingCtrl.create({
-      content: '处理中...'
-    });
-    this.onceLoad-->0?loading.present():'';
-    this.infinite && this.infinite.enable(true);
-    let params = {
+  // 获取数据
+  getDynamicList(params?) {
+    let p = {
       size: this.size,
       searchKeyword: this.selectString,
       searchStart: this.timeStarts,
-      // searchEnd: this.dateUtil.format(new Date(this.timeEnd), 'yyyy-MM-dd')
-      searchEnd: this.timeEnd
+      searchEnd: this.timeEnd,
+      ...params
     };
-    if (boolSearch && this.dynamicList.length) {
-      params['endTime'] = this.dynamicList[this.dynamicList.length - 1]['publishTime'];
-    }
-    this.getDynamicList(params, this.type).subscribe(
-      (data) => {
-        if(!boolSearch && !(this.dynamicList.length == data.length && data.length == 0)){
-          loading.present();
-        };
-        if(!data[0]){
-          this.showNotFound = true;
-        };
-        loading.dismiss();
-        
-        infinite && infinite.complete();
-        if(!params['endTime'] && data==''){
-          this.dynamicList = [];
-        }
-        if (data.length) {
-          infinite && infinite.enable(true);
-          boolSearch? this.dynamicList = this.dynamicList.concat(data): this.dynamicList = data;
-        } else {
-          infinite && infinite.enable(false);
-        }
-      }
-    );
+    this.isLoading = true;
+    return this.witchProvider(p, this.type).do(list => {
+      this.hasMore = list.length ? true : false;
+      this.isLoading = false;
+    });
   }
 
-  getDynamic(dynamic) {
+  // 重置列表
+  resetList() {
+    this.getDynamicList().subscribe((list) => {
+      this.dynamicList = list;
+    });
+  }
+
+  // 跳转详情页面
+  goDynamicShow(dynamic) {
+    this.navCtrl.push(DynamicDetailPage, {
+      type: this.type,
+      dynamic: dynamic
+    });
+  }
+
+  // 选择时间跨度
+  goSelectDate() {
+    // this.selectTimeShowFlag = !this.selectTimeShowFlag;
+    this.modalCtrl.create(BetweenDatePickerComponent, {
+      afterSure: (start, end) => {
+        this.timeStarts = this.dateUtil.format(start, 'yyyy-MM-dd');
+        this.timeEnd = this.dateUtil.format(end, 'yyyy-MM-dd');
+        this.search();
+      }
+    }).present();
+  }
+
+  // 搜索
+  search() {
+    this.resetList();
+  }
+
+  // 加载更多
+  more(infinite?: InfiniteScroll) {
+    this.getDynamicList({endTime: this.dynamicList[this.dynamicList.length - 1]['publishTime']}).subscribe((list) => {
+      list && (this.dynamicList = this.dynamicList.concat(list));
+      infinite.complete();
+    });
+  }
+
+  // 更新一条数据
+  updateOneDynamic(dynamic) {
     for (let i = 0; i < this.dynamicList.length; i++) {
       if (this.dynamicList[i]['dynamicId'] === dynamic.dynamicId) {
         this.dynamicList[i] = dynamic;

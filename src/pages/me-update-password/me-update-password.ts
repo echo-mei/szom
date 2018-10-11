@@ -16,7 +16,7 @@ export class MeUpdatePasswordPage {
   repwd: any;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public userProvider: UserProvider,
@@ -47,7 +47,7 @@ export class MeUpdatePasswordPage {
             message: '修改成功，请重新登录',
             buttons: [
               {text: '确认', handler: () => {
-                this.storage.clear();
+                this.storage.remove('user', 'menuList', 'token');
                 this.app.getRootNav().setRoot(LoginPage);
               }}
             ]
@@ -64,7 +64,7 @@ export class MeUpdatePasswordPage {
       });
       alert.present();
     }
-    
+
   }
 
 

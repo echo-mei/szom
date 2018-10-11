@@ -19,7 +19,7 @@
     <ion-list>
       <ion-item>
         <ion-label>日期</ion-label>
-        <ion-datetime formControlName="workDateStr" displayFormat="YYYY年MM月DD日" pickerFormat="YYYY MM DD" placeholder="请选择" cancelText="取消"
+        <ion-datetime formControlName="workDateStr" displayFormat="YYYY年MM月DD日" [max]="timeMax" pickerFormat="YYYY MM DD" placeholder="请选择" cancelText="取消"
           doneText="确认"></ion-datetime>
         <ion-icon item-end class="szom" name="md-you"></ion-icon>
       </ion-item>
@@ -33,14 +33,8 @@
 
       <ion-item>
         <ion-label>类型</ion-label>
-        <ion-multi-picker formControlName="weektableTypeId" placeholder="请选择" item-content [multiPickerColumns]="weektableTypeControls" doneText="确定"
-        cancelText="取消" (ionChange)="goTypeCustom()"></ion-multi-picker>
-        <!-- <ion-select formControlName="WeektableTypeId" interface="action-sheet" placeholder="请选择" okText="确定" cancelText="取消">
-          <ng-container *ngIf="weektableTypeList">
-            <ion-option *ngFor="let weektableType of weektableTypeList;let i=index;" value="weektableType.weektableTypeId">{{weektableType.typeName}}</ion-option>
-          </ng-container>
-          <ion-option (click)="goTypeCustom()">自定义</ion-option>
-        </ion-select> -->
+        <ion-multi-picker formControlName="weektableTypeCode" placeholder="请选择" item-content [multiPickerColumns]="weektableTypeControls" doneText="确定"
+        cancelText="取消"></ion-multi-picker>
         <ion-icon item-end class="szom" name="md-you"></ion-icon>
       </ion-item>
     </ion-list>

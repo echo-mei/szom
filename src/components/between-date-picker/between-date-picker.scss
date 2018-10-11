@@ -1,0 +1,85 @@
+between-date-picker {
+  .between-date-picker-backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+  }
+  .between-date-picker-wrapper {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: #fff;
+  }
+  .between-date-picker-displayer {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #F1F1F1;
+    .between-date-picker-start {
+      flex: 1;
+      text-align: left;
+      &.active p {
+        color: #4D74EB;
+      }
+    }
+    .between-date-picker-end {
+      flex: 1;
+      text-align: right;
+      &.active p {
+        color: #4D74EB;
+      }
+    }
+    label {
+      font-size: 12px;
+      color: #CCCCCC;
+      letter-spacing: 0;
+      line-height: 17px;
+    }
+    p {
+      font-size: 15px;
+      color: #999999;
+      letter-spacing: 0;
+      margin: 0;
+      line-height: 21px;
+    }
+  }
+  .between-date-picker-columns {
+    display: flex;
+    .between-date-picker-column {
+      flex: 1;
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+      .between-date-picker-item {
+        font-family: '微软雅黑';
+        height: 44px;
+        line-height: 44px;
+        font-size: 19px;
+        color: #333333;
+        letter-spacing: 0;
+        text-align: center;
+        position: absolute;
+        top: 88px;
+        left: 0;
+        width: 100%;
+      }
+    }
+  }
+  .between-date-picker-buttons {
+    height: 44px;
+    background: #F4F4F4;
+    button {
+      height: 44px;
+      line-height: 44px;
+      font-size: 16px;
+      color: #999999;
+      letter-spacing: -0.19px;
+      text-align: center;
+      background: initial;
+      &:first-child {
+        float: left;
+      }
+      float: right;
+    }
+  }
+}

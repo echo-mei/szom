@@ -1,0 +1,98 @@
+<!--
+  Generated template for the LeaderInfoLibDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title>详细资料</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item class="info-title">
+    <ion-avatar item-start>
+      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+    </ion-avatar>
+    <h2>{{user.name}}<ion-icon class="szom" name="md-zdattention" *ngIf="user.isEmpAttention"></ion-icon></h2>
+    <ion-note>{{user.orgName}} | {{user.dutyName}}</ion-note>
+  </ion-item>
+
+  <ion-list class="info-content">
+    <ion-item (click)="goBaseInfo()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-baseInfo"></ion-icon>
+      </ion-avatar>
+      <h2>基本信息</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goUserSelfInfo()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-personInfo"></ion-icon>
+      </ion-avatar>
+      <h2>个人自述</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goUserImpression()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-yxtag"></ion-icon>
+      </ion-avatar>
+      <h2>印象标签</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goSign()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-qiandao"></ion-icon>
+      </ion-avatar>
+      <h2>签到</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goWeektable()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-weektable"></ion-icon>
+      </ion-avatar>
+      <h2>工作周表</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-list class="info-content">
+    <ion-item (click)="goDaily()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-daily"></ion-icon>
+      </ion-avatar>
+      <h2>工作日志</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goDailyOne()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-dailyOne"></ion-icon>
+      </ion-avatar>
+      <h2>每周一励</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goDailyThree()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-dailyThree"></ion-icon>
+      </ion-avatar>
+      <h2>每季三励</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goDailyTen()">
+      <ion-avatar item-start>
+        <ion-icon class="szom" name="md-dailyTen"></ion-icon>
+      </ion-avatar>
+      <h2>每年十励</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer no-border>
+  <div class="footer-buttons">
+    <button ion-button block id="follow" *ngIf="!user.isEmpAttention" (click)="follow()">重点关注</button>
+    <button ion-button block id="cancel-follow" color="white" *ngIf="user.isEmpAttention" (click)="cancelFollow()">取消重点关注</button>
+  </div>
+</ion-footer>

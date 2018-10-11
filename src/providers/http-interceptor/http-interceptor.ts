@@ -50,25 +50,25 @@ export class HttpInterceptorProvider implements HttpInterceptor {
                 break;
             case 401:
                 // TODO: 无权限处理
-                this.storage.clear();
+                this.storage.remove('user', 'menuList', 'token');
                 this.events.publish('logout');
-                message = res['error'].message;
+                message = res['error'] ? res['error'].message : res['message'];
                 loading.dismiss();
                 this.app.getRootNav().setRoot(LoginPage);
                 break;
             case 404:
                 // TODO: 404 处理
-                message = res['error'].message;
+                message = res['error'] ? res['error'].message : res['message'];
                 loading.dismiss();
                 break;
             case 500:
                 // TODO: 500 处理
-                message = res['error'].message;
+                message = res['error'] ? res['error'].message : res['message'];
                 loading.dismiss();
                 break;
             default:
                 // 其他错误
-                message = res['error'].message;
+                message = res['error'] ? res['error'].message : res['message'];
                 loading.dismiss();
                 break;
         }

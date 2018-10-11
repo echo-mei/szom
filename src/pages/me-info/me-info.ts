@@ -94,6 +94,7 @@ export class MeInfoPage {
 
   goMeSign() {
     let popover = this.popoverCtrl.create(SignDatePage, {
+      user:JSON.parse(this.storage.get('user')),
       onSign: () => {
         this.getTodaySign();
         this.onSign && this.onSign();

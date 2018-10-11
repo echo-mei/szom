@@ -39,6 +39,7 @@ export class MenuProvider {
   }
 
   hasMenu(menuKey: string): boolean {
+    if(!this.storage.get('menuList')) { return false; }
     let menuList = JSON.parse(this.storage.get('menuList'));
     function findMenu(list) {
       return list.find((item) => {

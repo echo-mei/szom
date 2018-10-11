@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>印象标签</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="!newFlag">
       <button ion-button clear (click)="goAddImpression()">添加</button>
     </ion-buttons>
   </ion-navbar>

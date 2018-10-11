@@ -20,7 +20,7 @@ import { DateUtilProvider } from '../../providers/date-util/date-util';
 export class WorkWeektableCreatePage {
   weektableForm: FormGroup;
 
-  workDateStr: any;
+  workDateStr=new Date();
   dayPeriod: any;
   dayPeriodControls: object = [
     {
@@ -32,7 +32,7 @@ export class WorkWeektableCreatePage {
       ]
     }
   ]
-  weektableTypeId: any = "2";
+  weektableTypeCode: any;
   weektableTypeControls: object = [
     {
       options: []
@@ -41,8 +41,9 @@ export class WorkWeektableCreatePage {
   content: string;
   maxLength = 196;
   me: any;
+  timeMax=this.workDateStr.getFullYear()+1;
 
-  onUpdateWeektableList: () => {};
+  onUpdate: (date) => {};
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -53,12 +54,12 @@ export class WorkWeektableCreatePage {
     public storage: StorageProvider,
     public picker: PickerController) {
     this.me = JSON.parse(this.storage.get('user'));
-    this.onUpdateWeektableList = this.navParams.get('onUpdateWeektableList');
+    this.onUpdate = this.navParams.get('onUpdate');
     this.weektableForm = this.formBuilder.group({
       content: ['', Validators.compose([Validators.required])],
       workDateStr: ['', Validators.compose([Validators.required])],
       dayPeriod: ['', Validators.compose([Validators.required])],
-      weektableTypeId: ['', Validators.compose([Validators.required])]
+      weektableTypeCode: ['', Validators.compose([Validators.required])]
     });
     this.getWeektableType();
   }
@@ -73,7 +74,6 @@ export class WorkWeektableCreatePage {
         data.forEach(element => {
           this.weektableTypeControls[0].options.push({ text: element.typeName, value: element.weektableTypeId })
         });
-        this.weektableTypeControls[0].options.push({text:"自定义",value:"0"});
       }
     )
   }
@@ -98,20 +98,10 @@ export class WorkWeektableCreatePage {
           message: '发布成功',
           duration: 1000
         }).present();
-        this.onUpdateWeektableList && this.onUpdateWeektableList();
+        this.onUpdate && this.onUpdate(new Date(this.weektableForm.value.workDateStr));
         this.navCtrl.pop();
       }
     );
-  }
-
-  goTypeCustom() {
-    let weektableTypeId = this.weektableForm.value.weektableTypeId;
-    if(weektableTypeId === "0"){
-      this.weektableForm.controls['weektableTypeId'].setValue("1");
-      this.navCtrl.push(TypeCustomPage, {
-        onUpdateWeektableTypeList: this.getWeektableType.bind(this)
-      });
-    }
   }
 
 }

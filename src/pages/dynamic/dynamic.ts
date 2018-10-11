@@ -52,7 +52,15 @@ export class DynamicPage {
 
   ionViewDidEnter(){
     this.events.subscribe("dynamicListInit", () => {
-      this.initData();
+      let index = 0;
+      if(this.storage.get('ws-dynamic-attention')) {
+        index = 0;
+      }else if(this.storage.get('ws-dynamic-unit')) {
+        index = 1;
+      }else if(this.storage.get('ws-dynamic-leader-unit')||this.storage.get('ws-dynamic-leader-all')) {
+        index = 3;
+      }
+      this.initData(index);
     });
   }
 
@@ -60,9 +68,9 @@ export class DynamicPage {
     this.events.unsubscribe("dynamicListInit");
   }
 
-  initData(){
+  initData(index){
     this.initLoadFlag = [true,true,true,true];
-    this.goDynamicList(0);
+    this.goDynamicList(index);
     this.onSlideChanged();
   }
 
@@ -71,6 +79,18 @@ export class DynamicPage {
       //初始化,没数据才请求
       this.children._results[index].initDynamicList();
       this.initLoadFlag[index] = false;
+      switch(index) {
+        case 0:
+          this.storage.remove('ws-dynamic-attention');
+          break;
+        case 1:
+          this.storage.remove('ws-dynamic-unit');
+          break;
+        case 3:
+          this.storage.remove('ws-dynamic-leader-unit');
+          this.storage.remove('ws-dynamic-leader-all');
+          break;
+      }
     }
   }
 

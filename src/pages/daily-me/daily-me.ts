@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, Events, InfiniteScroll, PopoverController, LoadingController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -7,7 +7,7 @@ import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
 import { DailyMeCreatePage } from '../daily-me-create/daily-me-create';
 import { DailyMeSearchPage } from '../daily-me-search/daily-me-search';
 import { EmojiProvider } from '../../providers/emoji/emoji';
-import { DailyMeLikelistPage } from '../daily-me-likelist/daily-me-likelist';
+import { LikeStatisticsPage } from '../like-statistics/like-statistics';
 
 @Component({
   selector: 'page-daily-me',
@@ -18,11 +18,18 @@ export class DailyMePage {
   @ViewChild('infinite') infinite: InfiniteScroll;
 
   user: any;
+  newFlag:any;
 
   size = 10;
   logDataList: Array<object> = [];  // 日志列表
   stlikeList: Array<object> = []; // 点赞列表
   stlikeSum: number = 0;  // 总点赞
+  dataLoadOver = false; //数据加载完成标志
+  loading = this.loadingCtrl.create({
+    content: '处理中...',
+    // showBackdrop:false,
+    cssClass: 'loading-new'
+  });
 
   constructor(
     public navCtrl: NavController,
@@ -31,9 +38,11 @@ export class DailyMePage {
     public events: Events,
     public storage: StorageProvider,
     public emojiProvider: EmojiProvider,
-    public popoverCtrl:PopoverController
+    public popoverCtrl:PopoverController,
+    public loadingCtrl:LoadingController
   ) {
     this.user = this.navParams.get('user');
+    this.newFlag = this.navParams.get('newFlag');
     this.getfindSTLike();
     this.initLogDailyList();
   }
@@ -71,8 +80,15 @@ export class DailyMePage {
     if (this.logDataList.length) {
       params['endTime'] = this.logDataList[this.logDataList.length - 1]['publishTime'];
     }
+    if (!infinite) {
+      this.loading.present();
+    }
     this.dailyProvider.getLogDailyList(params).subscribe(
       (data) => {
+        if (!infinite) {
+          this.dataLoadOver = true;
+          this.loading.dismiss();
+        }
         infinite && infinite.complete();
         if (data.length) {
           infinite && infinite.enable(true);
@@ -90,7 +106,7 @@ export class DailyMePage {
 
   getfindSTLike() {
     this.dailyProvider.getfindSTLike({
-      accountCode: JSON.parse(this.storage.get('user')).userCode
+      accountCode: this.user.userCode
     }).subscribe(
       (data) => {
         let that = this;
@@ -143,7 +159,7 @@ export class DailyMePage {
   }
 
   showDetailLike() {
-    let popover = this.popoverCtrl.create(DailyMeLikelistPage,{
+    let popover = this.popoverCtrl.create(LikeStatisticsPage,{
       stlikeList:this.stlikeList,
       stlikeSum:this.stlikeSum
     }, {

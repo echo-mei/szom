@@ -34,7 +34,7 @@ export class MePage {
         {
           text: '确定', handler: () => {
             this.app.getRootNav().setRoot(LoginPage);
-            this.storage.clear();
+            this.storage.remove('user', 'menuList', 'token');
             this.events.publish('logout');
           }
         },

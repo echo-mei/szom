@@ -60,17 +60,21 @@
       <embed width=30 height=30 src="assets/imgs/ganbu-info.svg" type="image/svg+xml">
       <p>干部评价</p>
     </div>
-    <button ion-button block (click)="goBanzi()">班子信息</button>
+    <div *ngIf="menuProvider.hasMenu('workspace-person-info-bank')" class="gzt-item" (click)="goLeaderInfoLib()">
+      <embed width=30 height=30 src="assets/imgs/ganbu-info.svg" type="image/svg+xml">
+      <p>干部信息库</p>
+    </div>
+    <!-- <button ion-button block (click)="goBanzi()">班子信息</button> -->
     <div class="gzt-item" *ngIf="0<cols-personMenus.length%cols"></div>
     <div class="gzt-item" *ngIf="1<cols-personMenus.length%cols"></div>
     <div class="gzt-item" *ngIf="2<cols-personMenus.length%cols"></div>
   </div>
 
-  <!--<div class="gzt-main">
+  <!-- <div class="gzt-main">
     <div class="gzt-item gzrz" (click)="goBzWorkWeektable()">
       <embed width=30 height=30 src="assets/imgs/daily.svg" type="image/svg+xml">
       <p>工作周表</p>
     </div>
-  </div>-->
+  </div> -->
 
 </ion-content>

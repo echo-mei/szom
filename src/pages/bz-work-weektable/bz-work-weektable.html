@@ -35,9 +35,9 @@
         <ion-item-divider color="light">{{weektable.name}}</ion-item-divider>
         <div *ngFor="let w of weektable.children">
           <ion-item>
-            <ion-thumbnail item-start>{{w}}</ion-thumbnail>
+            <ion-thumbnail item-start>{{w.typeName}}</ion-thumbnail>
             <h2>{{w.content}}</h2>
-            <p>2018.08.08 {{w.week}} {{w}}</p>
+            <p>{{w.workDateStr | date:'yyyy.MM.dd'}} {{w.week}} {{w.dayPeriodName}}</p>
           </ion-item>
         </div>
       </div>

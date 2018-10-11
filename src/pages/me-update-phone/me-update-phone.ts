@@ -63,7 +63,7 @@ export class MeUpdatePhonePage {
     };
     this.userProvider.updatePhone(params).subscribe(
       () => {
-        this.storage.clear();
+        this.storage.remove('user', 'menuList', 'token');
         this.app.getRootNav().setRoot(LoginPage);
       }
     );

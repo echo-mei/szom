@@ -112,6 +112,9 @@ ion-content{
     height: 100%;
     z-index: 2;
   }
+  .main-content {
+    position: relative;
+  }
   // 列表部分
   .daily-list {
     margin: 0;

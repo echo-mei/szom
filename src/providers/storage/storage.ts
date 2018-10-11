@@ -14,8 +14,10 @@ export class StorageProvider {
     return localStorage.getItem(key);
   }
 
-  remove(key) {
-    localStorage.removeItem(key);
+  remove(...args) {
+    args.forEach((arg) => {
+      localStorage.removeItem(arg);
+    });
   }
 
   clear() {

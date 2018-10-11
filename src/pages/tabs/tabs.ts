@@ -15,8 +15,6 @@ import { WEBSOCKET_URL } from '../../config';
   templateUrl: 'tabs.html',
 })
 export class TabsPage {
-  hasNewFollow: boolean;
-  hasNewDynamic: boolean;
 
   workspace = WorkspacePage;
   addresslist = AddresslistPage;
@@ -37,29 +35,24 @@ export class TabsPage {
         }
       );
       this.hasNewStAttention();
-      this.events.subscribe('ws-addresslist', () => this.hasNewFollow = true);
-      this.events.subscribe('ws-dynamic', () => this.hasNewDynamic = true);
     }
-  }
-
-  initData(){
-    this.events.publish("dynamicListInit");
   }
 
   hasNewStAttention() {
     this.addresslistProvider.hasNewStAttention().subscribe(
       (obj) => {
-        this.hasNewFollow = obj=='true' ? true : false;
+        obj=='true' && this.storage.set('ws-addresslist', 'Y');
       }
     );
   }
 
-  onSelectAddresslistTab() {
-    this.addresslistProvider.updateToViewed().subscribe(
-      () => {
-        this.hasNewFollow = false;
-      }
-    );
+  onSelectAddresslistTab(){
+    this.storage.remove('ws-addresslist');
+  }
+
+  onSelectDynamicTab() {
+    this.storage.remove('ws-dynamic');
+    this.events.publish('dynamicListInit');
   }
 
 }

@@ -15,6 +15,23 @@ page-daily-ten {
         margin-right: rem(20);
       }
   }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+  }
   ion-list {
     .quaterWeek{
       padding-left: rem(20) !important;
@@ -62,7 +79,7 @@ page-daily-ten {
               color: #AFAFAF;
               letter-spacing: rem(-0.15);
               line-height: rem(16);
-            }            
+            }
             img {
               width: rem(36);
               height: rem(36);

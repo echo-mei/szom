@@ -19,7 +19,8 @@
           <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
         </ion-item> -->
         <ion-item>
-          <ion-label>{{maxLength-dailyTenForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
+          <ion-label *ngIf="dailyTenForm.controls['content'].value.length <= maxLength">{{dailyTenForm.controls['content'].value.length}}</ion-label>
+          <ion-label class="error" *ngIf="dailyTenForm.controls['content'].value.length > maxLength">超出{{dailyTenForm.controls['content'].value.length-maxLength}}字</ion-label>
           <ion-textarea autosize formControlName="content" name="content" placeholder="本年完成最满意的一件事..."></ion-textarea>
         </ion-item>
       </ion-list>
