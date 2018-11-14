@@ -26,7 +26,7 @@ export class ImageUtilProvider {
       destinationType: 1,
       encodingType: 0,
       mediaType: 0,
-      allowEdit: true,
+      allowEdit: false,
       correctOrientation: true
     };
     let actionSheet = this.actionSheetCtrl.create({
@@ -43,13 +43,33 @@ export class ImageUtilProvider {
         } },
         { text: '从手机相册选择', handler: () => {
           if(multiple) {
-            this.imagePicker.getPictures(options).then(
-              imgs => {
-                callback(imgs);
-              }
-            ).catch(
-              (err) => {
+            this.imagePicker.hasReadPermission().then(
+              r => {
+                if(!r) {
+                  this.imagePicker.requestReadPermission().then(
+                    () => {
+                      this.imagePicker.getPictures(options).then(
+                        imgs => {
+                          callback(imgs);
+                        }
+                      ).catch(
+                        (err) => {
 
+                        }
+                      );
+                    }
+                  );
+                }else {
+                  this.imagePicker.getPictures(options).then(
+                    imgs => {
+                      callback(imgs);
+                    }
+                  ).catch(
+                    (err) => {
+
+                    }
+                  );
+                }
               }
             );
           }else {

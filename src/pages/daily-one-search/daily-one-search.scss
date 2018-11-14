@@ -6,15 +6,6 @@ page-daily-one-search {
     background: #fafafa;
   }
 
-  ion-header{
-    .toolbar-background{
-      background-color: #fff;
-    }
-    .toolbar-content {
-      padding-left: rem(15);
-      display: flex;
-    }
-  }
   ion-content{
     overflow: hidden;
     .setDiv{
@@ -30,14 +21,20 @@ page-daily-one-search {
       color: #AFAFAF;
       position: relative;
       margin-bottom: rem(5);
-      margin-top: 1px;
+      // margin-top: 1px;
       .select-btn{
         position: relative;
         padding: 0 rem(15);
         z-index: 3;
+        .filter-icon{
+          width: rem(18);
+          vertical-align: middle
+        }
         span{
-            white-space: nowrap;
-            padding-right: rem(5);
+          display: inline-block;
+          vertical-align: middle;
+          white-space: nowrap;
+          padding-right: rem(5);
         }
         span.title{
             padding: 0 rem(8);
@@ -64,7 +61,7 @@ page-daily-one-search {
           justify-content: space-around;
           // height: rem(44);
           background-color: #fff;
-          border-top: .5px solid color($colors,boderColor);
+          @include border-t-1px(color($colors,boderColor));
           position: relative;
           padding-right: rem(10);
           .title{padding-left: rem(10);}
@@ -87,7 +84,7 @@ page-daily-one-search {
               justify-content: flex-end;
               // padding: 0 rem(10);
             }
-            
+
           }
           ion-icon{
               color: #AFAFAF;
@@ -138,13 +135,9 @@ page-daily-one-search {
       &.listDiv{
         height: calc(100% - 48px);
       }
-      ion-item{
-        background-color: transparent;
-        box-shadow: 0 1px 1px #cecece;
-      }
       .item{
         min-height: auto;
-        box-shadow:none;
+        @include border-b-1px(color($colors,boderColor));
         .item-inner{
           padding: rem(16) rem(15);
           min-height: auto;
@@ -155,6 +148,22 @@ page-daily-one-search {
           padding-left: 0 !important;
         }
       }
+    }
+  }
+  .no-more-tip{
+    padding: 0 rem(15);
+    background: #fafafa;
+    height: rem(50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cccccc;
+    font-size: rem(15);
+    span{
+      height: rem(1);
+      background: #dddddd;
+      flex-grow: 1;
+      margin: 0 rem(10);
     }
   }
 

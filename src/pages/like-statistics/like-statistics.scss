@@ -1,18 +1,21 @@
-.daily-likelist-pop{
-  ion-backdrop{
-    opacity: 0.6;
-  }
-
-  .popover-content{
-    width: rem(270);
-  }
-}
 page-like-statistics {
+  .like-main-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .like-main {
+      position: relative;
+      width: rem(270);
+      background: #fff;
+    }
+  }
   .like-main {
     background: #fff;
     .total{
       position: relative;
-      background: linear-gradient(to right, #3555DE, #628FF7);
+      background-size: 100%;
       font-size: rem(48);
       color: #FFFFFF;
       letter-spacing: 0;
@@ -26,9 +29,8 @@ page-like-statistics {
         top: 0;
         right: 0;
         padding: rem(10);
-        font-size: rem(14);
-        color: #000000;
-        opacity: .6;
+        font-size: rem(12);
+        color: #374479;
       }
       .des{
         opacity: 0.68;

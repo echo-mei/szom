@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { UnitProvider } from '../../providers/unit/unit';
-import { AddresslistUnitPage } from '../addresslist-unit/addresslist-unit';
 import { AddresslistOtherSearchPage } from '../addresslist-other-search/addresslist-other-search';
 import { UserProvider } from '../../providers/user/user';
 import { MeInfoPage } from '../me-info/me-info';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserInfoPage } from '../user-info/user-info';
+import { BzInfoPage } from '../bz-info/bz-info';
+import { BzUserInfoPage } from '../bz-user-info/bz-user-info';
 
 @Component({
   selector: 'page-addresslist-other',
@@ -18,8 +19,7 @@ export class AddresslistOtherPage {
 
   org: any;
   organizationlist = [];
-  personKeyList: any = [];
-  personValueList: any = [];
+  personList: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -35,13 +35,13 @@ export class AddresslistOtherPage {
   }
 
   getOrgList() {
-    if(this.org) {
-      this.unitProvider.getChildOrgList({organizationId: this.org.organizationId}).subscribe(
+    if (this.org) {
+      this.unitProvider.getOtherChildOrgList({ organizationId: this.org.organizationId }).subscribe(
         (list) => {
           this.organizationlist = list;
         }
       );
-    }else {
+    } else {
       this.unitProvider.getOtherUnitList().subscribe(
         (list) => {
           this.organizationlist = list;
@@ -51,32 +51,40 @@ export class AddresslistOtherPage {
   }
 
   getPersonList() {
-    if(this.org&&this.org.orgType) {
+    if (this.org && this.org.orgType) {
       this.unitProvider.getOrgPersonList({
         organizationId: this.org.organizationId,
         orgType: this.org.orgType
       }).subscribe(
         (list) => {
-          for(let key in list) {
-            this.personKeyList.push(key);
-            this.personValueList.push(list[key]);
-          }
+          this.personList = list;
         }
       );
     }
   }
 
   goUserInfo(user): any {
-    if(user.userCode==JSON.parse(this.storage.get('user')).userCode) {
-      this.navCtrl.push(MeInfoPage);
-    }else {
-      this.navCtrl.push(UserInfoPage, {
-        user: user,
-        followOrCancel: true,
-        showSelfInfo: true,
-        showDaily: true,
-        showTags: true
-      });
+    if (user.userType === "02") {//班子信息
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(BzInfoPage);
+      } else {
+        this.navCtrl.push(BzUserInfoPage, {
+          user: user,
+          followOrCancel: true
+        });
+      }
+    } else {
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(MeInfoPage);
+      } else {
+        this.navCtrl.push(UserInfoPage, {
+          user: user,
+          followOrCancel: true,
+          showSelfInfo: true,
+          showDaily: true,
+          showTags: true
+        });
+      }
     }
   }
 

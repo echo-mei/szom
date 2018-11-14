@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>我的消息</ion-title>
+    <ion-buttons right>
+      <button ion-button class="cantAdd" (click)="clearAll()">清空</button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-item-divider class="divider"></ion-item-divider>
+</ion-header>
+
+
+<ion-content>
+  <div class="noDailyList" *ngIf="!list[0]">
+    <img src="assets/imgs/nolog.png">
+    <p>没有对应日志</p>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let item of list" (click)="goDetail(item)">
+      <div class="inaa">
+        <!-- <ion-note>2</ion-note> -->
+        <img class="smallImg" src="../../assets/imgs/user.png" alt="">
+        <div class="ina">
+          <div class="content">
+            <h3 class="oneThreeTen">
+              <strong>{{ item.name }}</strong>
+              <p *ngIf="item.isComment">{{ item.comment }}</p>
+              <ion-icon *ngIf="!item.isComment" class="szom good" name="md-dianzandianji"></ion-icon>
+              <!-- <div class="bottom"> -->
+                <span class="span">昨天 下午10:15</span>
+
+              <!-- </div> -->
+            </h3>
+            <!-- <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.src='assets/imgs/default-img@3x.png'"> -->
+            <img *ngIf="item.hasImg" src="../../assets/imgs/user.png" alt="123">
+            <p class="nightFont" *ngIf="!item.hasImg"><span>{{ item.comment }}</span></p>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

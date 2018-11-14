@@ -1,9 +1,3 @@
-<!--
-  Generated template for the WorkWeektableCreatePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header no-border>
 
   <ion-navbar color="white">
@@ -19,31 +13,29 @@
     <ion-list>
       <ion-item>
         <ion-label>日期</ion-label>
-        <ion-datetime formControlName="workDateStr" displayFormat="YYYY年MM月DD日" [max]="timeMax" pickerFormat="YYYY MM DD" placeholder="请选择" cancelText="取消"
-          doneText="确认"></ion-datetime>
+        <ion-datetime formControlName="workDateStr" displayFormat="YYYY年MM月DD日 DDD" [max]="timeMax" pickerFormat="YYYY MM DD/DDD"
+          placeholder="请选择" cancelText="取消" doneText="确认" dayShortNames="星期日, 星期一, 星期二, 星期三, 星期四, 星期五, 星期六"></ion-datetime>
         <ion-icon item-end class="szom" name="md-you"></ion-icon>
       </ion-item>
-
       <ion-item>
         <ion-label>时间</ion-label>
         <ion-multi-picker formControlName="dayPeriod" placeholder="请选择" item-content [multiPickerColumns]="dayPeriodControls" doneText="确定"
-        cancelText="取消"></ion-multi-picker>
+          cancelText="取消"></ion-multi-picker>
         <ion-icon item-end class="szom" name="md-you"></ion-icon>
       </ion-item>
-
       <ion-item>
         <ion-label>类型</ion-label>
-        <ion-multi-picker formControlName="weektableTypeCode" placeholder="请选择" item-content [multiPickerColumns]="weektableTypeControls" doneText="确定"
-        cancelText="取消"></ion-multi-picker>
+        <ion-multi-picker formControlName="weektableTypeCode" placeholder="请选择" item-content [multiPickerColumns]="weektableTypeControls"
+          doneText="确定" cancelText="取消"></ion-multi-picker>
         <ion-icon item-end class="szom" name="md-you"></ion-icon>
       </ion-item>
+      <ion-item class="w-textarea">
+        <ion-label *ngIf="!weektableForm.hasError('maxlength', 'content')">{{weektableForm.controls['content'].value.length}}</ion-label>
+        <ion-label class="error" *ngIf="weektableForm.hasError('maxlength', 'content')">超出{{weektableForm.controls['content'].value.length-maxLength}}字</ion-label>
+        <ion-textarea autosize formControlName="content" name="content" placeholder="请输入您的工作内容..."></ion-textarea>
+      </ion-item>
     </ion-list>
-    <ion-item class="textarea">
-      <ion-label>{{maxLength-weektableForm.controls['content'].value.length}}/{{maxLength}}</ion-label>
-      <ion-textarea autosize formControlName="content" name="content" placeholder="请输入您的工作内容..."></ion-textarea>
-    </ion-item>
-    <button class="post-button" ion-button block (click)="postWeektableCreate()"
-    [disabled]="weektableForm.invalid|| weektableForm.controls['content'].value.length>maxLength
+    <button class="post-button" ion-button block (click)="postWeektableCreate()" [disabled]="weektableForm.invalid|| weektableForm.controls['content'].value.length>maxLength
     || (weektableForm.controls['content'].value&&weektableForm.controls['content'].value.trim()==='')">发布</button>
   </form>
 </ion-content>

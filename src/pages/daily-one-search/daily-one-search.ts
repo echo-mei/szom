@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
@@ -11,22 +11,27 @@ import { DateUtilProvider } from '../../providers/date-util/date-util';
   templateUrl: 'daily-one-search.html',
 })
 export class DailyOneSearchPage {
-  @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('searchbar') searchbar;
-  // @ViewChild('timeSelect') timeSelect: TimeSelectComponent;
-  // 搜索关键词
-  selectString: string = "";
+
+  // 用户
   user: any;
 
+  // 搜索关键词
+  selectString: string = "";
+  // 每页显示条数
   size: number = 10;
+  // 开始时间
   timeStarts: string = "";
+  // 结束时间
   timeEnd: string = "";
-
-  dailyOneList: any[] = []; // 每周一励列表
-
+  // 每周一励列表
+  dailyOneList: any[] = [];
+  // 展示搜索区域
   selectTimeShowFlag = false;
-  showNotFound: boolean = false;
-  onceLoad:number = 1;
+  // 是否正在加载数据
+  isLoading = false;
+  // 是否还有更多数据
+  hasMore: boolean = true;
+  // 时间选择器
   dateControls: object = [
     {
       options: []
@@ -42,14 +47,15 @@ export class DailyOneSearchPage {
     public dailyProvider: DailyProvider,
     public storage: StorageProvider,
     public dateUtil: DateUtilProvider,
-    public loadingCtrl: LoadingController
   ) {
     this.user = this.navParams.get('user');
-    this.initList();
+    this.resetList();
     this.getTime();
   }
 
-  //获取日期控件值
+  // =================== Public Method =========================
+
+  // 获取日期控件值
   getTime() {
     let startYear = 1900;
     let date, year;
@@ -67,31 +73,42 @@ export class DailyOneSearchPage {
         }
       });
     }, 100);
-
   }
 
-  goBack() {
-    this.navCtrl.pop();
-    // this.searchbar.setFocus();
+  // 重置列表
+  resetList() {
+    this.isLoading = true;
+    this.dailyOneList = [];
+    this._getLogDailyList().subscribe((data) => {
+      data && data.list && (this.dailyOneList = data.list);
+    });
   }
 
-  initList() {
-    this.more(false);
+  // 获取列表数据
+  _getLogDailyList(params?) {
+    params = {
+      size: this.size,
+      userCode: this.user.userCode,
+      searchKeyword: this.selectString,
+      searchStart: this.timeStarts,
+      searchEnd: this.timeEnd,
+      ...params
+    };
+    if(params['searchStart'] || params['searchEnd']){
+      this.getOneWeekOut(params);
+    }
+    return this.dailyProvider.getDailyOneList(params).do(
+      data => {
+        this.hasMore = data.list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
   }
 
-  // 搜索确定按钮实现
-  goSelcet(event: any) {
-    this.selectTimeShowFlag = false;
-    this.initList();
-  }
-
-  // 重置
-  reset() {
-    this.timeStarts = '';
-    this.timeEnd = '';
-    this.selectTimeShowFlag = true;
-  }
-
+  // 搜索条件格式转换
   getOneWeekOut(params) {
     let startYear = parseInt(params['searchStart']);
     let endYear = parseInt(params['searchEnd']);
@@ -103,58 +120,55 @@ export class DailyOneSearchPage {
     params['searchEnd'] = endDate.getFullYear()+'-'+(endDate.getMonth()+1)+'-'+endDate.getDate();
   }
 
-  more(boolSearch = true,infinite?: InfiniteScroll) {
-    let loading = this.loadingCtrl.create({
-      content: '处理中...'
-    });
-    this.infinite && this.infinite.enable(true);
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode,
-      searchKeyword: this.selectString,
-      searchStart: this.timeStarts,
-      searchEnd: this.timeEnd
-    };
-    if(params['searchStart'] || params['searchEnd']){
-      this.getOneWeekOut(params);
-    }
-    if (boolSearch && this.dailyOneList.length) {
-      params['endTime'] = this.dailyOneList[this.dailyOneList.length - 1]['publishTime'];
-    }
-    this.onceLoad-->0?loading.present():'';
-    this.dailyProvider.getDailyOneList(params).subscribe(
-      (data) => {
-        if(!boolSearch && !(this.dailyOneList == data.list && !data.list)){
-          loading.present();
-        };
-        if(!data.list){
-          this.showNotFound = true;
-        };
-        loading.dismiss();
-        infinite && infinite.complete();
-        if(!params['endTime'] && data.list == ''){
-          this.dailyOneList = [];
-        }
-        if (data.list.length) {
-          infinite && infinite.enable(true);
-          boolSearch?this.dailyOneList = this.dailyOneList.concat(data.list):this.dailyOneList = data.list;
-        } else {
-          infinite && infinite.enable(false);
-        }
-      }
-    );
-  }
-
-  goDailyShow(one) {
-    this.navCtrl.push(DailyOneShowPage, {
-      dailyOne: one,
-      onDelete: this.initList.bind(this),
-      onUpdate: this.initList.bind(this)
-    });
-  }
-
+  // 获取图片地址
   getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  // ============================ Events ============================
+
+  // 点击取消
+  onClickCancel() {
+    this.navCtrl.pop();
+  }
+
+  // 点击搜索
+  onClickSearch() {
+    this.selectTimeShowFlag = false;
+    this.resetList();
+  }
+
+  // 点击清除并搜索
+  onClickClearSearch() {
+    this.selectString = '';
+    this.selectTimeShowFlag = false;
+    this.resetList();
+  }
+
+  // 点击重置查询条件
+  onClickResetCondition() {
+    this.timeStarts = '';
+    this.timeEnd = '';
+    this.selectTimeShowFlag = true;
+  }
+
+  // 点击日志
+  onClickDaily(one) {
+    this.navCtrl.push(DailyOneShowPage, {
+      user: this.user,
+      count: 1,
+      dailyOne: one,
+      onDelete: this.resetList.bind(this),
+      onUpdate: this.resetList.bind(this)
+    });
+  }
+
+  // 滚动加载
+  onScrollDailyList(infinite?: InfiniteScroll) {
+    this._getLogDailyList({endTime: this.dailyOneList[this.dailyOneList.length - 1]['publishTime']}).subscribe((data) => {
+      data && data.list && (this.dailyOneList = this.dailyOneList.concat(data.list));
+      infinite.complete();
+    });
   }
 
 }

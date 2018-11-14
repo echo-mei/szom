@@ -1,18 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, PickerController } from 'ionic-angular';
-import { TypeCustomPage } from '../type-custom/type-custom';
 import { FormGroup, FormBuilder, Validators } from '../../../node_modules/@angular/forms';
 import { WorkProvider } from '../../providers/work/work';
 import { StorageProvider } from '../../providers/storage/storage';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { DatePipe } from '@angular/common';
-
-/**
- * Generated class for the WorkWeektableUpdatePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { DicProvider } from '../../providers/dic/dic';
 
 @Component({
   selector: 'page-work-weektable-update',
@@ -24,30 +17,35 @@ import { DatePipe } from '@angular/common';
 export class WorkWeektableUpdatePage {
   weektableForm: FormGroup;
 
+  //当前用户
+  me: any;
+  //时间
   workDateStr: any;
+  // 时间限制年份选择可以比当前时间大一年
+  timeMax=(new Date()).getFullYear()+1;
+  //时间段
   dayPeriod: any;
+  //时间段选择栏
   dayPeriodControls: object = [
     {
-      options: [
-        { text: "全天", value: "4" },
-        { text: "上午", value: "1" },
-        { text: "下午", value: "2" },
-        { text: "晚上", value: "3" }
-      ]
+      options: []
     }
   ]
+  //周表类型id
   weektableTypeId: any = "2";
+  //周表类型选择栏
   weektableTypeControls: object = [
     {
       options: []
     }
   ]
+  //周表内容
   content: string;
+  //内容最大长度限制
   maxLength = 196;
-  me: any;
 
   weektable:any;
-  onUpdate: () => {};
+  onUpdate: (data:Date) => {};
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -57,33 +55,42 @@ export class WorkWeektableUpdatePage {
     public dateUtil: DateUtilProvider,
     public datePipe: DatePipe,
     public storage: StorageProvider,
-    public picker: PickerController) {
-    this.me = JSON.parse(this.storage.get('user'));
+    public picker: PickerController,
+    public dicProvider: DicProvider) {
+    this.me = this.storage.me;
     this.weektable = this.navParams.get("weektable");
     this.onUpdate = this.navParams.get('onUpdate');
     this.weektableForm = this.formBuilder.group({
-      content: [this.weektable.content, Validators.compose([Validators.required])],
+      content: [this.weektable.content, Validators.compose([Validators.required,Validators.maxLength(this.maxLength)])],
       workDateStr: [this.datePipe.transform(this.weektable.workDateStr, 'yyyy-MM-dd'), Validators.compose([Validators.required])],
       dayPeriod: [this.weektable.dayPeriod, Validators.compose([Validators.required])],
       weektableTypeCode: [this.weektable.weektableTypeCode.toString(), Validators.compose([Validators.required])]
     });
-    this.getWeektableType();
   }
 
   ionViewDidLoad() {
-  }
-
-  getWeektableType() {
-    this.workProvider.getWeektableType().subscribe(
-      (data) => {
-        this.weektableTypeControls[0].options = [];
-        data.forEach(element => {
-          this.weektableTypeControls[0].options.push({ text: element.typeName, value: element.weektableTypeId })
+    this.dicProvider.getDicItemList({dicTypeCode: 'JDRS0900'}).subscribe(
+      (list) => {
+        this.dayPeriodControls[0].options = list.map((item) => {
+          return {
+            text: item.displayName,
+            value: item.dicItemCode
+          };
         });
-        this.weektableTypeControls[0].options.push({text:"自定义",value:"0"});
+        this.weektableForm.controls['dayPeriod'].setValue(this.weektable.dayPeriod);
+      }
+    );
+    this.dicProvider.getDicItemList({dicTypeCode: 'JDRS0901'}).subscribe(
+      (list) => {
+        this.weektableTypeControls[0].options = list.map((item) => {
+          return {
+            text: item.displayName,
+            value: item.dicItemCode
+          };
+        });
         this.weektableForm.controls['weektableTypeCode'].setValue(this.weektable.weektableTypeCode);
       }
-    )
+    );
   }
 
   postWeektableCreate() {
@@ -106,19 +113,10 @@ export class WorkWeektableUpdatePage {
           message: '修改成功',
           duration: 1000
         }).present();
-        this.onUpdate && this.onUpdate();
+        this.onUpdate && this.onUpdate(new Date(this.weektableForm.value.workDateStr));
         this.navCtrl.pop();
       }
     );
   }
 
-  goTypeCustom() {
-    let weektableTypeId = this.weektableForm.value.weektableTypeId;
-    if(weektableTypeId === "0"){
-      this.weektableForm.controls['weektableTypeId'].setValue("1");
-      this.navCtrl.push(TypeCustomPage, {
-        onUpdateWeektableTypeList: this.getWeektableType.bind(this)
-      });
-    }
-  }
 }

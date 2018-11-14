@@ -2,6 +2,11 @@
 
   <ion-navbar color="white">
     <ion-title>创建工作日志</ion-title>
+    <ion-buttons right>
+      <button ion-button clear color="primary"
+        (click)="postDailyCreate()"
+        [disabled]="(dailyForm.invalid||dailyForm.controls['content'].value.trim()==='')&&!imagePicker.images.length">发布</button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -10,20 +15,12 @@
 <ion-content padding>
   <form [formGroup]="dailyForm">
     <ion-list no-lines>
-      <!-- <ion-item>
-        <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
-      </ion-item> -->
       <ion-item>
-        <ion-label *ngIf="dailyForm.controls['content'].value.length <= maxLength">{{dailyForm.controls['content'].value.length}}</ion-label>
-        <ion-label class="error" *ngIf="dailyForm.controls['content'].value.length > maxLength">超出{{dailyForm.controls['content'].value.length-maxLength}}字</ion-label>
+        <ion-label *ngIf="!dailyForm.hasError('maxlength', 'content')">{{dailyForm.controls['content'].value.length}}</ion-label>
+        <ion-label class="error" *ngIf="dailyForm.hasError('maxlength', 'content')">超出{{dailyForm.controls['content'].value.length-maxLength}}字</ion-label>
         <ion-textarea autosize formControlName="content" name="content" placeholder="来说说今天都做了些什么……"></ion-textarea>
       </ion-item>
     </ion-list>
     <image-picker #imagePicker></image-picker>
-    <button class="post-button" ion-button block (click)="postDailyCreate()"
-      [disabled]="
-        (dailyForm.invalid&&!imagePicker.images.length)
-        || dailyForm.controls['content'].value.length>maxLength
-        || (dailyForm.controls['content'].value&&dailyForm.controls['content'].value.trim()==='')">发布</button>
   </form>
 </ion-content>

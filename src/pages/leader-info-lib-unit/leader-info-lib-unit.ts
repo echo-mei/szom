@@ -6,13 +6,6 @@ import { UserProvider } from '../../providers/user/user';
 import { LeaderInfoLibSearchPage } from '../leader-info-lib-search/leader-info-lib-search';
 import { LeaderInfoPage } from '../leader-info/leader-info';
 
-/**
- * Generated class for the LeaderInfoLibUnitPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @Component({
   selector: 'page-leader-info-lib-unit',
   templateUrl: 'leader-info-lib-unit.html',
@@ -20,9 +13,8 @@ import { LeaderInfoPage } from '../leader-info/leader-info';
 export class LeaderInfoLibUnitPage {
   org: any;
 
-  unitList: any[];
-  personKeyList: any = [];
-  personValueList: any = [];
+  unitList: any = [];
+  personList: any[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -43,7 +35,7 @@ export class LeaderInfoLibUnitPage {
   getUnitList(): any {
     this.unitProvider.getChildOrgList({organizationId: this.org.organizationId}).subscribe(
       (list) => {
-        this.unitList = list;
+        list.length && (this.unitList = list);
       }
     );
   }
@@ -52,13 +44,11 @@ export class LeaderInfoLibUnitPage {
     if(this.org.orgType) {
       this.unitProvider.getOrgPersonList({
         organizationId: this.org.organizationId,
-        orgType: this.org.orgType
+        orgType: this.org.orgType,
+        userType:"01"
       }).subscribe(
         (list) => {
-          for(let key in list) {
-            this.personKeyList.push(key);
-            this.personValueList.push(list[key]);
-          }
+          this.personList = list;
         }
       );
     }

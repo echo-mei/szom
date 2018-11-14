@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color="white">
     <ion-title text-center>{{title}}</ion-title>
     <ion-buttons right>
@@ -11,8 +11,13 @@
 
 
 <ion-content padding (click)="focus(textarea)">
-  <form>
-    <ion-textarea autosize #textarea [placeholder]="title+'...'" [(ngModel)]="value" [name]="attr"></ion-textarea>
-    <ion-label>{{value?maxLength-value.length:''}}</ion-label>
+  <form [formGroup]="selfForm">
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label *ngIf="!selfForm.hasError('maxlength', 'content')">{{selfForm.controls['content'].value ? selfForm.controls['content'].value.length : 0}}</ion-label>
+        <ion-label class="error" *ngIf="selfForm.hasError('maxlength', 'content')">超出{{selfForm.controls['content'].value.length-maxLength}}字</ion-label>
+        <ion-textarea autosize (keyup.enter)="onEnter($event)" #textarea formControlName="content" [placeholder]="title+'...'" [(ngModel)]="value"></ion-textarea>
+      </ion-item>
+    </ion-list>
   </form>
 </ion-content>

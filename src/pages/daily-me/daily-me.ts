@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll, PopoverController, LoadingController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams, Events, InfiniteScroll, PopoverController, ModalController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -15,21 +15,23 @@ import { LikeStatisticsPage } from '../like-statistics/like-statistics';
 })
 export class DailyMePage {
 
-  @ViewChild('infinite') infinite: InfiniteScroll;
+  // 用户
+  @Input() user: any = {};
 
-  user: any;
-  newFlag:any;
-
+  // 当前用户
+  me: any;
+  // 每页显示条数
   size = 10;
-  logDataList: Array<object> = [];  // 日志列表
-  stlikeList: Array<object> = []; // 点赞列表
-  stlikeSum: number = 0;  // 总点赞
-  dataLoadOver = false; //数据加载完成标志
-  loading = this.loadingCtrl.create({
-    content: '处理中...',
-    // showBackdrop:false,
-    cssClass: 'loading-new'
-  });
+  // 日志列表
+  logDataList: Array<object> = [];
+  // 点赞统计列表
+  stlikeList: Array<object> = [];
+  // 总点赞数
+  stlikeSum: number = 0;
+  // 是否正在加载数据
+  isLoading = false;
+  // 是否还有更多数据
+  hasMore: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -39,133 +41,149 @@ export class DailyMePage {
     public storage: StorageProvider,
     public emojiProvider: EmojiProvider,
     public popoverCtrl:PopoverController,
-    public loadingCtrl:LoadingController
+    public modalCtrl: ModalController
   ) {
-    this.user = this.navParams.get('user');
-    this.newFlag = this.navParams.get('newFlag');
-    this.getfindSTLike();
-    this.initLogDailyList();
+    this.me = this.storage.me;
   }
 
-  initLogDailyList() {
-    this.logDataList = [];
-    this.more();
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
+    this.resetLikeInfo();
+    this.resetLogDailyList();
   }
 
-  load() {
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode
-    };
-    if (this.logDataList.length) {
-      params['startTime'] = this.logDataList[0]['publishTime'];
-    }
-    this.dailyProvider.getLogDailyList(params).subscribe(
-      (data) => {
-        if (data.length) {
-          for (let i = data.length - 1; i >= 0; i--) {
-            this.logDataList.unshift(data[i]);
-          }
-        }
-      }
-    );
-  }
-
-  more(infinite?: InfiniteScroll) {
-    this.infinite && this.infinite.enable(true);
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode
-    };
-    if (this.logDataList.length) {
-      params['endTime'] = this.logDataList[this.logDataList.length - 1]['publishTime'];
-    }
-    if (!infinite) {
-      this.loading.present();
-    }
-    this.dailyProvider.getLogDailyList(params).subscribe(
-      (data) => {
-        if (!infinite) {
-          this.dataLoadOver = true;
-          this.loading.dismiss();
-        }
-        infinite && infinite.complete();
-        if (data.length) {
-          infinite && infinite.enable(true);
-          this.logDataList = this.logDataList.concat(data);
-        } else {
-          infinite && infinite.enable(false);
-        }
-      }
-    );
-  }
-
-  getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
-  }
-
-  getfindSTLike() {
+  // =================== Public Methods =====================
+  // 重置统计点赞信息
+  resetLikeInfo() {
     this.dailyProvider.getfindSTLike({
       accountCode: this.user.userCode
     }).subscribe(
       (data) => {
-        let that = this;
+        this.stlikeSum = 0;
         this.stlikeList = data;
         this.stlikeList.forEach((val) => {
-          that.stlikeSum += val["likeCounts"];
+          this.stlikeSum += val["likeCounts"];
         });
       }
     )
   }
 
+  // 重置日志列表
+  resetLogDailyList() {
+    this.isLoading = true;
+    this._getLogDailyList().subscribe((list) => {
+      list.length && (this.logDataList = list);
+    });
+  }
+
+  // 加载最新数据
+  loadLoadDailyList() {
+    let params = {};
+    this.logDataList.length && (params['startTime'] = this.logDataList[0]['publishTime']);
+    this._getLogDailyList(params).subscribe((list) => {
+      if (list && list.length) {
+        this.logDataList || (this.logDataList = []);
+        for (let i = list.length - 1; i >= 0; i--) {
+          this.logDataList.unshift(list[i]);
+        }
+      }
+    });
+  }
+
+  // 更新某一条日志
   updateDaily(daily) {
     for (let i = 0; i < this.logDataList.length; i++) {
       if (this.logDataList[i]['dailyId'] === daily.dailyId) {
         this.logDataList[i] = daily;
+        this.resetLikeInfo();
         return;
       }
     }
   }
 
+  // 删除某一条日志
   deleteDaily(dailyId) {
     for (let i = 0; i < this.logDataList.length; i++) {
       if (this.logDataList[i]['dailyId'] === dailyId) {
         this.logDataList.splice(i,1);
+        this.resetLikeInfo();
         return;
       }
     }
   }
 
-  goDailyShow(daily) {
+  // 获取列表数据
+  _getLogDailyList(params?) {
+    params = {
+      size: this.size,
+      userCode: this.user.userCode,
+      ...params
+    };
+    return this.dailyProvider.getLogDailyList(params).do(
+      list => {
+        this.hasMore = list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // 获取图片地址
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  // ================ Events ===================
+
+  // 滚动加载
+  onScrollDailyList(infinite?: InfiniteScroll) {
+    this._getLogDailyList({endTime: this.logDataList[this.logDataList.length - 1]['publishTime']}).subscribe((list) => {
+      list && (this.logDataList = this.logDataList.concat(list));
+      infinite.complete();
+    });
+  }
+
+  // 点击日志
+  onClikeDaily(daily) {
     this.navCtrl.push(DailyMeShowPage, {
+      user:this.user,
       daily: daily,
       onUpdate: this.updateDaily.bind(this),
       onDelete: this.deleteDaily.bind(this)
     });
   }
 
-  goDailyCreate() {
+  // 点击创建
+  onClikeCreate() {
     this.navCtrl.push(DailyMeCreatePage, {
-      onCreate: this.load.bind(this)
+      onCreate: this.loadLoadDailyList.bind(this)
     });
   }
 
-  goDailySearch() {
-    this.navCtrl.push(DailyMeSearchPage,{
+  // 点击搜索
+  onClickSearch() {
+    this.navCtrl.push(DailyMeSearchPage, {
       user: this.user,
       onUpdate: this.updateDaily.bind(this),
       onDelete: this.deleteDaily.bind(this)
     });
   }
 
-  showDetailLike() {
-    let popover = this.popoverCtrl.create(LikeStatisticsPage,{
+  // 点击点赞统计
+  onClickLike() {
+    this.modalCtrl.create(LikeStatisticsPage, {
       stlikeList:this.stlikeList,
       stlikeSum:this.stlikeSum
-    }, {
-      cssClass: 'daily-likelist-pop'
-    });
-    popover.present();
+    }).present();
+    // let popover = this.popoverCtrl.create(LikeStatisticsPage, {
+    //   stlikeList:this.stlikeList,
+    //   stlikeSum:this.stlikeSum
+    // }, {
+    //   cssClass: 'daily-likelist-pop'
+    // });
+    // popover.present();
   }
 
 }

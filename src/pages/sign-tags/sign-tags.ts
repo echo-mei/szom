@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { SignProvider } from '../../providers/sign/sign';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -8,6 +8,8 @@ import { StorageProvider } from '../../providers/storage/storage';
   templateUrl: 'sign-tags.html',
 })
 export class SignTagsPage {
+
+  @ViewChild('wrapper') wrapper: ElementRef;
 
   tags: any[];
 
@@ -22,7 +24,9 @@ export class SignTagsPage {
     public navParams: NavParams,
     public signProvider: SignProvider,
     public viewCtrl: ViewController,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public renderer2: Renderer2,
+    public elementRef: ElementRef
   ) {
     this.date = new Date();
     this.tags = this.navParams.get('tags');
@@ -44,14 +48,21 @@ export class SignTagsPage {
     };
     this.signProvider.signIn(sign).subscribe(
       () => {
-        this.viewCtrl.dismiss();
+        this.close();
         this.onSign();
       }
     );
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.wrapper.nativeElement.classList.add('slideOutDown', 'fast');
+    const modal = this.renderer2.parentNode(this.renderer2.parentNode(this.elementRef.nativeElement));
+    this.renderer2.addClass(modal, 'animated');
+    this.renderer2.addClass(modal, 'fadeOut');
+    this.renderer2.addClass(modal, 'fast');
+    setTimeout(() => {
+      this.viewCtrl.dismiss();
+    }, 250);
   }
 
 }

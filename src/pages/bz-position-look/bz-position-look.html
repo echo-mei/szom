@@ -1,0 +1,23 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>班子职数</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="header">
+      <ion-col col-5>职务属性</ion-col>
+      <ion-col col-5>职务层次</ion-col>
+      <ion-col col-2>数量</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let position of bzPositionList; let i=index; ">
+      <ion-col col-5>{{position.dutyAttribute}}</ion-col>
+      <ion-col col-5>{{position.dutyLevel}}</ion-col>
+      <ion-col col-2>{{position.verifiedNum}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

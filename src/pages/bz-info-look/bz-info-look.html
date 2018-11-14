@@ -1,0 +1,24 @@
+<ion-header no-border>
+  <ion-navbar color="white">
+    <ion-title>{{ user.userName }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="bzIntro">
+    <h2>班子概述</h2>
+    <p>{{ user.teamDesc }}</p>
+  </div>
+  <ion-list class="type-list">
+    <h2>班子成员</h2>
+    <!-- <span>(平均年龄:{{averageAge}}岁)</span> -->
+    <ion-item *ngFor="let user of personList;" (click)="onClickUser(user)">
+      <ion-avatar item-start>
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <h2>{{user.personName}}</h2>
+      <ion-note>{{user.dutyName}}</ion-note>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

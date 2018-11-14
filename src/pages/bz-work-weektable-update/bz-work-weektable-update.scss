@@ -1,0 +1,81 @@
+page-bz-work-weektable-update {
+  .separate{
+    background: #fafafa;
+    height: rem(6);
+    width: 100%;
+  }
+  form{
+    padding-left: rem(15);
+    .list{
+      .item{
+        .item-inner{
+          padding-right: 0!important;
+          @include border-b-1px(color($colors,boderColor));
+          // border-bottom: .5px solid color($colors,boderColor);
+
+          .label{
+            color:#000000;
+          }
+
+          .szom{
+            font-size: rem(16);
+            color:#999999;
+            margin: 0 rem(10) 0 0;
+          }
+
+          .select-icon{
+            display: none;
+          }
+
+          .select-text{
+            font-size: rem(16);
+            height: rem(60);
+          }
+        }
+      }
+    }
+    .w-textarea{
+      position: relative;
+      &.item-input {
+        border: 0!important;
+        box-shadow: initial!important;
+      }
+      .item-inner{
+        padding-right: rem(15)!important;
+        border: 0!important;
+        box-shadow: initial!important;
+
+        ion-label {
+          position: absolute;
+          bottom: 0;
+          right: rem(15);
+          margin: 0!important;
+          font-size: rem(14);
+          color: #999999!important;
+
+          &.error {
+            color: red!important;
+          }
+        }
+        .text-input{
+          max-height: rem(100);
+          width: 100%;
+          margin: rem(10) 0 rem(20) 0;
+          padding-right: rem(15);
+        }
+      }
+      textarea {
+        max-height: rem(100);
+      }
+
+    }
+
+  }
+  ion-footer {
+    padding: rem(15);
+    button {
+      background: #4D74EB!important;
+      height: rem(46)!important;
+    }
+  }
+}

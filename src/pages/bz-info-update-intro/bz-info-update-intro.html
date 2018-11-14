@@ -1,18 +1,20 @@
-<!--
-  Generated template for the BzInfoUpdateIntroPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>bz-info-update-intro</ion-title>
+<ion-header no-border>
+  <ion-navbar color="white">
+    <ion-title>班子概况</ion-title>
+    <ion-buttons right>
+      <button ion-button clear color="primary" (click)="goSuccess()" [disabled]="introForm.invalid || introForm.controls['content'].value.trim()===''">完成</button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
-
+  <form [formGroup]="introForm">
+    <ion-item>
+      <ion-label *ngIf="!introForm.hasError('maxlength', 'content')">{{introForm.controls['content'].value.length}}</ion-label>
+      <ion-label class="error" *ngIf="introForm.hasError('maxlength', 'content')">超出{{introForm.controls['content'].value.length-maxLength}}字</ion-label>
+      <ion-textarea autosize formControlName="content" name="content" placeholder="班子概况"></ion-textarea>
+    </ion-item>
+  </form>
+  <span class="error-info" [hidden]="!introForm.hasError('emoji', 'content')">不支持表情</span>
 </ion-content>

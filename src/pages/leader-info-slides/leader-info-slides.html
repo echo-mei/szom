@@ -1,0 +1,28 @@
+<ion-content>
+  <ion-slides #slides (ionSlideDidChange)="onSlideChanged($event)">
+    <ion-slide>
+      <page-user-baseinfo [user]="user"></page-user-baseinfo>
+    </ion-slide>
+    <ion-slide>
+      <page-user-selfinfo [user]="user"></page-user-selfinfo>
+    </ion-slide>
+    <ion-slide>
+      <page-user-impression [user]="user"></page-user-impression>
+    </ion-slide>
+    <ion-slide>
+      <page-work-weektable [user]="user"></page-work-weektable>
+    </ion-slide>
+    <ion-slide>
+      <page-daily-me [user]="user"></page-daily-me>
+    </ion-slide>
+    <ion-slide>
+      <page-daily-one [user]="user"></page-daily-one>
+    </ion-slide>
+    <ion-slide>
+      <page-daily-three [user]="user"></page-daily-three>
+    </ion-slide>
+    <ion-slide>
+      <page-daily-ten [user]="user"></page-daily-ten>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

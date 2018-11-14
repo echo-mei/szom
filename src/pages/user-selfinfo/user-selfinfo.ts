@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   selector: 'page-user-selfinfo',
@@ -8,17 +9,29 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class UserSelfinfoPage {
 
-  user: any;
+  @Input() user: any = {};
 
   userSelfInfo: any = {};
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public statusBar: StatusBar
   ) {
-    this.user = this.navParams.get('user');
+  }
+
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
     this.getUserSelfInfo();
+  }
+
+  ionViewWillEnter() {
+    this.statusBar.styleLightContent();
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
   }
 
   // 获取用户自述信息

@@ -1,37 +1,50 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title text-center>我</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content>
-  <ion-list no-lines>
-    <ion-item>
-      <ion-thumbnail item-start>
-        <img *ngIf="me.personId" [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
-      </ion-thumbnail>
-      <h4>{{me.name}}</h4>
-      <p>{{me.unitName}} | {{me.dutyName}}</p>
+  <ion-item class="info-title" (click)="me.userType=='01'&&goMeInfo()">
+    <ion-avatar *ngIf="me.userType!='02'" item-start>
+      <img [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
+    </ion-avatar>
+    <h2 [class.big]="me.userType=='02'">{{me.personName}}</h2>
+    <ion-note>{{me.dutyName}}</ion-note>
+  </ion-item>
 
+  <ion-list class="info-content">
+    <!-- <ion-item (click)="goMessageInfo()" class="lonely">
+      <ion-avatar item-start>
+        <img src="assets/imgs/mes-tz@3x.png">
+      </ion-avatar>
+      <h2>消息通知</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item> -->
+    <ion-item *ngIf="menuProvider.hasMenu('me-help')" class="lonely" (click)="goHelpFeedback()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/help@3x.png">
+      </ion-avatar>
+      <h2>帮助与反馈</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
-    <button ion-item *ngIf="menuProvider.hasMenu('me-help')">
-      <i class="szom ion-md-banzhu" style="color: #02BA9E;"></i>
-      帮助与反馈
-    </button>
-
-    <button ion-item *ngIf="menuProvider.hasMenu('me-account')" (click)="meSafe()">
-      <i class="szom ion-md-zhanghuanquan" style="color: #4C6AEF;"></i>
-      账户安全
-      <ion-icon class="szom" name="you" item-end></ion-icon>
-    </button>
-
-    <button ion-item *ngIf="menuProvider.hasMenu('me-setting')">
-      <!-- <embed src="../../assets/imgs/me-setting.svg" type="image/svg+xml"/> -->
-      <i class="szom ion-md-xitongshezhi" style="color: #5E6999;"></i>
-      系统设置
-    </button>
+    <ion-item *ngIf="menuProvider.hasMenu('me-account')" (click)="meSafe()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/account-save@3x.png">
+      </ion-avatar>
+      <h2>账户安全</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <!-- <ion-item *ngIf="menuProvider.hasMenu('me-setting')">
+      <ion-avatar item-start>
+        <img src="assets/imgs/sys-set@3x.png">
+      </ion-avatar>
+      <h2>系统设置</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item> -->
   </ion-list>
-  <button class="exit" ion-button full (click)="logout()">退出</button>
+
+  <button class="exit" ion-button full (click)="logout()" >退出</button>
 </ion-content>

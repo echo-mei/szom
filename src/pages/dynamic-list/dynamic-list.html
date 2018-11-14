@@ -1,21 +1,31 @@
-<ion-content (ionScroll)="commentInputHide()">
-  <ion-refresher (ionRefresh)="load($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="松开刷新" refreshingSpinner="circles" refreshingText="为您提供最新动态中……"></ion-refresher-content>
+<ion-content content-shadow>
+  <ion-refresher (ionRefresh)="loadDynamicList($event)" *ngIf="hasRefresher" closeDuration="1000" pullMin="50" pullMax="400" snapbackDuration="500">
+    <ion-refresher-content pullingIcon="none" pullingText="下拉刷新" refreshingSpinner="crescent" refreshingText=""></ion-refresher-content>
   </ion-refresher>
-  <ion-list (click)="commentInputHide()">
+  <div class="noDailyList" *ngIf="!isLoading && !dynamicList.length">
+    <img src="assets/imgs/nolog.png">
+    <p>没有对应日志</p>
+  </div>
+  <div style="text-align:center;" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <ion-list *ngIf="dynamicList.length>0" class="card-list">
     <ion-card *ngFor="let dynamic of dynamicList;let i=index;">
       <ion-card-header>
         <ion-item no-padding>
-          <ion-avatar item-start>
-            <img *ngIf="dynamic.soaPersonInfoDTO.personId" [src]="userProvider.getHeadImageUrl(dynamic.soaPersonInfoDTO.personId)" onerror="this.src='assets/imgs/user.png'"
-              (click)="goUserInfo(dynamic.soaPersonInfoDTO.userCode)">
+          <ion-avatar item-start *ngIf="dynamic.soaPersonInfoDTO.userType!='02'">
+            <img *ngIf="dynamic.soaPersonInfoDTO.personId" [src]="getHeadImageUrl(dynamic.soaPersonInfoDTO.personId)" onerror="this.src='assets/imgs/user.png'"
+              (click)="onClickUser(dynamic.soaPersonInfoDTO.userCode,dynamic.soaPersonInfoDTO.userType)">
           </ion-avatar>
-          <h3><span (click)="goUserInfo(dynamic.soaPersonInfoDTO.userCode)">{{dynamic.soaPersonInfoDTO.name}}</span></h3>
+          <ion-avatar item-start *ngIf="dynamic.soaPersonInfoDTO.userType=='02'">
+            <img src="assets/imgs/banzi-user.png">
+          </ion-avatar>
+          <h3><span (click)="onClickUser(dynamic.soaPersonInfoDTO.userCode,dynamic.soaPersonInfoDTO.userType)">{{dynamic.soaPersonInfoDTO.name}}</span></h3>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <div class="content-wrap" [hidden]="dynamic.showMore">
-          <p class="content showEllipsis" #content>
+          <p class="content-text showEllipsis" #content>
             <span class="tag" *ngIf="dynamic.dataSource==2">周</span>
             <span class="tag" *ngIf="dynamic.dataSource==3">季</span>
             <span class="tag" *ngIf="dynamic.dataSource==4">年</span>
@@ -24,7 +34,7 @@
           <p class="more" [hidden]="showMoreBtn(content)" (click)="dynamic.showMore=true">更多</p>
         </div>
         <div class="content-wrap" [hidden]="!dynamic.showMore">
-          <p class="content showAll">
+          <p class="content-text showAll">
             <span class="tag" *ngIf="dynamic.dataSource==2">周</span>
             <span class="tag" *ngIf="dynamic.dataSource==3">季</span>
             <span class="tag" *ngIf="dynamic.dataSource==4">年</span>
@@ -36,61 +46,50 @@
         <div class="other">
           <ion-note class="pubTime">{{ dynamic.publishTime | howLongAgo }}</ion-note>
           <ion-note class="handle" float-right>
-            <button ion-button clear class="xiaoxi" (click)="startComment(dynamic);$event.stopPropagation();">
-              <ion-icon class="szom" name="md-xiaoxi"></ion-icon>
+            <button class="xiaoxi" (click)="onClickCommentIcon(dynamic);$event.stopPropagation();">
+              <img src="assets/imgs/pinglun.png" />
             </button>
-            <button ion-button clear class="dianzan" *ngIf="!dynamic.hasMeLike" (click)="sendLike(dynamic);$event.stopPropagation();">
-              <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+            <button #dianzanmoren class="dianzan" *ngIf="!dynamic.hasMeLike" (click)="onClickLikeIcon(dynamic);$event.stopPropagation();">
+              <img [class.scale-large]="dynamic.hasClicked" src="assets/imgs/dianzanmoren.png" />
             </button>
-            <button ion-button clear class="dianzan dianji" *ngIf="dynamic.hasMeLike">
-              <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+            <button #dianzandianji class="dianzan dianji" *ngIf="dynamic.hasMeLike" (click)="onClickCancelLikeIcon(dynamic);$event.stopPropagation();">
+              <img [class.scale-small]="dynamic.hasClicked" src="assets/imgs/dianzan.png" />
             </button>
           </ion-note>
         </div>
-        <div [hidden]="!dynamic.sbLikeList.length && !dynamic.sbCommentList.length" class="line"></div>
-        <ion-row *ngIf="dynamic.sbLikeList.length" (click)="goLikeList(dynamic)">
-          <ion-col col-1>
-            <ion-icon class="szom zanList" name="md-dianzandianji"></ion-icon>
+        <ion-row *ngIf="dynamic.sbLikeList.length" (click)="onClickLikeList(dynamic)">
+          <ion-col col-1 class="zanList-wrap">
+            <img class="zanList" src="assets/imgs/dianzan-num@3x.png" />
           </ion-col>
-          <ion-col class="zan" *ngIf="dynamic.sbLikeList.length<=9">
-            <span *ngFor="let user of dynamic.sbLikeList.slice(0, 9);let li=index;">
-              <a class="zanName" (click)="goUserInfo(user.userCode);$event.stopPropagation();">{{user.likeUserName}}</a><span
+          <ion-col class="zan" *ngIf="dynamic.sbLikeList.length<=8">
+            <span *ngFor="let user of dynamic.sbLikeList.slice(0, 7);let li=index;">
+              <a class="zanName">{{user.likeUserName}}</a><span
                 class="zanName" *ngIf="li<8&&li<dynamic.sbLikeList.length-1">、</span>
             </span>
           </ion-col>
-          <ion-col class="zan" *ngIf="dynamic.sbLikeList.length>9">
-            <span *ngFor="let user of dynamic.sbLikeList.slice(0, 8);let li=index;">
-              <a class="zanName" (click)="goUserInfo(user.userCode);$event.stopPropagation();">{{user.likeUserName}}</a><span
+          <ion-col class="zan" *ngIf="dynamic.sbLikeList.length>8">
+            <span *ngFor="let user of dynamic.sbLikeList.slice(0, 7);let li=index;">
+              <a class="zanName">{{user.likeUserName}}</a><span
                 class="zanName" *ngIf="li<7&&li<dynamic.sbLikeList.length-1">、</span>
             </span>
-            <span>等{{dynamic.sbLikeList.length}}人觉得很赞</span>
+            <span>&nbsp;&nbsp;&nbsp;等{{dynamic.sbLikeList.length}}人觉得很赞</span>
           </ion-col>
         </ion-row>
-        <ion-list class="comList" *ngIf="dynamic.sbCommentList">
-          <p *ngFor="let comment of dynamic.sbCommentList" (click)="startReplyComment(dynamic,comment);$event.stopPropagation();">
-            <a (click)="goUserInfo(comment.userCode);$event.stopPropagation();" (press)="startReplyComment(dynamic,comment);">{{comment.commentUserName}}</a>
+        <div class="line" *ngIf="dynamic.sbLikeList&&dynamic.sbLikeList.length&&dynamic.sbCommentList&&dynamic.sbCommentList.length"></div>
+        <ion-list class="comList" *ngIf="dynamic.sbCommentList&&dynamic.sbCommentList.length">
+          <p *ngFor="let comment of dynamic.sbCommentList" (click)="onClickComment(dynamic,comment);$event.stopPropagation();">
+            <a (click)="onClickUser(comment.userCode,comment.commentUserType);$event.stopPropagation();">{{comment.commentUserName}}</a>
             <span *ngIf="comment.beCommentUserName">回复
-              <a (click)="goUserInfo(comment.beUserCode);$event.stopPropagation();">{{comment.beCommentUserName}}</a>
+              <a (click)="onClickUser(comment.beUserCode,comment.beUserType);$event.stopPropagation();">{{comment.beCommentUserName}}</a>
             </span>:
             <span>{{comment.content}}</span>
           </p>
         </ion-list>
       </ion-card-content>
     </ion-card>
-    <div class="no-more-tip" *ngIf="!isInfinite">
-      <span>没有更多了！...</span>
-    </div>
   </ion-list>
-  <ion-infinite-scroll (ionInfinite)="more($event)" *ngIf="type!='recommend'">
-    <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
+  <div class="no-more-tip" *ngIf="!hasMore && dynamicList.length"><span></span>没有更多内容<span></span></div>
+  <ion-infinite-scroll (ionInfinite)="moreDynamicList($event)" *ngIf="!isLoading && hasInfinite && hasMore">
+    <ion-infinite-scroll-content loadingText=""></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
 </ion-content>
-
-<ion-item class="publish-comment" no-lines>
-  <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="commentData" #commentInput (input)="saveComment(commentData)"></ion-textarea>
-  <div item-end>
-    <button ion-button (click)="sendComment()">发送</button>
-  </div>
-</ion-item>
-

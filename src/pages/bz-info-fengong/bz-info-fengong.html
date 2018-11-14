@@ -1,0 +1,28 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>班子分工</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="bzIntro">
+    <h2>班子职数</h2>
+    <p>{{bzZhiShu && bzZhiShu.leaderDuty}}</p>
+  </div>
+
+  <ion-list class="type-list" no-lines>
+    <div *ngFor="let user of personList;" class="list-item">
+      <ion-item (click)="onClickUser(user)">
+        <ion-avatar item-start>
+          <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+        </ion-avatar>
+        <h2>{{user.personName}}</h2>
+        <ion-note>{{user.dutyName}}</ion-note>
+      </ion-item>
+      <h2>{{user.division}}</h2>
+    </div>
+  </ion-list>
+</ion-content>

@@ -20,11 +20,11 @@ import { LeaderInfoPage } from '../leader-info/leader-info';
 export class LeaderInfoLibSearchPage {
   @ViewChild('searchEle') searchEle;
 
+  // 搜索关键字
   key: string;
 
-  unitList: any[];
-  personKeyList: any = [];
-  personValueList: any = [];
+  unitList: any = [];
+  personList: any = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -43,32 +43,29 @@ export class LeaderInfoLibSearchPage {
   getUnitList(): any {
     let params = {};
     if (this.key) {
-      params['keyWords'] = this.key;
+      params['keywords'] = this.key;
     }else  {
       return;
     }
-    this.unitProvider.getChildOrgList(params).subscribe(
+    this.unitProvider.getLeaderUnitList(params).subscribe(
       (list) => {
-        this.unitList = list;
+        list.length && (this.unitList = list);
       }
     );
   }
 
   getPersonList(): any {
-    let params = {};
+    let params = {
+      userType:"01"
+    };
     if (this.key) {
-      params['keyWords'] = this.key;
+      params['keywords'] = this.key;
     }else  {
       return;
     }
-    this.unitProvider.getOtherUnitUsersList(params).subscribe(
+    this.unitProvider.getLeaderUserList(params).subscribe(
       (data) => {
-        this.personKeyList = [];
-        this.personValueList = [];
-        for(let key in data) {
-          this.personKeyList.push(key);
-          this.personValueList.push(data[key]);
-        }
+        this.personList = data;
       }
     );
   }
@@ -86,11 +83,19 @@ export class LeaderInfoLibSearchPage {
   }
 
   search() {
+    this.unitList = [];
+    this.personList = [];
     this.getUnitList();
     this.getPersonList();
   }
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  clear(){
+    this.key = "";
+    this.unitList = [];
+    this.personList = [];
   }
 }

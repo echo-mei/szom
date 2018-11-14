@@ -15,7 +15,7 @@ page-daily-list-radio {
   .szom-search-wrap{
     position: relative;
     z-index:  10;
-    padding: rem(4) rem(15) rem(6) rem(15);
+    padding: rem(10) rem(15);
     background: #fff;
   }
   .insertImg{
@@ -42,7 +42,7 @@ page-daily-list-radio {
   .radio .radio-icon{
     display: none;
   }
-  
+
   // .radio{
   //   .radio-icon{
 
@@ -72,6 +72,10 @@ page-daily-list-radio {
       position: relative;
       padding: 0 rem(15);
       z-index: 3;
+      .filter-icon{
+        width: rem(18);
+        vertical-align: middle
+      }
       span{
           white-space: nowrap;
           padding-right: rem(5);
@@ -163,10 +167,17 @@ page-daily-list-radio {
     }
   }
   .list {
-    
+
     .item{
-      border-bottom: rem(0.5) solid #f9f9f9;
+      @include border-b-1px(color($colors,boderColor));
       margin-bottom: 0 !important;
+      .radio[item-start]{
+        margin: 0;
+      }
+      .radio-select{
+        width: rem(19);
+        margin:0 rem(12) 0 rem(15);
+      }
       .item-inner{
         padding-right: 0;
 
@@ -197,8 +208,9 @@ page-daily-list-radio {
               &.date {
                 margin-right: rem(27);
               }
-              ion-icon {
-                font-size: rem(10);
+              .show-icon {
+                width:rem(13);
+                vertical-align: middle;
               }
             }
           }

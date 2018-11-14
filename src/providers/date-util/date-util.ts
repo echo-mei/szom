@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class DateUtilProvider {
 
   // 一天毫秒数
-  private DAY_MILLISECOND = 1 * 24 * 60 * 60 * 1000;
+  public DAY_MILLISECOND = 1 * 24 * 60 * 60 * 1000;
 
   format(date: Date, fmt: string): string {
     var o = {
@@ -88,6 +88,7 @@ export class DateUtilProvider {
 
   // 获取日期所在周（周一为每周第一天，每年1号所在周为当年的第一周，从0开始表示第一周）
   getWeekOfDay(date: Date): {
+    year: number,
     index: number,
     week: {
       firstDate: Date,
@@ -99,6 +100,7 @@ export class DateUtilProvider {
       let b = date >= week.firstDate && date <= week.lastDate;
       if (b) {
         result = {
+          year: date.getFullYear(),
           index: i,
           week: week
         };
@@ -110,6 +112,7 @@ export class DateUtilProvider {
         let b = date >= week.firstDate && date <= week.lastDate;
         if (b) {
           result = {
+            year: date.getFullYear() + 1,
             index: i,
             week: week
           };
@@ -122,6 +125,7 @@ export class DateUtilProvider {
 
   // 获取日期所在季（从1开始表示第一季）
   getQuarterOfDay(date: Date): {
+    year?: number,
     index?: number,
     quarter?: {
       firstDate: Date,
@@ -133,6 +137,7 @@ export class DateUtilProvider {
     let month = date.getMonth();
     if (month >= 0 && month <= 2) {
       result = {
+        year: year,
         index: 1,
         quarter: {
           firstDate: new Date(year, 0, 1),
@@ -141,6 +146,7 @@ export class DateUtilProvider {
       };
     } else if (month >= 3 && month <= 5) {
       result = {
+        year: year,
         index: 2,
         quarter: {
           firstDate: new Date(year, 2, 1),
@@ -149,14 +155,16 @@ export class DateUtilProvider {
       };
     } else if (month >= 6 && month <= 8) {
       result = {
+        year: year,
         index: 3,
         quarter: {
           firstDate: new Date(year, 6, 1),
           lastDate: new Date(year, 8, 30)
         }
       };
-    } else if (month >= 9 && month <= 1) {
+    } else if (month >= 9 && month <= 11) {
       result = {
+        year: year,
         index: 4,
         quarter: {
           firstDate: new Date(year, 9, 1),

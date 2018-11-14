@@ -55,58 +55,52 @@ page-dynamic-detail {
             &.dianji{
               color: color($colors,subBlueColor);
             }
+            img {
+              width: rem(23);
+            }
           }
         }
-        .line{
+        .like-list {
+          padding: rem(10) rem(10);
+          background: #f4f4f4;
           width: 100%;
-          height: 1px;
-          background: transparent;
-          margin: rem(10) 0 rem(10) 0;
-          border-bottom: .5px solid color($colors,boderColor);
-        }
-        .like-wrap{
-          display: flex;
-          margin-bottom: rem(13);
-          ion-icon{
-            flex: 0 0 rem(20);
+          .col{
+            padding: 0;
+            white-space: normal;
+          }
+          .zanList{
             width: rem(20);
-            color: color($colors,subBlueColor);
-            font-size: rem(12);
-            line-height: rem(20);
-          }
-          .like-names{
-            flex: 1;
-            font-size: rem(14);
-            letter-spacing: 0;
-            line-height: rem(20);
-
-            .zan-name{
-              color: color($colors,subBlueColor);
-            }
-            span{
-              color: #999999;
-            }
           }
         }
-        .comment-list{
-          .comment-item{
-            font-size: rem(14);
-            letter-spacing: 0;
-            line-height: rem(15);
-            margin: rem(8) 0 0 0;
-
-            a{
-              color: color($colors,subBlueColor);
-            }
-
-            .commentPeople{
-              color: color($colors,subBlueColor);
-            }
-            .commentCon{
-              color: #595959;
-            }
+        .comList{
+          position: relative;
+          background: #f4f4f4;
+          padding: rem(10) rem(10);
+          &.no-line:before {
+            height: 0;
           }
-
+          &:before {
+            content: '';
+            position: absolute;
+            height: rem(.5);
+            left: rem(10);
+            top: 0;
+            right: rem(10);
+            background: #dddddd;
+          }
+          p{
+            margin: 0 0 rem(6) 0;
+            line-height: normal;
+          }
+          a{
+            font-size: rem(14);
+            color: color($colors,subBlueColor);
+          }
+          span{
+            font-size: rem(14);
+            color: #595959;
+            line-height: rem(15);
+          }
         }
       }
 

@@ -1,0 +1,27 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>班子编制</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="add-new" (click)="onClikeCreate()">
+    <img src="assets/imgs/xierizhi.png" />
+  </div>
+  <ion-grid>
+    <ion-row class="header">
+      <ion-col col-5>编制类型</ion-col>
+      <ion-col col-5>经费形式</ion-col>
+      <ion-col col-2>数量</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let weave of bzWeaveList; let i=index; " (click)="onClickWeave(weave)">
+      <ion-col col-5><span>{{weave.hcCode}}</span></ion-col>
+      <ion-col col-5>{{weave.budgetFromCode}}</ion-col>
+      <ion-col col-2>{{weave.verifiedNum}}</ion-col>
+      <ion-icon class="szom" name="md-you"></ion-icon>
+    </ion-row>
+  </ion-grid>
+</ion-content>

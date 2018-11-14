@@ -4,6 +4,8 @@ import * as stompjs from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { StorageProvider } from '../storage/storage';
 import { WEBSOCKET_URL } from '../../config';
+import { Events } from 'ionic-angular';
+import { EVENT_NAMES } from '../event/event';
 
 @Injectable()
 export class WebsocketProvider {
@@ -11,7 +13,8 @@ export class WebsocketProvider {
   stompClient;
 
   constructor(
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public events: Events
   ) {
   }
 
@@ -40,49 +43,59 @@ export class WebsocketProvider {
   }
 
   connectWebsocket() {
-    this.connect(WEBSOCKET_URL, () => {
-      if(!this.storage.get('user')) {return;}
-      // 新的关注
+    this.connect(`${WEBSOCKET_URL}/endpointLglms`, () => {
+      if(!this.storage.me) {return;}
+      // 同意关注
       this.subscribe(
-        `/attention/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
+        `/agreeAttention/notifications/${this.storage.me.userCode}`,
         (frame) => {
           if(frame.body == 'Y') {
-            console.log('ws-addresslist');
-            this.storage.set('ws-addresslist', 'Y');
-            // this.events.publish('ws-addresslist');
+            this.events.publish(EVENT_NAMES.AGREE_ATTENTION);
+          }
+        }
+      );
+      // 取消关注
+      this.subscribe(
+        `/cancelAttention/notifications/${this.storage.me.userCode}`,
+        (frame) => {
+          if(frame.body == 'Y') {
+            this.events.publish(EVENT_NAMES.CANCEL_ATTENTION);
+          }
+        }
+      );
+      // 新的关注
+      this.subscribe(
+        `/attention/notifications/${this.storage.me.userCode}`,
+        (frame) => {
+          if(frame.body == 'Y') {
+            this.storage.newAttention = 'Y';
           }
         }
       );
       // 干部动态-关注
       this.subscribe(
-        `/attentionDynamicMessage/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
+        `/attentionDynamicMessage/notifications/${this.storage.me.userCode}`,
         (frame) => {
           if(frame.body == 'Y') {
-            console.log('ws-dynamic-attention');
-            this.storage.set('ws-dynamic-attention', 'Y');
-            // this.events.publish('ws-dynamic-attention');
+            this.storage.newDynamicAttention = 'Y';
           }
         }
       );
       // 干部动态-本单位
       this.subscribe(
-        `/unitDynamicMessage/notifications/${JSON.parse(this.storage.get('user')).userCode}`,
+        `/unitDynamicMessage/notifications/${this.storage.me.userCode}`,
         (frame) => {
           if(frame.body == 'Y') {
-            console.log('ws-dynamic-unit');
-            this.storage.set('ws-dynamic-unit', 'Y');
-            // this.events.publish('ws-dynamic-unit');
+            this.storage.newDynamicUnit = 'Y';
           }
         }
       );
       // 干部动态-领导批赞-单位领导
       this.subscribe(
-        `/leaderLikeDynamicMessage/notifications/unitId/${JSON.parse(this.storage.get('user')).orgCode}`,
+        `/leaderLikeDynamicMessage/notifications/unitId/${this.storage.me.orgCode}`,
         (frame) => {
           if(frame.body == 'Y') {
-            console.log('ws-dynamic-leader-unit');
-            this.storage.set('ws-dynamic-leader-unit', 'Y');
-            // this.events.publish('ws-dynamic-leader-unit');
+            this.storage.newDynamicLeader = 'Y';
           }
         }
       );
@@ -91,49 +104,22 @@ export class WebsocketProvider {
         `/leaderLikeDynamicMessage/notifications/all`,
         (frame) => {
           if(frame.body == 'Y') {
-            console.log('ws-dynamic-leader-all');
-            this.storage.set('ws-dynamic-leader-all', 'Y');
-            // this.events.publish('ws-dynamic-leader-all');
+            this.storage.newDynamicLeader = 'Y';
           }
         }
       );
-      // 干部动态
+      // 干部动态屏蔽/取消屏蔽
       this.subscribe(
-        `/dynamicMessage/notifications/userCode/${JSON.parse(this.storage.get('user')).userCode}`,
+        `/illegalDynamicMsg/notifications/${this.storage.me.userCode}`,
         (frame) => {
-          if(frame.body == 'Y') {
-            console.log('/dynamicMessage/notifications/userCode/');
-            this.storage.set('ws-dynamic', 'Y');
-            // this.events.publish('ws-dynamic');
-          }
-        }
-      );
-      // 干部动态
-      this.subscribe(
-        `/dynamicMessage/notifications/unitId/${JSON.parse(this.storage.get('user')).orgCode}`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('/dynamicMessage/notifications/unitId/');
-            this.storage.set('ws-dynamic', 'Y');
-            // this.events.publish('ws-dynamic');
-          }
-        }
-      );
-      // 干部动态
-      this.subscribe(
-        `/dynamicMessage/notifications/all`,
-        (frame) => {
-          if(frame.body == 'Y') {
-            console.log('/dynamicMessage/notifications/all');
-            this.storage.set('ws-dynamic', 'Y');
-            // this.events.publish('ws-dynamic');
-          }
+          const obj = JSON.parse(frame.body);
+          this.events.publish(obj.isBlock ? 'block-true' : 'block-false', obj);
         }
       );
     }, () => {
       setTimeout(() => {
         this.connectWebsocket();
-      }, 1000);
+      }, 5000);
     });
   }
 

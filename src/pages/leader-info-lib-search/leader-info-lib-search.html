@@ -5,35 +5,35 @@
   Ionic pages and navigation.
 -->
 <ion-header no-border>
-    <ion-toolbar color="white">
-      <div class="input-box">
-        <ion-icon class="szom" name="sousuo"></ion-icon>
-        <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..." #searchEle></ion-searchbar>
-        <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';search()"></ion-icon>
-      </div>
-      <button ion-button (click)="goBack()" clear float-right>取消</button>
-    </ion-toolbar>
-  </ion-header>
-
-
-<ion-content>
-  <ion-list no-lines>
-    <div *ngFor="let unit of unitList;">
-      <button class="unit" ion-item (click)="goLeaderInfoLibUnit(unit)">
-        {{unit.orgName}}
-        <ion-icon item-end class="szom" name="you"></ion-icon>
-      </button>
+  <ion-toolbar color="white" class="search-header">
+    <div class="szom-search">
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <ion-searchbar #searchEle [(ngModel)]="key" (ionInput)="search()" placeholder="请输入用户名/单位名搜索..."></ion-searchbar>
+      <img class="search-clear-icon" src="assets/imgs/delete@3x.png" *ngIf="key" (click)="clear();">
     </div>
+    <button class="cancel-btn" (click)="goBack()" ion-button clear float-right>取消</button>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content content-shadow>
+  <not-found-person *ngIf="!unitList.length && !personList.length"></not-found-person>
+
+  <ion-list class="type-list">
+    <ion-item *ngFor="let unit of unitList;" (click)="goLeaderInfoLibUnit(unit)">
+      <h2>{{unit.orgName}}</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
+    </ion-item>
   </ion-list>
-  <ion-list class="type-list" no-lines>
-    <div *ngFor="let key of personKeyList;let i = index;">
-      <div class="divider">{{key}}</div>
-      <ion-item *ngFor="let user of personValueList[i];" (click)="goUserInfo(user)">
+  <ion-list class="type-list type-list-person" [class.margin-top]="unitList.length">
+    <ion-item *ngFor="let user of personList;let i = index;" (click)="goUserInfo(user)">
+      <ion-avatar item-start>
         <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
-        <h2>{{user.name}}</h2>
-        <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
-      </ion-item>
-    </div>
+      </ion-avatar>
+      <h2>{{user.name}}</h2>
+      <ion-note>{{user.dutyName}}</ion-note>
+    </ion-item>
   </ion-list>
 
 </ion-content>

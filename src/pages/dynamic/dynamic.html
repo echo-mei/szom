@@ -1,36 +1,31 @@
 <ion-header no-border>
   <ion-navbar color="white">
-    <ion-title (click)="goTop()">干部动态</ion-title>
+    <ion-title (click)="onClickTop()">干部动态</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goDynamicSearch();$event.stopPropagation();" class="searchBtn">
-        <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      <button ion-button (click)="onClickSearch();" class="searchBtn">
+        <img src="assets/imgs/search@3x.png" />
       </button>
-      <button ion-button (click)="popover($event);$event.stopPropagation();">
-        <ion-icon class="szom" name="md-xierizhi"></ion-icon>
+      <button ion-button (click)="onClikeCreate();">
+        <img src="assets/imgs/edit@3x.png" />
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-buttons class="sildes-btns">
-    <button *ngIf="menuProvider.hasMenu('dynamic-follow')" ion-button clear (click)="goDynamicList(0)" [class.active]="isActive === 0" [class.has-badge]="storage.get('ws-dynamic-attention')">关注</button>
-    <button *ngIf="menuProvider.hasMenu('dynamic-unit')" ion-button clear (click)="goDynamicList(1)" [class.active]="isActive === 1" [class.has-badge]="storage.get('ws-dynamic-unit')">本单位</button>
-    <button *ngIf="menuProvider.hasMenu('dynamic-recommend')" ion-button clear (click)="goDynamicList(2)" [class.active]="isActive === 2">推荐</button>
-    <button *ngIf="menuProvider.hasMenu('dynamic-leader')" ion-button clear (click)="goDynamicList(3)" [class.active]="isActive === 3" [class.has-badge]="storage.get('ws-dynamic-leader-unit')">领导批赞</button>
-  </ion-buttons>
 </ion-header>
-
 <ion-content>
-  <ion-slides #mySlider (ionSlideDidChange)="onSlideChanged($event)">
-    <ion-slide>
-      <page-dynamic-list type="attention"></page-dynamic-list>
-    </ion-slide>
-    <ion-slide>
-      <page-dynamic-list type="unit"></page-dynamic-list>
-    </ion-slide>
-    <ion-slide>
-      <page-dynamic-list type="recommend"></page-dynamic-list>
-    </ion-slide>
-    <ion-slide>
-      <page-dynamic-list type="leaderlike"></page-dynamic-list>
+  <ion-buttons class="btn-tabs">
+    <button [class.active]="tabIndex==0" [class.has-new]="tabIndex!=0&&storage.newDynamicAttention?' ':''" (click)="selectTab(0)">关注</button>
+    <button [class.active]="tabIndex==1" [class.has-new]="tabIndex!=1&&storage.newDynamicUnit?' ':''" (click)="selectTab(1)">本单位</button>
+    <button [class.active]="tabIndex==2" (click)="selectTab(2)">推荐</button>
+    <button [class.active]="tabIndex==3" [class.has-new]="tabIndex!=3&&storage.newDynamicLeader?' ':''" (click)="selectTab(3)">领导批赞</button>
+    <div class="btn-effect" [style]="styleEffect()"></div>
+  </ion-buttons>
+  <ion-slides #slides (ionSlideDidChange)="onSlideChanged($event)">
+    <ion-slide *ngFor="let tab of tabs">
+      <page-dynamic-list [hasRefresher]="tab.hasRefresher"
+        [hasInfinite]="tab.hasInfinite"
+        [getListPromise]="tab.getListPromise"
+        [onLoad]="tab.onLoad"
+        [eventEmitter]="tab.eventEmitter"></page-dynamic-list>
     </ion-slide>
   </ion-slides>
 </ion-content>

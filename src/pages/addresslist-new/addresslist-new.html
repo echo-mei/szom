@@ -2,46 +2,54 @@
 
   <ion-navbar color="white">
     <ion-title>新的关注</ion-title>
-    <!-- <ion-buttons right>
-      <button ion-button>
-        <ion-icon class="szom" name="md-jiahaoyou"></ion-icon>
-      </button>
-    </ion-buttons> -->
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content>
-  <div class="searcher">
-    <ion-icon class="szom" name="sousuo"></ion-icon>
-    <ion-searchbar (click)="goAddresslistNewSearch()" placeholder="搜索"></ion-searchbar>
+<ion-content content-shadow>
+  <div class="searcher-show-wrap" (click)="goAddresslistNewSearch()">
+    <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+    <div class="searcher-input">搜索</div>
   </div>
 
+  <div style="text-align:center;" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
   <div class="divider" *ngIf="list1.length">最近</div>
-  <ion-list class="type-list" no-lines>
+  <ion-list class="type-list">
     <ion-item *ngFor="let user of list1" (click)="goUserInfo(user)">
-      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      <ion-avatar item-start *ngIf="user.userType!='02'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="user.userType=='02'">
+        <img src="assets/imgs/banzi-user.png">
+      </ion-avatar>
       <h2>{{user.name}}</h2>
-      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
-      <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end>等待对方确认</button>
+      <ion-note>{{user.dutyName}}</ion-note>
+      <button *ngIf="user.status=='01'&&user.applyType=='send'" class="noShadow" ion-button item-end>等待对方确认</button>
       <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end>待处理</button>
-      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
-      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
-      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已添加</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已拒绝</button>
     </ion-item>
   </ion-list>
   <div class="divider" *ngIf="list2.length">一周前</div>
-  <ion-list class="type-list" no-lines>
+  <ion-list class="type-list">
     <ion-item *ngFor="let user of list2" (click)="goUserInfo(user)">
-      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      <ion-avatar item-start *ngIf="user.userType!='02'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="user.userType=='02'">
+        <img src="assets/imgs/banzi-user.png">
+      </ion-avatar>
       <h2>{{user.name}}</h2>
-      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
-      <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end clear>等待对方确认</button>
-      <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end clear>待处理</button>
-      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
-      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
-      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
+      <ion-note>{{user.dutyName}}</ion-note>
+      <button class="handle" *ngIf="user.status=='01'&&user.applyType=='send'" class="noShadow" ion-button item-end clear>等待对方确认</button>
+      <button class="handle" *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end clear>待处理</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已添加</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已拒绝</button>
     </ion-item>
   </ion-list>
 </ion-content>

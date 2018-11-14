@@ -25,11 +25,10 @@ export class LeaderInfoLibPage {
     public navParams: NavParams,
     public unitProvider: UnitProvider
   ) {
-    this.getOrgList();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaderInfoLibPage');
+    this.getOrgList();
   }
 
   getOrgList() {
@@ -38,7 +37,6 @@ export class LeaderInfoLibPage {
         this.organizationlist = list;
       }
     );
-
   }
 
   goLeaderInfoLibUnit(org) {

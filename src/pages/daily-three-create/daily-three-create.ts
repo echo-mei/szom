@@ -22,6 +22,7 @@ export class DailyThreeCreatePage {
   three = '每季三励';
   year: number; // 当前年
   quarter: {
+    year?: number,
     index?: number,
     quarter?: {
       firstDate: Date,
@@ -87,13 +88,15 @@ export class DailyThreeCreatePage {
       writeThing: this.dailyThreeForm.value['content'],
       user: this.user,
       witch: this.three,
+      minDate: this.quarter.quarter.firstDate,
+      maxDate: this.quarter.quarter.lastDate,
       onDone: (daily) => {
         this.dailyThreeForm.controls['content'].setValue(daily.content);
         this.imagePicker.images = [];
-        daily.uploadFileDetailDTOList.forEach((img) => {
+        daily.uploadFileDetailDTOList && daily.uploadFileDetailDTOList.forEach((img) => {
           this.imagePicker.images.push({
-            img: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`,
-            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`
+            img: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`,
+            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`
           });
         });
       }

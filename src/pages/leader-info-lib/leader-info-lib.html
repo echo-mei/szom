@@ -7,10 +7,11 @@
 </ion-header>
 
 
-<ion-content>
-  <div class="searcher">
-    <ion-icon class="szom" name="sousuo"></ion-icon>
-    <ion-searchbar (click)="goLeaderInfoLibSearch()" placeholder="搜索"></ion-searchbar>
+<ion-content content-shadow>
+
+  <div class="searcher-show-wrap" (click)="goLeaderInfoLibSearch()">
+    <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+    <div class="searcher-input">搜索</div>
   </div>
   <ion-list class="type-list">
     <ion-item *ngFor="let org of organizationlist" (click)="goLeaderInfoLibUnit(org)">

@@ -1,4 +1,3 @@
-
 <ion-header no-border>
 
   <ion-navbar color="white">
@@ -8,17 +7,38 @@
 </ion-header>
 
 <ion-content>
-  <button ion-item class="condition">
-    <ion-label>
-      <ion-icon class="szom" name="md-shaixuan"></ion-icon>
-      <span class="displayer">时间筛选</span>
-      <span class="value">2017-04-15至2018-1-4</span>
-    </ion-label>
-  </button>
-  <ion-list>
-    <ion-item>
-      <label>基层调研</label>
-      <ion-badge>14</ion-badge>
-    </ion-item>
-  </ion-list>
+  <div class="conditions">
+    <div class="select-btn" (click)="goSelectDate()">
+      <img class="filter-icon" *ngIf="!timeStarts && !timeEnd" src="assets/imgs/filter@3x.png" />
+      <img class="filter-icon" *ngIf="timeStarts || timeEnd" src="assets/imgs/filter-active@3x.png" />
+      <span class="title">筛选:</span>
+      <span class="color-blue" *ngIf="timeStarts || timeEnd">{{timeStarts}}至{{timeEnd}}</span>
+      <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
+    </div>
+  </div>
+  <div *ngIf="!isLoading&&!list.length" class="setDiv">
+    <not-found></not-found>
+  </div>
+  <div class="separate"></div>
+  <div class="main-content">
+    <div style="text-align:center;" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+    <div class="type-list" *ngFor="let user of list;let i=index;">
+      <ion-item class="person-info">
+        <ion-avatar item-start>
+          <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+        </ion-avatar>
+        <h2>{{user.name}}</h2>
+        <ion-note>{{user.dutyName}}</ion-note>
+      </ion-item>
+      <ion-list *ngIf="user.upWeektableDTOList.length" class="like-classify">
+        <ion-item *ngFor="let weektableType of user.upWeektableDTOList;let i=index;">
+          <span class="li-type"></span>
+          <p class="des">{{weektableType.typeName}}</p>
+          <p class="num" item-end>{{weektableType.typeCounts?weektableType.typeCounts:"-"}}</p>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
 </ion-content>

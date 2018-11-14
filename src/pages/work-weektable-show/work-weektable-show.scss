@@ -10,7 +10,8 @@ page-work-weektable-show {
     .item{
       .item-inner{
         padding-right: rem(15);
-        border-bottom: .5px solid color($colors,boderColor)!important;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor)!important;
 
         .label{
           color:#cccccc;

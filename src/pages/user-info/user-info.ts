@@ -11,6 +11,8 @@ import { UserBaseinfoPage } from '../user-baseinfo/user-baseinfo';
 import { UserSelfinfoPage } from '../user-selfinfo/user-selfinfo';
 import { UserDynamicListPage } from '../user-dynamic-list/user-dynamic-list';
 import { UserImpressionPage } from '../user-impression/user-impression';
+import { SignProvider } from '../../providers/sign/sign';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   selector: 'page-user-info',
@@ -18,15 +20,19 @@ import { UserImpressionPage } from '../user-impression/user-impression';
 })
 export class UserInfoPage {
 
-  showBaseInfo:boolean;
-  showSelfInfo:boolean;
-  showDaily:boolean;
-  showTags:boolean;
+  showBaseInfo: boolean;
+  showSelfInfo: boolean;
+  showDaily: boolean;
+  showTags: boolean;
 
-  agreeOrRefuse:boolean;  // 同意|拒绝
-  followOrCancel:boolean;  // 关注|取关
+  agreeOrRefuse: boolean;  // 同意|拒绝
+  followOrCancel: boolean;  // 关注|取关
 
   user: any = {};
+
+  todaySign: any;
+
+  userBaseInfo:any = {};
 
   userSelfInfo: any = {};
 
@@ -39,6 +45,8 @@ export class UserInfoPage {
   onAgree: () => {};
   onRefuse: () => {};
 
+  isLoading: boolean;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -49,7 +57,9 @@ export class UserInfoPage {
     public dynamicProvider: DynamicProvider,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public actionSheetCtrl: ActionSheetController
+    public actionSheetCtrl: ActionSheetController,
+    public signProvider: SignProvider,
+    public statusBar: StatusBar
   ) {
     this.showBaseInfo = this.navParams.get('showBaseInfo');
     this.showSelfInfo = this.navParams.get('showSelfInfo');
@@ -65,14 +75,48 @@ export class UserInfoPage {
     this.getUserInfo();
   }
 
+  ionViewWillEnter() {
+    this.statusBar.styleLightContent();
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
+  }
+
   // 获取用户基本信息
-  getUserInfo(){
-    this.userProvider.getUserInfo({userCode: this.user.userCode}).subscribe(
+  getUserInfo() {
+    this.isLoading = true;
+    this.userProvider.getUserInfo({ userCode: this.user.userCode }).subscribe(
       (user) => {
         this.user = user;
+        // this.getUserBaseInfo();
+        this.getTodaySign();
         this.getUserSelfInfo();
         this.getImpressionList();
         this.getUerDailyList();
+        this.isLoading = false;
+      }
+    );
+  }
+
+
+  // 获取今天的签到信息
+  getTodaySign() {
+    let params = {
+      userCode: this.user.userCode
+    }
+    this.signProvider.getTodaySign(params).subscribe(
+      (data) => {
+        this.todaySign = data;
+      }
+    );
+  }
+
+  // 获取用户基本信息
+  getUserBaseInfo() {
+    this.userProvider.getUserInfoByPersonId(this.user.personId).subscribe(
+      (user) => {
+        this.userBaseInfo = user;
       }
     );
   }
@@ -110,11 +154,7 @@ export class UserInfoPage {
   }
 
   getHeadImageUrl(personId) {
-    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.get('token')}&personId=${personId}`;
-  }
-
-  goDailyList() {
-    this.navCtrl.push(DailyMePage);
+    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.token}&personId=${personId}`;
   }
 
   goBaseInfo() {
@@ -137,14 +177,15 @@ export class UserInfoPage {
 
   goUserImpression() {
     this.navCtrl.push(UserImpressionPage, {
-      user: this.user
+      user: this.user,
+      onUpdate:this.getImpressionList.bind(this)
     });
   }
 
   follow() {
     let params = {
       attentedUserCode: this.user.userCode,
-      userCode: JSON.parse(this.storage.get('user')).userCode
+      userCode: this.storage.me.userCode
     };
     this.userProvider.postFollow(params).subscribe(
       () => {
@@ -168,7 +209,7 @@ export class UserInfoPage {
           text: '确定', handler: () => {
             this.userProvider.postFollow({
               attentedUserCode: this.user.userCode,
-              userCode: JSON.parse(this.storage.get('user')).userCode,
+              userCode: this.storage.me.userCode,
               status: '05'
             }).subscribe(
               () => {

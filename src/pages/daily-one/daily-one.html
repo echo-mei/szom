@@ -3,8 +3,8 @@
   <ion-navbar color="white">
     <ion-title>每周{{ count | digitalChineseConversion }}励</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goDailySearch()">
-        <ion-icon class="szom" name="md-sousuo"></ion-icon>
+      <button ion-button (click)="onClickSearch()">
+        <img src="assets/imgs/search@3x.png" />
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -12,33 +12,35 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-list *ngIf="dailyOneList" no-lines>
-    <ion-item *ngIf="canCreate && !newFlag && dataLoadOver" class="addItemInput">
+<ion-content content-shadow>
+  <ion-list class="daily-list">
+    <ion-item *ngIf="user.userCode==me.userCode && !isLoading && canCreate" class="addItemInput">
       <ion-note class="now-daily" item-start style="opacity: 0.3;">{{week.index+1}}</ion-note>
       <div class="oneInput">
-        <div class="text" (click)="goDailyCreate()">本周完成最满意的一件事...</div>
+        <div class="text" (click)="onClickCreate()">本周完成最满意的一件事...</div>
         <div>
           <span>{{week.week.firstDate | date:'yyyy.MM.dd'}}-{{week.week.lastDate | date:'yyyy.MM.dd'}}</span>
         </div>
       </div>
     </ion-item>
-    <div class="noDailyList" *ngIf="dailyOneList.length===0 && newFlag && dataLoadOver">
-      <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml"/>
+    <div class="noDailyList" *ngIf="!dailyOneList.length && !isLoading && user.userCode!==me.userCode">
+      <img src="assets/imgs/nolog.png">
       <p>没有发布过每周一励</p>
     </div>
-    <div *ngFor="let log of dailyOneList;let i = index;">
-      <div class="yearWeek" *ngIf="boolShow[i]">{{ log.year }}年第{{ log.weekNums+1 }}周</div>
-      <ion-item (click)="goDailyShow(log)">
-        <div class="inaa">
-          <ion-note [class.now-daily]="dateFormat(week.week.firstDate) + '-' + dateFormat(week.week.lastDate) == log.startDate.split('T')[0].replace('-','.').replace('-','.') +'-'+log.endDate.split('T')[0].replace('-','.').replace('-','.')">{{log.weekNums + 1}}</ion-note>
-          <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
-        </div>
+    <div style="text-align:center;" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+    <div *ngFor="let group of dailyOneList">
+      <div class="quaterWeek">{{ group.week.year }}年第{{ group.week.index }}周</div>
+      <ion-item *ngFor="let log of group.list;" (click)="onClickDailly(log)">
+        <ion-note item-start [class.now-daily]="isCurrentWeek(log)">{{ log.weekNums }}</ion-note>
+        <list-item [log]="log" [getImageUrl]="getImageUrl"></list-item>
       </ion-item>
     </div>
   </ion-list>
-  <ion-infinite-scroll (ionInfinite)="more($event)">
-    <ion-infinite-scroll-content loadingText="正在加载...">
+  <div class="no-more-tip" *ngIf="!hasMore && dailyOneList.length"><span></span>没有更多内容<span></span></div>
+  <ion-infinite-scroll *ngIf="!isLoading && hasMore" (ionInfinite)="onScrollDailyList($event)">
+    <ion-infinite-scroll-content loadingText="">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

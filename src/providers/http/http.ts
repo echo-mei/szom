@@ -90,25 +90,6 @@ export class HttpProvider {
         });
         observables.push(observable);
       }
-      // if (!value.path.startsWith('file://')) {
-      //   value.path = 'file://' + value.path;
-      // }
-      // let observable = new Observable((sub) => {
-      //   this.file.resolveLocalFilesystemUrl(value.path).then(entry => {
-      //     (entry as FileEntry).file(file => {
-      //       let blob: Blob = <Blob>file;
-      //       const reader = new FileReader();
-      //       reader.onloadend = () => {
-      //         const imgBlob = new Blob([reader.result], {type: blob.type});
-      //         formData.append(value.name, imgBlob, (<any>blob).name);
-      //         sub.next(null);
-      //         sub.complete();
-      //       };
-      //       reader.readAsArrayBuffer(blob);
-      //     });
-      //   });
-      // });
-      // observables.push(observable);
     });
     if(observables.length) {
       return ForkJoinObservable.create(observables).mergeMap(data => {

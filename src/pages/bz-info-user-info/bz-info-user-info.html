@@ -1,27 +1,22 @@
-<!--
-  Generated template for the BzInfoUserInfoPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-  <ion-navbar>
+<ion-header no-border>
+  <ion-navbar color="white">
     <ion-title>详细信息</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
+  <ion-item (click)="goUserInfo(user)">
     <ion-thumbnail item-start>
-      <img src="../../assets/imgs/user.png" alt="">
+      <!-- <img src="assets/imgs/user.png" alt=""> -->
+      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
     </ion-thumbnail>
-    <h2>阿萨德</h2>
-    <p>娃哈哈</p>
+    <h2>{{ user.personName }}</h2>
+    <ion-note>{{ user.dutyName }}</ion-note>
     <ion-icon item-end class="szom" name="md-you"></ion-icon>
   </ion-item>
   <ion-item-divider class="divider"></ion-item-divider>
-  <div class="bzIntroFengong">
+  <div class="bzIntroFengong" (click)="goUpdate()">
     <h2>分工</h2>
-    <button ion-item>sad六块腹肌拉三大框架发多少大法师打发士大夫撒旦法士大夫萨达<ion-icon class="szom" name="md-you" item-end></ion-icon></button>
+    <div ion-item>{{ user.division }}<ion-icon class="szom" name="md-you" item-end></ion-icon></div>
   </div>
 </ion-content>

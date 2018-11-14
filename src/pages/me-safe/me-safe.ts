@@ -6,7 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { UserProvider } from '../../providers/user/user';
 import { StorageProvider } from '../../providers/storage/storage';
 import { MeUpdatePage } from '../me-update/me-update';
-import { MeUpdatePhonePage } from '../me-update-phone/me-update-phone';
+import { MeUpdateUserPage} from '../me-update-user/me-update-user';
+import { MeUpdatePasswordPage} from '../me-update-password/me-update-password';
+import { MeUpdatePhonePage} from '../me-update-phone/me-update-phone';
+import { JSEncrypt } from 'jsencrypt';
 
 @Component({
   selector: 'page-me-safe',
@@ -16,6 +19,8 @@ export class MeSafePage {
 
   second:number;
   form: FormGroup;
+  showPassword: boolean = false;
+  operateType: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public platform: Platform,
@@ -26,23 +31,41 @@ export class MeSafePage {
     public events: Events,
     public toastCtrl: ToastController
   ) {
+    this.operateType = this.navParams.get('operateType');
     this.form = formBuilder.group({
       phoneNum: ['', Validators.compose([Validators.required])],
-      msgCode: ['', Validators.compose([Validators.required])],
+      password: [''],
+      msgCode: ['']
     });
-    this.getMe();
+    // this.getMe();
   }
 
   getMe() {
-    this.userProvider.getMe().subscribe(
+    this.userProvider.getMobilePhone().subscribe(
       me => {
+        // console.log(me)
         this.form.controls['phoneNum'].setValue(me.mobilePhone1);
+        // this.form.controls['phoneNum'].setValue(18319509521);
       }
     );
   }
 
+  isPhone() {
+    let flag = this.form.controls['phoneNum'].value
+      && /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/.test(this.form.controls['phoneNum'].value);
+    if (flag) {
+      this.form.controls['password'].clearValidators();
+      this.form.controls['password'].updateValueAndValidity();
+      this.form.controls['msgCode'].setValidators([Validators.required]);
+    } else {
+      this.form.controls['msgCode'].clearValidators();
+      this.form.controls['msgCode'].updateValueAndValidity();
+      this.form.controls['password'].setValidators([Validators.required]);
+    }
+    return flag;
+  }
   getSMSCode() {
-    this.userProvider.getMobliePhoneSMSCode({mobilePhone: this.form.controls['phoneNum'].value}).subscribe(
+    this.userProvider.getMobliePhoneSMSCode({mobilePhone: this.form.controls['phoneNum'].value, operateType: this.operateType}).subscribe(
       () => {
         let toast = this.toastCtrl.create({
           cssClass: 'mini',
@@ -62,16 +85,52 @@ export class MeSafePage {
     );
   }
 
-  goSubmit() {
-    let params = {
-      smsCode: this.form.value.msgCode,
-    };
-    this.userProvider.checkUserSMS(params).subscribe(
-      () => {
-        this.navCtrl.push(MeUpdatePage, {
-          oldMobilePhone: this.form.value.phoneNum
-        });
+  // sendRequest(fn, params){
+
+  // }
+
+  goSubmit() {    
+    let params;
+    let fn = 'validatorAccount';
+    if(this.isPhone()){
+      fn = 'validatorPhont';
+      params = {
+        accountNo: this.form.controls['phoneNum'].value,
+        smsCode: this.form.controls['msgCode'].value,
+        operateType: this.operateType
       }
-    );
+    }else{
+      params = {
+        accountNo: this.form.controls['phoneNum'].value,
+        password: this.form.controls['password'].value
+      }
+      this.userProvider.getRSAPublicKey().subscribe(
+        (signKey) => {
+          var encrypt = new JSEncrypt(); 
+          encrypt.setPublicKey(signKey);
+          params['password'] = encrypt.encrypt(this.form.controls['password'].value);
+          console.log(params)
+          this.userProvider[fn](params).subscribe(
+            data => {
+              switch(this.operateType){
+                case 2: this.navCtrl.push(MeUpdateUserPage); break;
+                case 3: this.navCtrl.push(MeUpdatePhonePage); break;
+                case 4: this.navCtrl.push(MeUpdatePasswordPage); break;
+              }
+            }
+          )
+        }
+      )
+      return;
+    }
+    this.userProvider[fn](params).subscribe(
+      data => {
+        switch(this.operateType){
+          case 2: this.navCtrl.push(MeUpdateUserPage); break;
+          case 3: this.navCtrl.push(MeUpdatePhonePage); break;
+          case 4: this.navCtrl.push(MeUpdatePasswordPage); break;
+        }
+      }
+    )
   }
 }

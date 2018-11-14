@@ -1,15 +1,14 @@
 list-item {
     flex: 1;
-    
+
     .content {
-        height: rem(64);
         font-size: 15px;
         color: #333333;
         display: flex;
         h3 {
+            display: grid;
             position: relative;
             flex-grow: 1;
-            padding-right: rem(16);
             margin-top: 0;
             margin-bottom: 0 !important;
             p{
@@ -24,8 +23,10 @@ list-item {
             }
             .bottom{
                 padding-left: rem(20);
-                position: absolute;
                 bottom: -1px;
+                display: flex;
+                align-items: flex-end;
+                padding-top: rem(12);
             span {
                 font-size: rem(13);
                 color: #AFAFAF;
@@ -33,19 +34,45 @@ list-item {
                 line-height: rem(15);
                 &.icons {
                     ion-icon {
-                        margin-left: rem(13);
+                        // margin-left: rem(13);
                         font-size: rem(13);
+                    }
+                    .leftIcon{
+                        margin-left: rem(26);
+                        margin-right: rem(13);
+                    }
+                    img.show-icon{
+                      vertical-align: middle;
+                      width:rem(13);
                     }
                 }
             }
+            .likeNum{
+              vertical-align: middle;
+                display: inline-block;
+                width: rem(16);
+            }
         }
         }
-        img {
+        .img-container {
+          margin-left: rem(16);
+        //   background: #f0f0f0;
           width: rem(68);
-          height: rem(68);
+          // height: rem(68);
           min-width: rem(68);
-          min-height: rem(68);
-          border-radius: rem(5);
+          max-height: rem(68);
+          display: flex;
+        //   align-items: center;
+          justify-content: center;
+          img {
+            width: rem(68);
+            // height: rem(68);
+            &.fail {
+              width: rem(16);
+              height: rem(16);
+            }
+          }
         }
     }
+
 }

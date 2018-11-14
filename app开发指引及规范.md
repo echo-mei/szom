@@ -14,30 +14,41 @@
 
 1. svn管理
 
-    svn地址：svn://[图片]192.168.1.107/SZOM-IGLMS/trunk/app
+    svn地址：svn://192.168.1.107/SZOM-IGLMS/trunk/app
 
 2. 环境准备
 
-    1. 在`环境准备`文件夹中下载并安装node-v8.9.0-x64.msi。进入cmd，执行：
+    * node 版本号：v8.9.0
+    * npm 版本号：6.0.1
+    * ioinic 版本号：3.20.0
+    * cordova 版本号：8.0.0
+    * angular 版本号：6.0.0
 
-            npm -v
-    
-        检查node是否安装成功。
+    1. windows环境
 
-    2. 为保证代码的格式风格一致性，建议使用visual studio code开发。在`环境准备`文件夹有`VSCodeSetup-x64-1.23.0.exe`安装包。
+        1. 在`环境准备`文件夹中下载并安装node-v8.9.0-x64.msi。进入cmd，执行：
+
+                npm -v
+        
+            检查node是否安装成功。若安装的npm的版本非6.0.1版本，可执行以下命令：
+
+                npm install npm@6.0.1 -g
+
+        2. 为保证代码的格式风格一致性，建议使用visual studio code开发。在`环境准备`文件夹有`VSCodeSetup-x64-1.23.0.exe`安装包。
+
+        3. 安装ionic和cordova：
+
+                npm install ionic@3.20.0 -g
+                npm install cordova@8.0.0 -g
+
 
 3. 项目启动
 
-    1. cmd进入app根目录，下载依赖npm包：
+    1. cmd进入app根目录，下载依赖npm包（这一步最好先删除node_modules目录）：
 
             npm i
 
-    2. 安装ionic和cordova：
-    
-            npm install ionic -g
-            npm install cordova -g
-
-    3. 配置项目：
+    2. 配置项目：
 
         1. 配置项目代理：
 
@@ -45,19 +56,16 @@
 
                 "proxies": [
                     {
-                        "path": "/ionic",   // 修改为http请求的前缀
+                        "path": "/ionic", 
                         "proxyUrl": "http://localhost:9999" // 修改为代理url，根据实际情况改为后端提供的地址。
+                    },
+                    {
+                      "path": "/ws",
+                      "proxyUrl": "http://localhost:8900"// 修改为代理url，根据实际情况改为后端提供的websocket地址。
                     }
                 ]
 
-        2. 配置全局参数：
-
-            修改`app/src/config.ts`：
-
-                const BASE_URL = '/ionic';  // 和ionic.config.json的path对应。
-                const REAL_URL = 'http://localhost:9999';   // 和ionic.config.json的proxyUrl对应。
-
-        3. 是否启动测试：
+        2. 是否启动测试：
 
             修改`app/src/app/app.module.ts`：
 
@@ -65,6 +73,15 @@
                 Test;
 
             加入以上两行则启动测试，注释则关闭测试。
+
+        3. 是否开启调试
+
+            修改`app/src/app/app.module.ts`：
+
+                import * as VConsole from 'vconsole';
+                new VConsole();
+
+            加入以上两行则启动调试，注释则关闭调试。
 
     4. 在app根目录下，运行项目：
 
@@ -175,27 +192,51 @@
 
 ## <span id="prod">投入生产</span>
 
-1. 项目打包apk
+**打包步骤**：
 
-    修改配置文件config.xml，将`<content>`标签的`src`属性配置成下一步`项目运行`的地址。
+1. 移除android平台
+```
+ionic cordova platform rm android
+```
+2. 删除plugins文件夹
 
-    执行命令：
-
-        ionic cordova build android --prod
-
-2. 项目运行
-
-    1. 打包
-
-        执行命令：
-    
-            ionic build --prod
-
-    2. node 运行
-
-        修改app.js，将`BASE_URL`改为代理请求前缀，将`REAL_URL`改为被代理服务器地址。
-
-        执行命令：
-
-            node app
-
+3. 添加android平台
+```
+ionic cordova platform add android
+```
+4. 由于外部原因，一些plugin没有成功安装，需要手动安装：
+```
+ionic cordova plugin add cordova-plugin-photo-library --force
+cordova plugin add https://github.com/pwlin/cordova-plugin-file-opener2
+cordova plugin add https://github.com/phonegap/phonegap-mobile-accessibility.git
+```
+5. 修改图片选择器的提示信息
+* 修改`platforms\android\app\src\main\java\com\synconse\MultiImageChooserActivity.java`文件第200-202行：
+```
+.setTitle("最多选择 " + maxImageCount + " 张图片")
+// .setMessage("You can only select " + maxImageCount + " photos at a time.")
+.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+```
+* 在`plugins\cordova-plugin-telerik-imagepicker\src\android\Library\res`下添加文件夹`values-zh`，再添加文件`multiimagechooser_strings_zh.xml`，文件内容：
+```
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">图片选择</string>
+    <string name="free_version_label">版本 - Images left: %d</string>
+    <string name="error_database">打开图片失败</string>
+    <string name="requesting_thumbnails">请求缩略图, 请稍等...</string>
+    <string name="multi_image_picker_processing_images_title">正在选择...</string>
+    <string name="multi_image_picker_processing_images_message">请稍等</string>
+    <string name="discard" translatable="false">取消</string>
+    <string name="done" translatable="false">确认</string>
+ </resources>
+```
+6. 修改`src/config.ts`：
+```
+const BASE_URL = 后台服务地址;
+const WEBSOCKET_URL = 后台websocket地址;
+```
+7. 打包
+```
+ionic cordova build android --minifyjs --minifycss --optimizejs
+```

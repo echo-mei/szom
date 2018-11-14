@@ -1,5 +1,5 @@
-<div class="between-date-picker-backdrop" (click)="dismiss()"></div>
-<div class="between-date-picker-wrapper">
+<div class="between-date-picker-backdrop" (click)="dismiss(wrapper)"></div>
+<div class="between-date-picker-wrapper animated bounceInUp" #wrapper>
   <div class="between-date-picker-displayer">
     <div class="between-date-picker-start {{selectStartOrEnd=='start' ? 'active' : ''}}"
       (click)="selectStartOrEnd='start'">
@@ -7,6 +7,7 @@
       <p *ngIf="startDate">{{startDate | date:'yyyy年MM月dd日'}}</p>
       <p *ngIf="!startDate">请选择</p>
     </div>
+    <div class="line"></div>
     <div class="between-date-picker-end {{selectStartOrEnd=='end' ? 'active' : ''}}"
       (click)="selectStartOrEnd='end'">
       <label>结束时间</label>
@@ -25,6 +26,6 @@
     </div>
   </div>
   <div class="between-date-picker-buttons">
-    <button *ngFor="let button of buttons" (click)="button.handler&&button.handler()">{{ button.text }}</button>
+    <button *ngFor="let button of buttons" (click)="button.handler&&button.handler()" [class]="button.cls">{{ button.text }}</button>
   </div>
 </div>

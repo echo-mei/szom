@@ -20,13 +20,40 @@
     <div class="other">
       <ion-note class="pubTime">{{dynamic.publishTime | date:'yyyy-MM-dd hh:mm:ss'}}</ion-note>
       <button class="dianzan" *ngIf="!dynamic.hasMeLike" ion-button clear float-right (click)="sendLike()">
-        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+        <img [class.scale-large]="dynamic.hasClicked" src="assets/imgs/dianzanmoren.png" />
       </button>
-      <button class="dianzan dianji" *ngIf="dynamic.hasMeLike" ion-button clear float-right>
-        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      <button class="dianzan dianji" *ngIf="dynamic.hasMeLike" ion-button clear float-right (click)="cancelLike()">
+        <img [class.scale-small]="dynamic.hasClicked" src="assets/imgs/dianzan.png" />
       </button>
     </div>
-    <div [hidden]="!dynamic.sbLikeList.length && !dynamic.sbCommentList.length" class="line"></div>
+    <ion-row class="like-list" *ngIf="dynamic.sbLikeList.length" (click)="goLikeList()">
+      <ion-col col-1>
+        <img class="zanList" src="assets/imgs/dianzan.png" />
+      </ion-col>
+      <ion-col class="zan" *ngIf="dynamic.sbLikeList.length<=8">
+        <span *ngFor="let user of dynamic.sbLikeList.slice(0, 7);let li=index;">
+          <a class="zanName">{{user.likeUserName}}</a>
+          <span class="zanName" *ngIf="li<8&&li<dynamic.sbLikeList.length-1">、</span>
+        </span>
+      </ion-col>
+      <ion-col class="zan" *ngIf="dynamic.sbLikeList.length>8">
+        <span *ngFor="let user of dynamic.sbLikeList.slice(0, 7);let li=index;">
+          <a class="zanName">{{user.likeUserName}}</a>
+          <span class="zanName" *ngIf="li<7&&li<dynamic.sbLikeList.length-1">、</span>
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;等{{dynamic.sbLikeList.length}}人觉得很赞</span>
+      </ion-col>
+    </ion-row>
+    <ion-list class="comList" [class.no-line]="!dynamic.sbLikeList||!dynamic.sbLikeList.length" *ngIf="dynamic.sbCommentList&&dynamic.sbCommentList.length">
+      <p *ngFor="let comment of dynamic.sbCommentList" (click)="replyComment(comment)">
+        <a (click)="onClickCommentName(comment.userCode);$event.stopPropagation();">{{comment.commentUserName}}</a>
+        <span *ngIf="comment.beCommentUserName">回复
+          <a (click)="onClickCommentName(comment.beUserCode);$event.stopPropagation();">{{comment.beCommentUserName}}</a>
+        </span>:
+        <span>{{comment.content}}</span>
+      </p>
+    </ion-list>
+    <!-- <div [hidden]="!dynamic.sbLikeList.length && !dynamic.sbCommentList.length" class="line"></div>
     <ion-row class="like-wrap" *ngIf="dynamic.sbLikeList.length" (click)="goLikeList()">
       <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
       <ion-note class="like-names" *ngIf="dynamic.sbLikeList.length<=13">
@@ -44,18 +71,18 @@
       </ion-note>
     </ion-row>
     <ion-list class="comment-list" *ngIf="dynamic.sbCommentList">
-      <p (click)="goLikeList()" *ngFor="let comment of dynamic.sbCommentList" class="comment-item" (click)="commentId=comment.sbCommentId;placeholder='回复'+comment.commentUserName+':';">
+      <p *ngFor="let comment of dynamic.sbCommentList" class="comment-item" (click)="replyComment(comment)">
         <a>{{comment.commentUserName}}</a>
         <span *ngIf="comment.beCommentUserName">回复
           <a>{{comment.beCommentUserName}}</a>
         </span>:
         <ion-note class="commentCon">{{comment.content}}</ion-note>
       </p>
-    </ion-list>
+    </ion-list> -->
   </div>
 </ion-content>
 
-<ion-footer no-border>
+<ion-footer no-border #footer>
   <ion-item class="publish-comment" no-lines>
     <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment"></ion-textarea>
     <button item-end ion-button (click)="sendComment()">发送</button>

@@ -1,7 +1,17 @@
 page-sign-date {
+  .sign-date-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .sign-date-container {
+      width: rem(330);
+      background: #fff;
+    }
+  }
   ion-icon.szom {
     float: right;
-    margin: rem(10);
+    margin: rem(10) rem(10) rem(20) rem(10);
     font-size: rem(12);
   }
   ion-calendar {
@@ -32,25 +42,22 @@ page-sign-date {
     .days {
       font-size: rem(16);
     }
+    ion-calendar-month .primary .days .last-month-day p, ion-calendar-month .primary .days .next-month-day p {
+      color: #e2e2e2;
+    }
   }
   .impression {
-    padding: rem(20) rem(10);
-    background: #fff;
+    border-top: .5px solid color($colors,boderColor);
+    margin: rem(10) rem(20);
+    padding: rem(22) 0;
+    overflow: hidden;
+
     ion-badge {
-      &.tag-1:before {
+      &.tag-1:before,&.tag-2:before {
         background: #4D74EB;
       }
-      &.tag-2:before {
+      &.tag-3:before ,&.tag-4:before,&.tag-5:before{
         background: #0DB6B6;
-      }
-      &.tag-3:before {
-        background: #F759AB;
-      }
-      &.tag-4:before {
-        background: #9254DE;
-      }
-      &.tag-5:before {
-        background: #3FA60C;
       }
       &.tag-6:before {
         background: #C98600;
@@ -63,10 +70,17 @@ page-sign-date {
         transform: rotate(45deg);
         border-radius: rem(1);
         margin-right: rem(10);
+        margin-left: rem(4);
       }
+      padding: 0;
+      width: 33.33%;
+      float: left;
+      text-align: left;
+      margin-bottom: rem(16);
       border-radius: 0;
       background: initial;
       font-size: rem(14);
+      font-weight: normal;
       color: #545454;
     }
   }
@@ -75,20 +89,14 @@ page-sign-date {
     line-height: rem(10);
     overflow: initial!important;
   }
-  .sign-date-1 p, .sign-date-1 small {
+  .sign-date-1 p, .sign-date-1 small,
+  .sign-date-2 p, .sign-date-2 small {
     color: #4D74EB!important;
   }
-  .sign-date-2 p, .sign-date-2 small {
-    color: #0DB6B6!important;
-  }
-  .sign-date-3 p, .sign-date-3 small {
-    color: #F759AB!important;
-  }
-  .sign-date-4 p, .sign-date-4 small {
-    color: #9254DE!important;
-  }
+  .sign-date-3 p, .sign-date-3 small,
+  .sign-date-4 p, .sign-date-4 small,
   .sign-date-5 p, .sign-date-5 small {
-    color: #3FA60C!important;
+    color: #0DB6B6!important;
   }
   .sign-date-6 p, .sign-date-6 small {
     color: #C98600!important;

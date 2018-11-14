@@ -32,8 +32,7 @@ export class DailyMeCreatePage {
   ) {
     this.onCreate = this.navParams.get('onCreate');
     this.dailyForm = formBuilder.group({
-      // title: ['', Validators.compose([Validators.required])],
-      content: ['', Validators.compose([Validators.required])]
+      content: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxLength)])]
     });
   }
   postDailyCreate(){

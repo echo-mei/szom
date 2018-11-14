@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams, ViewController, TextInput } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-me-update-zs',
@@ -14,14 +15,15 @@ export class MeUpdateZsPage {
   selfInfo: any;
   value: any;
 
-  maxLength: number = 196;
-
+  maxLength: number;
+  selfForm: FormGroup;
   onUpdate: () => {}
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public userProvider: UserProvider,
+    public formBuilder: FormBuilder,
     public viewCtrl: ViewController
   ) {
     this.title = navParams.get('title');
@@ -30,11 +32,10 @@ export class MeUpdateZsPage {
     this.selfInfo = navParams.get('selfInfo');
     this.onUpdate = navParams.get('onUpdate');
     this.maxLength = navParams.get('maxLength');
-    this.value = this.selfInfo[this.attr];
-  }
-
-  focus(ele) {
-    ele.setFocus();
+    this.selfInfo && (this.value = this.selfInfo[this.attr]);
+    this.selfForm = formBuilder.group({
+      content: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxLength)])]
+    });
   }
 
   save() {
@@ -49,6 +50,14 @@ export class MeUpdateZsPage {
         this.onUpdate();
       }
     );
+  }
+
+  focus(textarea: TextInput) {
+    textarea.setFocus();
+  }
+
+  onEnter(e) {
+    this.value = this.value.replace(/[\r\n]/g,"");
   }
 
 }

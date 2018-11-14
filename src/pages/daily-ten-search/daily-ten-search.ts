@@ -1,11 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams, InfiniteScroll, ModalController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
 import { DailyMeShowPage } from '../daily-me-show/daily-me-show';
 import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
+import { DailyTenShowPage } from '../daily-ten-show/daily-ten-show';
 
 @Component({
   selector: 'page-daily-ten-search',
@@ -39,7 +40,6 @@ export class DailyTenSearchPage {
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public storage: StorageProvider,
-    public loadingCtrl: LoadingController,
     public modalCtrl: ModalController
   ) {
     this.user = this.navParams.get('user');
@@ -58,17 +58,23 @@ export class DailyTenSearchPage {
       searchEnd: this.timeEnd,
       ...params
     };
-    this.isLoading = true;
-    return this.dailyProvider.getLogDailyList(p).do(list => {
-      this.hasMore = list.length ? true : false;
-      this.isLoading = false;
-    });
+    return this.dailyProvider.getDailyTenList(p).do(
+      data => {
+        this.hasMore = data && data.list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
   }
 
   // 重置列表
   resetList() {
-    this.getLogDailyList().subscribe((list) => {
-      this.dailyList = list;
+    this.isLoading = true;
+    this.dailyList = [];
+    this.getLogDailyList().subscribe((data) => {
+      data && data.list && (this.dailyList = data.list);
     });
   }
 
@@ -79,8 +85,8 @@ export class DailyTenSearchPage {
 
   // 加载更多
   more(infinite?: InfiniteScroll) {
-    this.getLogDailyList({endTime: this.dailyList[this.dailyList.length - 1]['publishTime']}).subscribe((list) => {
-      list && (this.dailyList = this.dailyList.concat(list));
+    this.getLogDailyList({endTime: this.dailyList[this.dailyList.length - 1]['publishTime']}).subscribe((data) => {
+      data && data.list && (this.dailyList = this.dailyList.concat(data.list));
       infinite.complete();
     });
   }
@@ -123,8 +129,10 @@ export class DailyTenSearchPage {
 
   // 跳转详情页面
   goDailyShow(daily) {
-    this.navCtrl.push(DailyMeShowPage, {
-      daily: daily,
+    this.navCtrl.push(DailyTenShowPage, {
+      user: this.user,
+      count: 10,
+      dailyTen: daily,
       onSearchUpdate: this.updateDaily.bind(this),
       onSearchDelete: this.deleteDaily.bind(this),
       onUpdate: this.onUpdate,
@@ -133,7 +141,7 @@ export class DailyTenSearchPage {
   }
 
   getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
   }
 
 }

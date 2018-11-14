@@ -3,6 +3,7 @@ page-work-weektable {
     color: color($colors,mainBlueColor)!important;
     font-size: rem(17);
   }
+
   .time-select{
     position: relative;
     display: flex;
@@ -14,7 +15,7 @@ page-work-weektable {
       color: #333333;
       letter-spacing: -0.22px;
       position: relative;
-      opacity: 0;
+      // opacity: 0;
       z-index: 1;
     }
     .time-show{
@@ -44,38 +45,15 @@ page-work-weektable {
     border-radius: 50%;
     text-align: center;
     z-index: 3;
-
-    ion-icon{
-      color:#fff;
-      height: rem(50);
-      line-height: rem(50);
-      font-size: rem(22);
+    box-shadow: 0 rem(2) rem(4) rgba(77, 116, 235, 50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      height: rem(24);
     }
   }
 
-  .noDailyList{
-    position: relative;
-    text-align: center;
-    margin-top: rem(100);
-    img{
-      display: block;
-      width: rem(88);
-      height: rem(88);
-      position: relative;
-      left: 50%;
-      margin-left: rem(-44);
-    }
-    p{
-      font-size: rem(15);
-      color: #999999;
-    }
-    button{
-      font-size: rem(18);
-      color: #FFFFFF;
-      height: rem(46);
-      width: rem(208);
-    }
-  }
 
   .time-tabs{
     display: flex;
@@ -101,22 +79,22 @@ page-work-weektable {
     }
   }
 
+  .w-title{
+    font-size: rem(12);
+    background-color: #FAFAFA;
+    color: #999999;
+    letter-spacing: -0.42px;
+    height: rem(20);
+    line-height: rem(20);
+    padding-left: rem(15);
+  }
   .weektable-list{
-
-    .title{
-      font-size: rem(12);
-      background-color: #FAFAFA;
-      color: #999999;
-      letter-spacing: -0.42px;
-      height: rem(20);
-      line-height: rem(20);
-      padding-left: rem(15);
-    }
-
+    margin: 0;
     .item{
       .item-inner{
         padding: rem(18) rem(15) rem(18) 0;
-        border-bottom: .5px solid color($colors,boderColor)!important;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
         .label {
           margin: 0;
           display: flex;
@@ -185,5 +163,34 @@ page-work-weektable {
     }
 
   }
-
+  .blank{
+    height: calc(100% - 100px);
+    width: 100%;
+  }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+    button{
+      font-size: rem(18);
+      color: #FFFFFF;
+      height: rem(46);
+      width: rem(208);
+    }
+    a{
+      text-decoration: underline;
+    }
+  }
 }

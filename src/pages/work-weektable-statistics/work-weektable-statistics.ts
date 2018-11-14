@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { WorkProvider } from '../../providers/work/work';
+import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
+import { DateUtilProvider } from '../../providers/date-util/date-util';
 
 @Component({
   selector: 'page-work-weektable-statistics',
@@ -8,21 +10,36 @@ import { WorkProvider } from '../../providers/work/work';
 })
 export class WorkWeektableStatisticsPage {
 
+  // 用户
+  user: any;
   selectTimeShowFlag = false;
   stratDateStr: string = "";
   endDateStr: string = "";
-  weektableTypeList: any;
+  // 工作周表搜索结果列表
+  weektableTypeList: Array<Object>=[];
+  timeMax = (new Date()).getFullYear() + 1;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public workProvider: WorkProvider) {
+    public workProvider: WorkProvider,
+    public dateUtil:DateUtilProvider,
+    public modalCtrl:ModalController) {
+    this.user = this.navParams.get('user');
     this.countWeektable();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WorkWeektableStatisticsPage');
+  // 选择时间跨度
+  goSelectDate() {
+    this.modalCtrl.create(BetweenDatePickerComponent, {
+      afterSure: (start, end) => {
+        this.stratDateStr = this.dateUtil.format(start, 'yyyy-MM-dd');
+        this.endDateStr = this.dateUtil.format(end, 'yyyy-MM-dd');
+        this.search();
+      }
+    }).present();
   }
 
-  goSelcet() {
+  search() {
     this.selectTimeShowFlag = false;
     this.countWeektable();
   }
@@ -36,7 +53,8 @@ export class WorkWeektableStatisticsPage {
 
   countWeektable() {
     let params = {
-      stratDateStr: this.stratDateStr,
+      userCode: this.user.userCode,
+      startDateStr: this.stratDateStr,
       endDateStr: this.endDateStr
     }
     this.workProvider.countWeektable(params).subscribe(

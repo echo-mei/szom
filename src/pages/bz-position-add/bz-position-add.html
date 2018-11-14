@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons *ngIf="showMore">
+      <button ion-button (click)="popover($event);$event.stopPropagation();">
+        <ion-icon float-right class="szom" name="md-gengduo"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  
+  <ion-grid>
+    <div class="content">
+      <ion-row>
+        <ion-col col-6>职务属性</ion-col>
+        <ion-col col-6 ion-item>
+            <ion-multi-picker [(ngModel)]="dutyAttribute" [disabled]="yesOrNo" item-content [multiPickerColumns] = "weaveType"  doneText="确定" cancelText="取消" placeholder="请选择"> </ion-multi-picker>
+        </ion-col>
+      </ion-row>
+      <ion-icon class="szom" name="md-you"></ion-icon>
+    </div>
+    <div class="content">
+      <ion-row>
+        <ion-col col-6>职务层次</ion-col>
+        <ion-col col-6 ion-item>
+            <ion-multi-picker [(ngModel)]="dutyLevel" [disabled]="yesOrNo" item-content [multiPickerColumns] = "moneySource"  doneText="确定" cancelText="取消" placeholder="请选择"> </ion-multi-picker>
+        </ion-col>
+      </ion-row>
+      <ion-icon class="szom" name="md-you"></ion-icon>
+    </div>
+    <div class="content">
+      <ion-row>
+        <ion-col col-6>数量</ion-col>
+        <!-- <ion-col col-6 ion-item>
+            <ion-multi-picker item-content [multiPickerColumns] = "moneySource"  doneText="确定" cancelText="取消" placeholder="请选择"> </ion-multi-picker>
+        </ion-col> -->
+        <ion-col col-6 ion-item>
+          <ion-input type="number" maxlength="6" [(ngModel)]="num" [disabled]="canUpdateNum"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-icon class="szom" name="md-you"></ion-icon>
+    </div>
+  </ion-grid>
+  <button ion-button block class="saveBtn" *ngIf="canCreate" (click)="saveData()">保存</button>
+</ion-content>

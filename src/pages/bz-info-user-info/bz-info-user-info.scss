@@ -1,27 +1,32 @@
 page-bz-info-user-info {
-    ion-item{
-        padding:0 rem(16) !important;
+    .item{
+        padding:0 rem(16);
+        .item-inner{
+          padding: 0!important;
+        }
         ion-thumbnail{
-            min-width: rem(50) !important;
-            min-height: rem(50) !important;
-            width: rem(50) !important;
-            height: rem(50) !important;
+          min-height: rem(50);
+          min-width: rem(50);
+            width: rem(50);
+            height: rem(50);
+            overflow: hidden;
             img{
-                min-width: rem(50) !important;
-                min-height: rem(50) !important;
-                width: rem(50) !important;
-                height: rem(50) !important;
+              width: 100%;
+              height: auto;
             }
         }
         h2{
-            font-size: rem(18) !important;
-            margin-bottom: rem(8) !important;
+            font-size: rem(18);
+            margin-bottom: rem(8);
             color: #333333;
-            font-weight: bold !important;
+            font-weight: bold;
         }
-        p{
-            font-size: rem(12) !important;
-            color: #333333 !important;
+        ion-note {
+          opacity: 0.99;
+          font-size: rem(12);
+          color: #999999;
+          letter-spacing: rem(-0.42);
+          line-height: rem(17);
         }
         ion-icon{
             margin-right: 0 !important;
@@ -43,6 +48,7 @@ page-bz-info-user-info {
             font-weight: bold;
         }
         .item{
+          padding: 0;
             .item-inner{
                 border-bottom: 0 !important;
                 padding-right: 0;
@@ -60,20 +66,11 @@ page-bz-info-user-info {
             }
         }
     }
-    .toolbar{
-        .toolbar-background{
-            background-color: #fff;
-        }
-        ion-icon{
-            color: #4D74EB !important;
-        }       
-    }
+
     .divider{
         height: rem(10);
         background-color: #fafafa;
         border: 0;
     }
-    .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
-        background: none;
-    }
+
 }

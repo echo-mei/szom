@@ -9,7 +9,7 @@
   <ion-navbar color="white">
     <ion-title>工作周表详情</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="popover();" class="searchBtn">
+      <button ion-button (click)="popover();" class="searchBtn" *ngIf="canShow()">
         <ion-icon class="szom" name="md-gengduo"></ion-icon>
       </button>
     </ion-buttons>

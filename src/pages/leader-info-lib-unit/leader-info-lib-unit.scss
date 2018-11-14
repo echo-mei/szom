@@ -1,6 +1,6 @@
 page-leader-info-lib-unit {
   .scroll-content {
-    background: #F4F4F4;
+    background: #fafafa;
   }
   .searcher {
     position: relative;
@@ -32,21 +32,31 @@ page-leader-info-lib-unit {
       }
     }
   }
+
+  .divider{
+    font-size: rem(12);
+    color: #666666;
+    letter-spacing: rem(-0.42);
+    line-height: rem(12);
+    padding: rem(6) rem(15);
+  }
   .type-list {
     margin:0;
-    .divider{
-      font-size: rem(12);
-      color: #666666;
-      letter-spacing: rem(-0.42);
-      line-height: rem(12);
-      padding: rem(6) rem(15);
+    &.type-list-person{
+      .item .item-inner .label h2{
+        padding-right: 0;
+      }
     }
-    ion-item {
+    &.margin-top{
+      margin-top: rem(4);
+    }
+    .item {
       min-height: rem(44);
       padding-left: rem(15);
       background: #FFFFFF;
       ion-avatar{
-        margin: rem(15) rem(10) rem(15) 0!important;
+        background-color: #f0f0f0;
+        margin: rem(15) rem(10) rem(15) 0;
         width: rem(50);
         height: rem(50);
         margin-right:rem(15);
@@ -56,8 +66,9 @@ page-leader-info-lib-unit {
         }
       }
       .item-inner {
-        padding-right: 0!important;
-        border-bottom: .5px solid color($colors,boderColor)!important;
+        padding-right: rem(15);
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
         ion-label.label {
           margin: 0;
           h2 {
@@ -66,6 +77,10 @@ page-leader-info-lib-unit {
             letter-spacing: rem(0.52);
             line-height: rem(21);
             // font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            padding-right: rem(50);
           }
           ion-note {
             opacity: 0.99;

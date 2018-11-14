@@ -17,8 +17,24 @@ export class BzWeektableProvider {
     return this.http.post(`${BASE_URL}/teamUpWeektable`, params);
   }
 
+  updateWeektable(id, params?): Observable<any> {
+    return this.http.put(`${BASE_URL}/teamUpWeektable/${id}`, params);
+  }
+
   listWeektable(params?): Observable<any> {
     return this.http.get(`${BASE_URL}/teamUpWeektable`, params);
+  }
+
+  staticWeektable(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/teamUpWeektable/countWeektableType`, params);
+  }
+
+  getWorktable(id): Observable<any> {
+    return this.http.get(`${BASE_URL}/teamUpWeektable/${id}`);
+  }
+
+  deleteWeektable(id): Observable<any> {
+    return this.http.delete(`${BASE_URL}/teamUpWeektable/${id}`);
   }
 
 }

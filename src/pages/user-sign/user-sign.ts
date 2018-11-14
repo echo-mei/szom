@@ -4,6 +4,7 @@ import { CalendarComponent, CalendarComponentOptions, DayConfig } from 'ion2-cal
 import { SignProvider } from '../../providers/sign/sign';
 import { CalendarService } from 'ion2-calendar/dist/services/calendar.service';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
+import { StatusBar } from '@ionic-native/status-bar';
 
 /**
  * Generated class for the UserSignPage page.
@@ -36,10 +37,19 @@ export class UserSignPage {
     public navParams: NavParams,
     public signProvider: SignProvider,
     public calendarService: CalendarService,
-    public dateUtil: DateUtilProvider
+    public dateUtil: DateUtilProvider,
+    public statusBar: StatusBar
   ) {
     this.user = this.navParams.get("user");
     this.goMonth();
+  }
+
+  ionViewWillEnter() {
+    this.statusBar.styleLightContent();
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
   }
 
   ionViewDidLoad() {

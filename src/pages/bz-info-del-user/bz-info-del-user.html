@@ -1,0 +1,35 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>{{ teamName }}</ion-title>
+    <ion-buttons right>
+      <button ion-button clear color="primary" (click)="delMember()" [disabled]="!userCodes">移除</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div class="szom-search-wrap search-header">
+    <div class="szom-search">
+      <ion-searchbar placeholder="" [(ngModel)]="selectString" (ionInput)="onClickSearch()"></ion-searchbar>
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <img class="search-clear-icon" *ngIf="selectString" (click)="selectString='';onClickSearch()" src="assets/imgs/delete@3x.png">
+    </div>
+  </div>
+
+  <ion-list class="type-list">
+    <ion-item *ngFor="let user of personList">
+      <img class="checkbox-select" item-start src="assets/imgs/radio@3x.png" *ngIf="!user.select" />
+      <img class="checkbox-select" item-start src="assets/imgs/radio-active@3x.png" *ngIf="user.select" />
+      <ion-checkbox (ionChange)="updateCucumber(user)" item-start></ion-checkbox>
+      <ion-avatar item-start>
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ user.personName }}</h2>
+        <ion-note>{{ user.dutyName }}</ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, ActionSheetController, PopoverController, ModalController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -12,6 +12,9 @@ import { DailyOnePage } from '../daily-one/daily-one';
 import { DailyThreePage } from '../daily-three/daily-three';
 import { DailyTenPage } from '../daily-ten/daily-ten';
 import { UserSignPage } from '../user-sign/user-sign';
+import { HeavyFocusProvider } from '../../providers/heavy-focus/heavy-focus';
+import { SignDatePage } from '../sign-date/sign-date';
+import { LeaderInfoSlidesPage } from '../leader-info-slides/leader-info-slides';
 
 /**
  * Generated class for the LeaderInfoLibDetailPage page.
@@ -27,13 +30,20 @@ import { UserSignPage } from '../user-sign/user-sign';
 export class LeaderInfoPage {
   user: any = {};
 
+  onEmpFollow: () => {};
+  onUnEmpFollow: () => {};
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public userProvider: UserProvider,
+    public heavyFocusProvider: HeavyFocusProvider,
     public storage: StorageProvider,
     public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController) {
     this.user = this.navParams.get('user');
+    this.onEmpFollow = this.navParams.get("onEmpFollow");
+    this.onUnEmpFollow = this.navParams.get("onUnEmpFollow");
     this.getUserInfo();
   }
 
@@ -41,9 +51,9 @@ export class LeaderInfoPage {
     console.log('ionViewDidLoad LeaderInfoLibDetailPage');
   }
 
-   // 获取用户基本信息
-   getUserInfo(){
-    this.userProvider.getUserInfo({userCode: this.user.userCode}).subscribe(
+  // 获取用户基本信息
+  getUserInfo() {
+    this.userProvider.getUserInfo({ userCode: this.user.userCode }).subscribe(
       (user) => {
         this.user = user;
       }
@@ -51,7 +61,7 @@ export class LeaderInfoPage {
   }
 
   getHeadImageUrl(personId) {
-    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.get('token')}&personId=${personId}`;
+    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.token}&personId=${personId}`;
   }
 
   follow() {
@@ -59,7 +69,7 @@ export class LeaderInfoPage {
       attentedUserCode: this.user.userCode,
       status: '02'
     };
-    this.userProvider.postAttentedFollow(params).subscribe(
+    this.heavyFocusProvider.postAttentedFollow(params).subscribe(
       () => {
         this.getUserInfo();
         this.toastCtrl.create({
@@ -68,6 +78,7 @@ export class LeaderInfoPage {
           duration: 1000,
           position: 'middle'
         }).present();
+        this.onEmpFollow && this.onEmpFollow();
       }
     );
   }
@@ -78,12 +89,13 @@ export class LeaderInfoPage {
       buttons: [
         {
           text: '确定', handler: () => {
-            this.userProvider.postAttentedFollow({
+            this.heavyFocusProvider.postAttentedFollow({
               attentedUserCode: this.user.userCode,
               status: '05'
             }).subscribe(
               () => {
                 this.getUserInfo();
+                this.onUnEmpFollow && this.onUnEmpFollow();
               }
             );
           }
@@ -91,6 +103,21 @@ export class LeaderInfoPage {
         { text: '取消', role: 'cancel' }
       ]
     }).present();
+  }
+
+  // 跳转到签到历史界面
+  goMeSign() {
+    this.modalCtrl.create(SignDatePage, {
+      user:this.user
+    }).present();
+  }
+
+  // 跳转到切换页
+  goLeaderInfoSlides(index) {
+    this.navCtrl.push(LeaderInfoSlidesPage, {
+      index: index,
+      user: this.user
+    });
   }
 
   //进到个人基本信息详情页
@@ -107,52 +134,40 @@ export class LeaderInfoPage {
     });
   }
 
-   //进到个人印象标签详情页
-  goUserImpression(){
+  //进到个人印象标签详情页
+  goUserImpression() {
     this.navCtrl.push(UserImpressionPage, {
-      user: this.user,
-      newFlag:true
-    });
-  }
-
-  goSign(){
-    this.navCtrl.push(UserSignPage, {
       user: this.user
     });
   }
 
-  goWeektable(){
+  goWeektable() {
     this.navCtrl.push(WorkWeektablePage, {
-      user: this.user,
-      newFlag:true
+      user: this.user
     });
   }
 
-  goDaily(){
+  goDaily() {
     this.navCtrl.push(DailyMePage, {
-      user: this.user,
-      newFlag:true
+      user: this.user
     });
   }
 
-  goDailyOne(){
+  goDailyOne() {
     this.navCtrl.push(DailyOnePage, {
-      user: this.user,
-      newFlag:true
+      user: this.user
     });
   }
 
-  goDailyThree(){
+  goDailyThree() {
     this.navCtrl.push(DailyThreePage, {
-      user: this.user,
-      newFlag:true
+      user: this.user
     });
   }
 
-  goDailyTen(){
+  goDailyTen() {
     this.navCtrl.push(DailyTenPage, {
-      user: this.user,
-      newFlag:true
+      user: this.user
     });
   }
 }

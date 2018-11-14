@@ -1,54 +1,30 @@
 page-leader-info-lib {
   .scroll-content {
-    background: #F4F4F4;
-  }
-  .searcher {
-    position: relative;
-    background: #FFFFFF;
-    height: rem(42);
-    width: rem(360);
-    padding: rem(4) rem(15) rem(6) rem(15);
-    .szom {
-      position: absolute;
-      left: rem(27);
-      top: rem(14);
-      z-index: 1;
-      font-size: rem(13);
-      color: #AFAFAF;
-    }
-    .searchbar {
-      padding: 0;
-      margin: 0;
-      background: #F4F4F4;
-      border-radius: 2px;
-      height: rem(32);
-      width: rem(330);
-      .searchbar-search-icon {
-        display: none;
-      }
-      .searchbar-input {
-        padding-left: rem(35);
-      }
-    }
+    background: #fafafa;
   }
 
   .type-list {
-    margin-top:rem(4);
-    ion-item {
+    margin: 0;
+    .item {
       width: rem(360);
       height: rem(44);
       background: #FFFFFF;
       padding-left: rem(15);
       .item-inner {
-        padding-right: 0!important;
-        border-bottom: .5px solid color($colors,boderColor)!important;
-        ion-label.label {
+        padding-right: rem(15);
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+        .label {
           margin: 0;
           h2 {
             font-size: rem(15);
             color: #333333;
             letter-spacing: rem(0.52);
             line-height: rem(21);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            padding-right: rem(50);
           }
           ion-note {
             opacity: 0.99;

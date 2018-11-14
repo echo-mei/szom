@@ -1,4 +1,9 @@
 page-bz-work-weektable {
+  .statistics{
+    color: color($colors,mainBlueColor)!important;
+    font-size: rem(17);
+  }
+
   .week-selector {
     position: relative;
     height: rem(44);
@@ -18,19 +23,33 @@ page-bz-work-weektable {
       }
     }
   }
-  .day-selector {
+  .multi-picker-text{
+    font-size: rem(16);
+  }
+  .time-tabs{
     display: flex;
-    button {
-      padding: 0 rem(5);
-      flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    height: rem(44);
+    padding: 0 rem(12);
+    border-bottom: .5px solid #e8e8e8;
+
+    .button{
+      width: rem(37);
       height: rem(27);
-      &.active {
-        background: #4D74EB;
-        border-radius: 1px;
-        color: #fff;
+      line-height: rem(27);
+      font-size: rem(14);
+      margin: 0;
+      padding: 0;
+      color: #999999;
+      border-radius: rem(1);
+      &.active{
+        background: color($colors,mainBlueColor);
+        color: #ffffff;
       }
     }
   }
+
   .noDailyList{
     position: relative;
     text-align: center;
@@ -53,6 +72,9 @@ page-bz-work-weektable {
       height: rem(46);
       width: rem(208);
     }
+    a{
+      text-decoration: underline;
+    }
   }
   .add-new{
     position: fixed;
@@ -64,13 +86,13 @@ page-bz-work-weektable {
     background-color:color($colors,mainBlueColor);
     border-radius: 50%;
     text-align: center;
-    z-index: 3;
-
-    ion-icon{
-      color:#fff;
-      height: rem(50);
-      line-height: rem(50);
-      font-size: rem(22);
+    z-index: 1000;
+    box-shadow: 0 rem(2) rem(4) rgba(77, 116, 235, 50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      height: rem(24);
     }
   }
   .item-divider {
@@ -80,33 +102,98 @@ page-bz-work-weektable {
     line-height: rem(20);
     padding: 0 rem(15);
   }
-  .item-block {
-    height: rem(78);
-    ion-thumbnail {
-      margin: 0 rem(15)!important;
-      min-height: initial!important;
-      min-width: initial!important;
-      background: #C9D5F9;
-      border-radius: 1px;
-      height: rem(42);
-      width: rem(42);
-      text-align: center;
-      font-size: rem(12);
-      color: #4D74EB;
-      line-height: rem(14);
-      padding: rem(8) rem(5);
+
+
+  .w-title{
+    font-size: rem(12);
+    background-color: #FAFAFA;
+    color: #999999;
+    letter-spacing: -0.42px;
+    height: rem(20);
+    line-height: rem(20);
+    padding-left: rem(15);
+  }
+  .weektable-list{
+    .item{
+      .item-inner{
+        padding: rem(18) rem(15) rem(18) 0;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+        .label {
+          margin: 0;
+          display: flex;
+        }
+      }
+      @mixin color-bg($color, $alpha) {
+        color: $color;
+        background:rgba($color: $color, $alpha: $alpha);
+      }
+      .type{
+        width: rem(42);
+        height: rem(42);
+        line-height: rem(42);
+        margin: 0 rem(15);
+        @include color-bg(#4D74EB, 0.3);
+        &.type1{
+          @include color-bg(#4d74eb, 0.3);
+        }
+        &.type2{
+          @include color-bg(#3FA60C, 0.3);
+        }
+        &.type3{
+          @include color-bg(#FF7A45, 0.3);
+        }
+        &.type4{
+          @include color-bg(#B031CA, 0.3);
+        }
+        &.type5{
+          @include color-bg(#C98600, 0.3);
+        }
+        &.type6{
+          @include color-bg(#79888b, 0.3);
+        }
+        .text{
+          display: inline-block;
+          width: rem(28);
+          font-size: rem(12);
+          line-height:rem(14);
+          letter-spacing: 1.63px;
+          white-space: initial;
+          margin: rem(7);
+        }
+      }
+      .content{
+        width: 100%;
+        padding-left: rem(56);
+        margin-left: rem(-56);
+        .text{
+          font-size: rem(15);
+          color: #333333;
+          height: rem(21);
+          line-height: rem(21);
+          margin: 0 0 rem(4) 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          .name{
+            color: color($colors,mainBlueColor);
+            margin-right: rem(5);
+          }
+        }
+        .time{
+          ion-note{
+            color:#afafaf;
+            margin-right: rem(10);
+            font-size: rem(13);
+          }
+        }
+      }
     }
-    h2 {
-      font-size: rem(15);
-      color: #333333;
-      font-weight: 700;
-      margin: rem(5) 0;
-    }
-    p {
-      font-size: rem(13);
-      color: #AFAFAF;
-      line-height: rem(15);
-      margin: rem(5) 0;
-    }
+
+  }
+  .blank{
+    height: calc(100% - 100px);
+    width: 100%;
   }
 }

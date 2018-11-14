@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, NavParams, InfiniteScroll, ModalController } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -40,7 +40,6 @@ export class DailyMeSearchPage {
     public dailyProvider: DailyProvider,
     public dateUtil: DateUtilProvider,
     public storage: StorageProvider,
-    public loadingCtrl: LoadingController,
     public modalCtrl: ModalController
   ) {
   }
@@ -63,7 +62,6 @@ export class DailyMeSearchPage {
       searchEnd: this.timeEnd,
       ...params
     };
-    this.isLoading = true;
     return this.dailyProvider.getLogDailyList(p).do(list => {
       this.hasMore = list.length ? true : false;
       this.isLoading = false;
@@ -72,6 +70,7 @@ export class DailyMeSearchPage {
 
   // 重置列表
   resetList() {
+    this.isLoading = true;
     this.getLogDailyList().subscribe((list) => {
       this.dailyList = list;
     });
@@ -132,7 +131,6 @@ export class DailyMeSearchPage {
 
   // 选择时间跨度
   goSelectDate() {
-    // this.selectTimeShowFlag = !this.selectTimeShowFlag;
     this.modalCtrl.create(BetweenDatePickerComponent, {
       afterSure: (start, end) => {
         this.timeStarts = this.dateUtil.format(start, 'yyyy-MM-dd');
@@ -143,6 +141,6 @@ export class DailyMeSearchPage {
   }
 
   getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
   }
 }

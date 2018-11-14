@@ -12,6 +12,41 @@ page-user-impression {
       letter-spacing: 0;
     }
   }
+  .conditions{
+    z-index: 10;
+    position: relative;
+    width: 100%;
+    height: rem(38);
+    line-height: rem(38);
+    background: #FFF;
+    color: #AFAFAF;
+    margin-top: 1px;
+    margin-bottom: rem(5);
+    .select-btn{
+      position: relative;
+      padding: 0 rem(15);
+      z-index: 3;
+      .filter-icon{
+        width: rem(18);
+        vertical-align: middle
+      }
+      span{
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        padding-right: rem(5);
+      }
+      span.title{
+          padding: 0 rem(8);
+      }
+      .color-blue{
+          color: #4D74EB;
+      }
+      .szom{
+          line-height: rem(38);
+      }
+    }
+  }
   .impression {
     padding-left: rem(10);
     background: #fff;

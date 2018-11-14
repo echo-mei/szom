@@ -14,12 +14,19 @@
     <ion-list>
         <ion-label class="tips">请先进行账户安全验证</ion-label>
         <ion-item>
-          <ion-label class="telFont">手机号/用户名</ion-label>
-          <ion-input formControlName="phoneNum" type="telNum" readonly disabled class="telNum" float-right></ion-input>
+          <!-- <ion-label class="telFont">手机号/用户名</ion-label> -->
+          <ion-input formControlName="phoneNum"  type="telNum" placeholder="账号/手机号" class="telNum" float-right></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label class="telFont">验证码</ion-label>
-          <ion-input formControlName="msgCode" type="text"></ion-input>
+        
+        <ion-item *ngIf="!isPhone()">
+          <ion-input formControlName="password"  oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false" [type]="showPassword?'text':'password'" placeholder="密码"></ion-input>
+          <button type="button" ion-button clear item-end *ngIf="form.controls['password'].value" (click)="showPassword=!showPassword">
+            <ion-icon class="szom" [name]="showPassword?'yanjing':'eye-close'"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item *ngIf="isPhone()">
+          <!-- <ion-label class="telFont">验证码</ion-label> -->
+          <ion-input formControlName="msgCode" type="text" class="messInput" maxlength="6" placeholder="验证码" oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></ion-input>
           <button type="button" ion-button clear item-end  *ngIf="form.controls['msgCode'].value" (click)="form.controls['msgCode'].setValue('')">
             <ion-icon class="szom" name="guanbi"></ion-icon>
           </button>

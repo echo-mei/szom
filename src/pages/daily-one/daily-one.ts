@@ -1,5 +1,5 @@
-import { Component, ViewChild} from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
@@ -8,34 +8,35 @@ import { BASE_URL } from '../../config';
 import { DailyOneCreatePage } from '../daily-one-create/daily-one-create';
 import { DailyOneSearchPage } from '../daily-one-search/daily-one-search';
 import { DailyOneShowPage } from '../daily-one-show/daily-one-show';
+import { Observable } from 'rxjs';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'page-daily-one',
   templateUrl: 'daily-one.html',
 })
 export class DailyOnePage {
-  canCreate: boolean;
-  user: any;
-  newFlag:any;
-  size:number = 10;
-  dailyOneList: any[] = []; // 每周一励列表
-  year:number;  // 当前年
-  count:number; //每周日志数配置
-  noInShow: boolean = true;
-  week:{
-    index?: number,
-    week?: {
-      firstDate: Date,
-      lastDate: Date
-    }
-  } = {};  // 当前周
-  boolShow = {};
-  dataLoadOver = false; //数据加载完成标志
-  loading = this.loadingCtrl.create({
-    content: '处理中...',
-    // showBackdrop:false,
-    cssClass: 'loading-new'
-  });
+
+  // 用户
+  @Input() user: any = {};
+
+  // 当前用户
+  me: any;
+  // 每页显示条数
+  size: number = 10;
+  // 每周一励列表
+  dailyOneList: any[] = [];
+  // 每周日志数配置
+  count: number;
+  // 当前周
+  week: any = {};
+  // 是否能创建当前周
+  canCreate: boolean = false;
+  // 是否正在加载数据
+  isLoading = false;
+  // 是否还有更多数据
+  hasMore: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -43,108 +44,135 @@ export class DailyOnePage {
     public dateUtil: DateUtilProvider,
     public events: Events,
     public storage: StorageProvider,
-    public loadingCtrl:LoadingController
   ) {
-    this.user = this.navParams.get('user');
-    this.newFlag = this.navParams.get('newFlag');
-    let date = new Date();
-    this.year = date.getFullYear();
-    this.week = this.dateUtil.getWeekOfDay(date);
-    this.initList();
+    this.me = this.storage.me;
   }
 
-  initList() {
-    this.dailyOneList = [];
-    this.more();
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
+    this.resetLogDailyList();
   }
 
-  showTopTime(list) {
-    for(var i=list.length-1; i>=0; i--){
-      if((i-1<0?true: list[i].weekNums != list[i-1].weekNums)){
-        this.boolShow[i] = true;
-      }else{
-        this.boolShow[i] = false;
-      }
-    }
-  }
+  // =================== Public Methods =====================
 
-  more(infinite?: InfiniteScroll) {
-    let params = {
+  // 获取列表数据
+  _getLogDailyList(params?) {
+    params = {
       size: this.size,
-      userCode: this.user.userCode
+      userCode: this.user.userCode,
+      ...params
     };
-    if(this.dailyOneList.length) {
-      params['endTime'] = this.dailyOneList[this.dailyOneList.length-1].publishTime;
-    }
-    if (!infinite) {
-      this.loading.present();
-    }
-    this.dailyProvider.getDailyOneList(params).subscribe(
+    return this.dailyProvider.getDailyOneList(params).mergeMap(
       (data) => {
-        if (!infinite) {
-          this.dataLoadOver = true;
-          this.loading.dismiss();
-        }
         this.count = data.count;
-        infinite && infinite.complete();
-        if(data.list.length) {
-          infinite && infinite.enable(true);
-          this.dailyOneList = this.dailyOneList.concat(data.list);
-        }else {
-          infinite && infinite.enable(false);
-        }
-        this.showTopTime(this.dailyOneList);
-        this.resetCanCreate();
+        this.week = this.dateUtil.getWeekOfDay(new Date(data.serverTime));
+        return Observable.create(observer => observer.next(data));
+      }
+    ).do(
+      (data: any) => {
+        this.hasMore = data.list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
       }
     );
   }
 
-  getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+  // 重置列表
+  resetLogDailyList() {
+    this.isLoading = true;
+    this.dailyOneList = [];
+    this._getLogDailyList().subscribe((data: any) => {
+      this.formateList(data.list);
+      this.checkCanCreate();
+    });
   }
 
-  resetCanCreate() {
-    let count = 0;
-    this.dailyOneList.forEach((daily) => {
-      if(daily.year == this.year && daily.weekNums == this.week.index) {
-        count++;
+  // 数据列表的格式变换
+  formateList(list) {
+    list = _.groupBy(list, function(item) {
+      return `${item.year}-${item.weekNums}`;
+    });
+    for(let key in list) {
+      let weekList = this.dailyOneList.find((item) => {
+        return item.week.year == key.split('-')[0] && item.week.index == key.split('-')[1];
+      });
+      if(weekList) {
+        weekList.list.concat(list[key]);
       }
-    })
-    this.canCreate = count>=this.count ? false : true;
+      this.dailyOneList.push({
+        week: {
+          year: key.split('-')[0],
+          index: key.split('-')[1]
+        },
+        list: list[key]
+      });
+    }
   }
 
-  goDailyCreate() {
+  // 检查是否可以创建当前周的记录
+  checkCanCreate() {
+    const currentWeekList = this.dailyOneList.find((item) => {
+      return item.week.year == this.week.year && item.week.index == this.week.index+1;
+    });
+    if(!currentWeekList) {
+      this.canCreate = true;
+      return;
+    }
+    this.canCreate = currentWeekList && currentWeekList.list.length >= this.count ? false : true;
+  }
+
+  // 判断记录是否为本周
+  isCurrentWeek(log) {
+    return this.week.year == log.year && this.week.index+1 == log.weekNums;
+  }
+
+  // 获取图片地址
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  //================= Events =======================
+
+  // 滚动加载
+  onScrollDailyList(infinite?: InfiniteScroll) {
+    let params = {};
+    if(this.dailyOneList.length) {
+      const list = this.dailyOneList[this.dailyOneList.length - 1].list;
+      params['endTime'] = list[list.length - 1]['publishTime'];
+    }
+    this._getLogDailyList(params).subscribe((data) => {
+      this.formateList(data.list);
+      infinite.complete();
+    });
+  }
+
+  // 点击创建
+  onClickCreate() {
     this.navCtrl.push(DailyOneCreatePage, {
-      year: this.year,
       week: this.week,
       user: this.user,
       count: this.count,
-      onCreate: this.initList.bind(this)
+      onCreate: this.resetLogDailyList.bind(this)
     });
   }
 
-  goDailyShow(one) {
+  // 点击记录
+  onClickDailly(one) {
     this.navCtrl.push(DailyOneShowPage, {
+      user:this.user,
       dailyOne: one,
       count: this.count,
-      onDelete: this.initList.bind(this),
-      onUpdate: this.initList.bind(this)
+      onDelete: this.resetLogDailyList.bind(this),
+      onUpdate: this.resetLogDailyList.bind(this)
     });
   }
 
-  goDailySearch(){
-    this.navCtrl.push(DailyOneSearchPage,{
+  // 点击搜索
+  onClickSearch(){
+    this.navCtrl.push(DailyOneSearchPage, {
       user: this.user,
     });
-  }
-
-  dateFormat(date):string{
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    month<10?month = '0' + month:month;
-    let day = date.getDate();
-    day<10?day = '0' + day:day;
-    date = year + '.' + month + '.' +day;
-    return date;
   }
 }

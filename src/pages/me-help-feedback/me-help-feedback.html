@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>帮助与反馈</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <div class="con" *ngFor="let item of list; let i = index">
+      <ion-item (click)="showDetail(i)">
+        <!-- <h3>Q: 你有啥子问题？</h3> -->
+        <h3>{{ item.question }}</h3>
+        <ion-icon class="szom" name="shang" *ngIf="!boolShow[i]" item-end></ion-icon>
+        <ion-icon class="szom" name="xia" *ngIf="boolShow[i]" item-end></ion-icon>
+      </ion-item>
+      <h4 *ngIf="boolShow[i]" (click)="goDetail(item)">{{ item.answer1.title }}{{ item.answer1.content }}{{ item.answer1.content1 }}<span *ngIf="item.answer1.title || item.answer1.content">。</span>{{ item.answer2.title }}{{ item.answer2.content }}<span  *ngIf="item.answer2.title || item.answer2.content">。</span>{{ item.answer3.title }}{{ item.answer3.content }}<span *ngIf="item.answer3.title || item.answer3.content">。</span>{{ item.answer4.title }}{{ item.answer4.content }}</h4>
+      <div class="bottom" *ngIf="boolShow[i]"></div>
+    </div>
+  </ion-list>
+</ion-content>

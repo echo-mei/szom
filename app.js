@@ -6,12 +6,12 @@ var app = express();
 app.use(express.static(__dirname + '/www'));
 
 var BASE_URL = '/ionic';
-var REAL_URL = 'http://192.168.0.197:8800';
+var REAL_URL = 'http://192.168.0.53:8800';
 
 var WS_BASE_URL = '/ws';
-var WS_REAL_URL = 'http://192.168.0.102:8900';
+var WS_REAL_URL = 'http://192.168.0.53:8900';
 
-//设置反向代理实现跨域访问
+// 设置反向代理实现跨域访问
 var apiProxy = httpProxy.createProxyServer();
 app.all(BASE_URL+'/*',function (req, res) {
     var url =  req.url.replace(BASE_URL ,"");

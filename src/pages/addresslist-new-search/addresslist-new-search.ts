@@ -1,11 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Searchbar } from 'ionic-angular';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UserProvider } from '../../providers/user/user';
 import { MeInfoPage } from '../me-info/me-info';
 import { UserInfoPage } from '../user-info/user-info';
+import { BzUserInfoPage } from '../bz-user-info/bz-user-info';
+import { BzInfoPage } from '../bz-info/bz-info';
 
 @Component({
   selector: 'page-addresslist-new-search',
@@ -13,18 +15,21 @@ import { UserInfoPage } from '../user-info/user-info';
 })
 export class AddresslistNewSearchPage {
 
-  @ViewChild('searchEle') searchEle;
+  @ViewChild('searchEle') searchEle: Searchbar;
 
-  key: string;
+  // 列表发生变化后置
+  onChange: any;
 
-  todayUserList: any[] = [];
-  weekUserList: any[] = [];
-  monthUserList: any[] = [];
-
-  onFollow: () => {};
-  onCancelFollow: () => {};
-  onAgree: () => {};
-  onRefuse: () => {};
+  // 关键字
+  key: string = '';
+  // 最近分组
+  list1: any[] = [];
+  // 一周前分组
+  list2: any[] = [];
+  // 列表数据是否已经发生变化
+  hasChanged: boolean;
+  // 是否正在加载
+  isLoading: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -34,6 +39,8 @@ export class AddresslistNewSearchPage {
     public storage: StorageProvider,
     public userProvider: UserProvider
   ) {
+    this.onChange = this.navParams.get('onChange');
+    // this.resetUserList();
   }
 
   ionViewDidEnter() {
@@ -42,68 +49,88 @@ export class AddresslistNewSearchPage {
     }, 150);
   }
 
-  search() {
-    this.getUserList();
+  ionViewWillUnload() {
+    this.hasChanged && this.onChange && this.onChange();
   }
 
-  goBack() {
-    this.navCtrl.pop();
-  }
+  // ========================= Public Methods ============================
 
-  getUserList() {
-    this.todayUserList = [];
-    this.weekUserList = [];
-    this.monthUserList = [];
-    let params = {};
-    if (this.key) {
-      params['keyWords'] = this.key;
-    }else {
-      return;
-    }
+  // 重置用户列表
+  resetUserList() {
+    this.list1 = [];
+    this.list2 = [];
+    if (!this.key) return;
+    let params = {
+      keyWords: this.key
+    };
+    this.isLoading = true;
     this.addresslistProvider.getNewFollowUserList(params).subscribe(
       (data) => {
-        let now = new Date();
+        this.isLoading = false;
         data.forEach((user) => {
-          if(this.dateUtil.isSameDay(new Date(user.updateDate.time), now)) {
-            this.todayUserList.push(user);
-          }else if(user.updateDate.time > (new Date().getTime()+24*60*60*1000) && user.updateDate.time < (new Date().getTime()+7*24*60*60*1000)) {
-            this.weekUserList.push(user);
-          }else {
-            this.monthUserList.push(user);
+          if (user.updateDate.time > (new Date().getTime() - 7 * 24 * 60 * 60 * 1000)) {
+            this.list1.push(user);
+          } else {
+            this.list2.push(user);
           }
         });
+      },
+      err => {
+        this.isLoading = false;
       }
     );
   }
 
+  // 改变列表数据
+  changeData() {
+    this.hasChanged = true;
+    this.resetUserList();
+  }
+
+  // =========================== Events ======================================
+
+  // 搜索
+  search() {
+    this.resetUserList();
+  }
+
+  // 取消（返回）
+  goBack() {
+    this.navCtrl.pop();
+  }
+
   goUserInfo(user) {
-    if(user.userCode==JSON.parse(this.storage.get('user')).userCode) {
-      this.navCtrl.push(MeInfoPage);
-    }else {
-      this.navCtrl.push(UserInfoPage, {
-        user: user,
-        followOrCancel: !(user.status=='01'&&user.applyType=='get') ? true : false,
-        agreeOrRefuse: user.status=='01'&&user.applyType=='get' ? true : false,
-        showSelfInfo: true,
-        showDaily: true,
-        showTags: true,
-        onFollow: () => {
-          this.getUserList();
-          this.onFollow && this.onFollow();
-        },
-        onCancelFollow: () => {
-          this.getUserList();
-          this.onCancelFollow && this.onCancelFollow();
-        },
-        onAgree: () => {
-          this.getUserList();
-          this.onAgree && this.onAgree();
-        },
-        onRefuse: () => {
-          this.getUserList();
-          this.onRefuse && this.onRefuse();
-        }
-      });
+    if (user.userType === "02") {//班子信息
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(BzInfoPage);
+      } else {
+        this.navCtrl.push(BzUserInfoPage, {
+          user: user,
+          followOrCancel: !(user.status == '01' && user.applyType == 'get') ? true : false,
+          agreeOrRefuse: (user.status == '01' && user.applyType == 'get') ? true : false,
+          onFollow: this.changeData.bind(this),
+          onCancelFollow: this.changeData.bind(this),
+          onAgree: this.changeData.bind(this),
+          onRefuse: this.changeData.bind(this)
+        });
+      }
+    } else {
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(MeInfoPage);
+      } else {
+        this.navCtrl.push(UserInfoPage, {
+          user: user,
+          followOrCancel: !(user.status == '01' && user.applyType == 'get') ? true : false,
+          agreeOrRefuse: (user.status == '01' && user.applyType == 'get') ? true : false,
+          showSelfInfo: true,
+          showDaily: true,
+          showTags: true,
+          onFollow: this.changeData.bind(this),
+          onCancelFollow: this.changeData.bind(this),
+          onAgree: this.changeData.bind(this),
+          onRefuse: this.changeData.bind(this)
+        });
+      }
     }
   }
 

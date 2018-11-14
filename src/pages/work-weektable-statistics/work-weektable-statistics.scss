@@ -8,11 +8,14 @@ page-work-weektable-statistics {
     background: #FFF;
     color: #AFAFAF;
     position: relative;
-    margin-top: 1px;
     .select-btn{
       position: relative;
       padding: 0 rem(15);
       z-index: 3;
+      .filter-icon{
+        width: rem(18);
+        vertical-align: middle
+      }
       span{
         white-space: nowrap;
         padding-right: rem(5);
@@ -42,7 +45,8 @@ page-work-weektable-statistics {
         justify-content: space-around;
         // height: rem(44);
         background-color: #fff;
-        border-top: .5px solid color($colors,boderColor);
+        @include border-b-1px(color($colors,boderColor));
+        // border-top: .5px solid color($colors,boderColor);
         position: relative;
         padding-right: rem(10);
         .title{padding-left: rem(10);}
@@ -104,7 +108,8 @@ page-work-weektable-statistics {
     margin: 0;
     .item {
       .item-inner{
-        border-bottom: .5px solid color($colors,boderColor)!important;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor)!important;
         padding: 0 rem(10);
       }
       .label {

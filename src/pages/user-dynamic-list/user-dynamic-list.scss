@@ -12,8 +12,25 @@ page-user-dynamic-list {
       color: #000000;
     }
   }
+  .noDailyList{
+    position: relative;
+    text-align: center;
+    margin-top: rem(100);
+    img{
+      display: block;
+      width: rem(88);
+      height: rem(88);
+      position: relative;
+      left: 50%;
+      margin-left: rem(-44);
+    }
+    p{
+      font-size: rem(15);
+      color: #999999;
+    }
+  }
   .like-main {
-    background: linear-gradient(to right, #3555DE, #628FF7);
+    background-size: 100%;
     margin: rem(8) rem(15);
     position: relative;
     text-align: center;
@@ -46,13 +63,12 @@ page-user-dynamic-list {
         transform: scale(0.5)
       }
     }
-  }  
-  .list {
+  }
+  .daily-list {
     .item{
-      padding: rem(16) rem(15) 0;
       .item-inner{
-        padding-right: 0;
-        border-bottom: rem(0.5) solid #f9f9f9;
+        padding: rem(16) rem(15) 0;
+        @include border-b-1px(color($colors,boderColor));
         ion-label {
           margin: 0;
           h4 {
@@ -79,6 +95,7 @@ page-user-dynamic-list {
               text-align: center;
               padding: rem(2) rem(5);
               font-weight: bold;
+              vertical-align: top;
             }
           }
           .other {
@@ -110,6 +127,22 @@ page-user-dynamic-list {
           }
         }
       }
+    }
+  }
+  .no-more-tip{
+    padding: 0 rem(15);
+    background: transparent;
+    height: rem(50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cccccc;
+    font-size: rem(15);
+    span{
+      height: rem(1);
+      background: #dddddd;
+      flex-grow: 1;
+      margin: 0 rem(10);
     }
   }
 }

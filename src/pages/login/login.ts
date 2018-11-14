@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Events, Platform, NavController } from 'ionic-angular';
+import { Events, Platform, NavController, Content, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { UserProvider } from '../../providers/user/user';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -9,12 +9,15 @@ import { TabsPage } from '../tabs/tabs';
 import { JSEncrypt } from 'jsencrypt';
 import { WebsocketProvider } from '../../providers/websocket/websocket';
 import { Device } from '@ionic-native/device';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
+
+  @ViewChild('content') content: Content;
 
   second: number;
   loginForm: FormGroup;
@@ -30,12 +33,20 @@ export class LoginPage {
     public navCtrl: NavController,
     public menuProvider: MenuProvider,
     public websocketProvider: WebsocketProvider,
-    private device: Device
+    private device: Device,
+    public keyboard: Keyboard,
+    public loadingCtrl: LoadingController
   ) {
     this.loginForm = formBuilder.group({
-      userCode: [this.storage.get('userCode'), Validators.compose([Validators.required])],
+      userCode: [this.storage.lastLoginUserCode, Validators.compose([Validators.required])],
       password: [''],
       msgCode: ['']
+    });
+    this.keyboard.onKeyboardShow().subscribe(() => {
+      this.content.scrollTo(0, document.getElementById('userCode').offsetTop, 20);
+    });
+    this.keyboard.onKeyboardHide().subscribe(() => {
+      this.content.scrollTo(0, 0, 20);
     });
   }
 
@@ -57,7 +68,7 @@ export class LoginPage {
   getSMSCode() {
     this.userProvider.getSMSCode({ mobilePhone: this.loginForm.value.userCode }).subscribe(
       () => {
-        this.second = 60;
+        this.second = 120;
         let interval = setInterval(() => {
           this.second = this.second - 1;
           if (this.second == 0) {
@@ -77,14 +88,18 @@ export class LoginPage {
   }
 
   login() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
     let params = {
       accountNo: this.loginForm.value.userCode,
       channel: /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent) ? 'MOBILE' : 'PC',
-      deviceId: this.device.uuid?this.device.uuid.replace(/-/g,""):this.getUUID()
+      deviceId: this.device.uuid?this.device.uuid.replace(/-/g,""):this.getUUID(),
+      
     };
     let fn = 'login';
     if (this.isPhone()) {
       params['msgCode'] = this.loginForm.value.msgCode;
+      
       fn = 'sendSMSCode';
     } else {
       params['password'] = this.loginForm.value.password;
@@ -96,18 +111,28 @@ export class LoginPage {
         params['password'] = encrypt.encrypt(this.loginForm.value.password);
         this.userProvider[fn](params).subscribe(
           (data) => {
-            this.storage.set('token', data.authorization);
-            this.storage.set('user', JSON.stringify(data));
-            this.storage.set('userCode', params.accountNo);
+            this.storage.token = data.authorization;
+            this.storage.me = data;
+            this.storage.lastLoginUserCode = params.accountNo;
             this.menuProvider.listMenuTree().subscribe(
               (menus) => {
                 this.menuProvider.storeMenu(menus);
                 this.navCtrl.setRoot(TabsPage);
                 this.websocketProvider.connectWebsocket();
+                loading.dismiss();
+              },
+              err => {
+                loading.dismiss();
               }
             );
+          },
+          err => {
+            loading.dismiss();
           }
         );
+      },
+      err => {
+        loading.dismiss();
       }
     );
   }

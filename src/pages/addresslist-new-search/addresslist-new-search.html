@@ -1,52 +1,56 @@
 <ion-header no-border>
-  <ion-toolbar>
-    <div class="input-box">
-      <ion-icon class="szom" name="sousuo"></ion-icon>
-      <ion-searchbar [(ngModel)]="key" (ionInput)="search()" placeholder="搜索..." #searchEle></ion-searchbar>
-      <ion-icon *ngIf="key" class="szom" name="guanbi" (click)="key='';search()"></ion-icon>
+  <ion-toolbar color="white" class="search-header">
+    <div class="szom-search">
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <ion-searchbar #searchEle [(ngModel)]="key" (ionInput)="search()" placeholder="请输入用户名/用户职务搜索..."></ion-searchbar>
+      <img class="search-clear-icon" src="assets/imgs/delete@3x.png" *ngIf="key" (click)="key='';search();">
     </div>
-    <button ion-button (click)="goBack()" clear float-right>取消</button>
+    <button class="cancel-btn" (click)="goBack()" ion-button clear float-right>取消</button>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content>
-  <div class="divider" *ngIf="todayUserList.length">今天</div>
-  <ion-list class="type-list" no-lines>
-    <ion-item *ngFor="let user of todayUserList" (click)="goUserInfo(user)">
-      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+<ion-content content-shadow>
+  <div style="text-align:center;" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <not-found-person *ngIf="!list1.length && !list2.length"></not-found-person>
+
+  <div class="divider" *ngIf="list1.length">最近</div>
+  <ion-list class="type-list">
+    <ion-item *ngFor="let user of list1" (click)="goUserInfo(user)">
+      <ion-avatar item-start *ngIf="user.userType!='02'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="user.userType=='02'">
+        <img src="assets/imgs/banzi-user.png">
+      </ion-avatar>
       <h2>{{user.name}}</h2>
-      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+      <ion-note>{{user.dutyName}}</ion-note>
       <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end>等待对方确认</button>
       <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end>待处理</button>
-      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
-      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
-      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已添加</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已拒绝</button>
     </ion-item>
   </ion-list>
-  <div class="divider" *ngIf="weekUserList.length">一周前</div>
-  <ion-list class="type-list" no-lines>
-    <ion-item *ngFor="let user of weekUserList" (click)="goUserInfo(user)">
-      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+  <div class="divider" *ngIf="list2.length">一周前</div>
+  <ion-list class="type-list">
+    <ion-item *ngFor="let user of list2" (click)="goUserInfo(user)">
+      <ion-avatar item-start *ngIf="user.userType!='02'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="user.userType=='02'">
+        <img src="assets/imgs/banzi-user.png">
+      </ion-avatar>
       <h2>{{user.name}}</h2>
-      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
-      <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end>等待对方确认</button>
-      <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end>待处理</button>
-      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
-      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
-      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
-    </ion-item>
-  </ion-list>
-  <div class="divider" *ngIf="monthUserList.length">近三个月</div>
-  <ion-list class="type-list" no-lines>
-    <ion-item *ngFor="let user of monthUserList" (click)="goUserInfo(user)">
-      <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
-      <h2>{{user.name}}</h2>
-      <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
-      <button *ngIf="user.status=='01'" ion-button item-end>待确定</button>
-      <button *ngIf="user.status=='02'" ion-button item-end clear>已添加</button>
-      <button *ngIf="user.status=='05'" ion-button item-end clear>已取消</button>
-      <button *ngIf="user.status=='03'" ion-button item-end clear>已拒绝</button>
+      <ion-note>{{user.dutyName}}</ion-note>
+      <button *ngIf="user.status=='01'&&user.applyType=='send'" ion-button item-end clear>等待对方确认</button>
+      <button *ngIf="user.status=='01'&&user.applyType=='get'" ion-button item-end clear>待处理</button>
+      <button *ngIf="user.status=='02'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已添加</button>
+      <button *ngIf="user.status=='05'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已取消</button>
+      <button *ngIf="user.status=='03'" ion-button item-end clear><span class="from">{{user.applyType == "send"?"发":"收"}}</span>已拒绝</button>
     </ion-item>
   </ion-list>
 </ion-content>

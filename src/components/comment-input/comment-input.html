@@ -1,0 +1,12 @@
+<div class="comment-input-backdrop" (touchstart)="dismiss()"></div>
+<div class="comment-input-wrapper" #wrapper>
+  <ion-footer no-border #footer>
+    <ion-item class="publish-comment" no-lines>
+      <ion-label *ngIf="commentData.length <= maxLength">{{commentData.length}}</ion-label>
+      <ion-label class="error" *ngIf="commentData.length > maxLength">超出{{commentData.length-maxLength}}字</ion-label>
+      <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="commentData" [maxlength]="maxLength" #commentInput></ion-textarea>
+      <button item-end ion-button (click)="onClickSend()" [disabled]="!commentData || commentData.length<1 || commentData.length>98">发送</button>
+    </ion-item>
+  </ion-footer>
+</div>
+

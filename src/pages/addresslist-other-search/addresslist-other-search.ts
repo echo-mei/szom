@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Searchbar } from 'ionic-angular';
 import { UnitProvider } from '../../providers/unit/unit';
 import { UserProvider } from '../../providers/user/user';
 import { StorageProvider } from '../../providers/storage/storage';
-import { AddresslistUnitPage } from '../addresslist-unit/addresslist-unit';
 import { MeInfoPage } from '../me-info/me-info';
 import { UserInfoPage } from '../user-info/user-info';
 import { AddresslistProvider } from '../../providers/addresslist/addresslist';
 import { AddresslistOtherPage } from '../addresslist-other/addresslist-other';
+import { BzInfoPage } from '../bz-info/bz-info';
+import { BzUserInfoPage } from '../bz-user-info/bz-user-info';
 
 @Component({
   selector: 'page-addresslist-other-search',
@@ -15,13 +16,18 @@ import { AddresslistOtherPage } from '../addresslist-other/addresslist-other';
 })
 export class AddresslistOtherSearchPage {
 
-  @ViewChild('searchEle') searchEle;
+  @ViewChild('searchEle') searchEle: Searchbar;
 
   key: string;
 
   unitList: any[] = [];
-  personKeyList: any = [];
-  personValueList: any = [];
+  // 人员列表
+  personList: {
+    key: string,
+    list: any[]
+  }[] = [];
+  // 列表是否正在加载
+  isLoading: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -31,8 +37,6 @@ export class AddresslistOtherSearchPage {
     public storage: StorageProvider,
     public addresslistProvider: AddresslistProvider
   ) {
-    // this.getUnitList();
-    // this.getPersonList();
   }
 
   ionViewDidEnter() {
@@ -43,34 +47,33 @@ export class AddresslistOtherSearchPage {
 
 
   getUnitList(): any {
-    let params = {};
-    if (this.key) {
-      params['keyWords'] = this.key;
-    }else  {
-      return;
-    }
+    this.unitList = [];
+    if (!this.key) return;
+    let params = { keyWords: this.key };
     this.unitProvider.getOtherUnitOrgsList(params).subscribe(
       (list) => {
-        this.unitList = list;
+        list.length && (this.unitList = list);
       }
     );
   }
 
   getPersonList(): any {
-    let params = {};
-    if (this.key) {
-      params['keyWords'] = this.key;
-    }else  {
-      return;
-    }
+    this.personList = [];
+    if (!this.key) return;
+    let params = { keyWords: this.key };
+    this.isLoading = true;
     this.unitProvider.getOtherUnitUsersList(params).subscribe(
-      (data) => {
-        this.personKeyList = [];
-        this.personValueList = [];
-        for(let key in data) {
-          this.personKeyList.push(key);
-          this.personValueList.push(data[key]);
+      (list) => {
+        for (let key in list) {
+          this.personList.push({
+            key: key,
+            list: list[key]
+          });
         }
+        this.isLoading = false;
+      },
+      err => {
+        this.isLoading = false;
       }
     );
   }
@@ -82,16 +85,27 @@ export class AddresslistOtherSearchPage {
   }
 
   goUserInfo(user): any {
-    if (user.userCode == JSON.parse(this.storage.get('user')).userCode) {
-      this.navCtrl.push(MeInfoPage, { user: user });
+    if (user.userType === "02") {//班子信息
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(BzInfoPage);
+      } else {
+        this.navCtrl.push(BzUserInfoPage, {
+          user: user,
+          followOrCancel: true
+        });
+      }
     } else {
-      this.navCtrl.push(UserInfoPage, {
-        user: user,
-        followOrCancel: true,
-        showSelfInfo: true,
-        showDaily: true,
-        showTags: true
-      });
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(MeInfoPage, { user: user });
+      } else {
+        this.navCtrl.push(UserInfoPage, {
+          user: user,
+          followOrCancel: true,
+          showSelfInfo: true,
+          showDaily: true,
+          showTags: true
+        });
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import { HttpProvider } from '../http/http';
 import { BASE_URL } from '../../config';
 import { Observable } from 'rxjs';
 import { StorageProvider } from '../storage/storage';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 
 @Injectable()
 export class UserProvider {
@@ -26,7 +27,12 @@ export class UserProvider {
   // 获取我的信息
   getMe(): Observable<any> {
     return this.http.get(`${BASE_URL}/personInfo/getMinePersonInfo`);
-    // return this.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode});
+    // return this.getUserInfo({userCode: this.storage.me.userCode});
+  }
+
+  // 获取手机号
+  getMobilePhone(): Observable<any> {
+    return this.http.get(`${BASE_URL}/personInfo/getMinePhoneNum`)
   }
 
   // 短信验证码登录
@@ -38,7 +44,12 @@ export class UserProvider {
   getSMSCode(params): Observable<any> {
     return this.http.get(`${BASE_URL}/base/getLoginSMSCode`, params);
   }
+
   // 获取修改手机号短信验证码
+  getNewMobliePhoneSMSCode(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/userSMS/getNewMobliePhoneSMSCode`, params)
+  }
+  // 账户安全-获取手机号短信验证码
   getMobliePhoneSMSCode(params): Observable<any> {
     return this.http.get(`${BASE_URL}/userSMS/getMobliePhoneSMSCode`, params);
   }
@@ -48,6 +59,15 @@ export class UserProvider {
     return this.http.get(`${BASE_URL}/userSMS/checkUserSMS`, params);
   }
 
+  // 账户安全-验证用户名和密码
+  validatorAccount(params): Observable<any>{
+    return this.http.post(`${BASE_URL}/userSMS/checkUserAccount`, params);
+  }
+  // 账户安全-验证手机号和短信验证码
+  validatorPhont(params): Observable<any> {
+    return this.http.post(`${BASE_URL}/userSMS/checkUserAccountBySMS`, params)
+  }
+
   // 获取用户个人信息
   getUserInfo(params?): Observable<any> {
     return this.http.get(`${BASE_URL}/personInfo`, params);
@@ -55,7 +75,7 @@ export class UserProvider {
 
   // 获取个人头像地址
   getHeadImageUrl(personId) {
-    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.get('token')}&personId=${personId}`;
+    return `${BASE_URL}/personInfo/getPhoto?Authorization=${this.storage.token}&personId=${personId}`;
   }
 
   // 获取用户个人信息
@@ -89,6 +109,10 @@ export class UserProvider {
     return this.http.post(`${BASE_URL}/users/updateUsersPassword`, params);
   }
 
+  // 账户安全-修改用户名
+  updateUsername(params): Observable<any>{
+    return this.http.post(`${BASE_URL}/users/updateUserAccount`, params);
+  }
   // 获取我的印象标签列表
   getImpressionList(): Observable<any> {
     // TODO: 获取我的印象标签列表
@@ -105,7 +129,7 @@ export class UserProvider {
 
   // 退出
   logout(params?): Observable<any> {
-    return this.http.get(`${BASE_URL}/base/logout`, params);
+    return this.http.delete(`${BASE_URL}/base/logout`, params);
   }
 
   // 获取某天的签到信息
@@ -155,11 +179,6 @@ export class UserProvider {
     return this.http.post(`${BASE_URL}/contactList/stAttentionRelation`, params);
   }
 
-  // 申请重点关注
-  postAttentedFollow(params): Observable<any> {
-    return this.http.post(`${BASE_URL}/empAttention/addEmpAttentionRelation`, params);
-  }
-
   // 接受关注
   recieveFollow(): Observable<any> {
     // TODO: 接受关注
@@ -190,12 +209,6 @@ export class UserProvider {
     return null;
   }
 
-  // 获取其他组织下人员列表
-  getOrgPersonList(): Observable<any> {
-    // TODO: 获取其他组织下人员列表
-    return null;
-  }
-
   // 获取已关注分组
   getFollowGroup(): Observable<any> {
     // TODO: 获取已关注分组
@@ -206,6 +219,11 @@ export class UserProvider {
   getFollowUserList(): Observable<any> {
     // TODO: 获取已关注分组用户列表
     return null;
+  }
+
+  // 获取当前最新版本号
+  versionupdates(params): Observable<any> {
+    return this.http.get(`${BASE_URL}/versionupdates`, params);
   }
 
 }

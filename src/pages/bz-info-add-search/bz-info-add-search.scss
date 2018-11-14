@@ -1,0 +1,147 @@
+page-bz-info-add-search {
+    .canAdd{
+        color: #4D74EB;
+    }
+    .cantAdd{
+        color: #999999;
+    }
+    .szom-search-wrap{
+      background: #fff;
+      padding: rem(10) rem(15);
+      @include border-b-1px(color($colors,boderColor));
+      // border-bottom: .5px solid color($colors,boderColor);
+    }
+    .scroll-content{
+        background-color: #fafafa;
+        // margin-top: rem(58) !important;
+        h2{
+            margin-top: 0px !important;
+        }
+
+        ion-list{
+            margin-top: rem(5);
+            .button-inner{
+                justify-content: left !important;
+                color: #333333;
+                font-size: rem(16);
+                position: relative;
+                ion-icon{
+                    position: absolute;
+                    float: right;
+                    right: 0;
+                }
+            }
+            .button{
+                box-shadow: 0 0 0;
+                background-color: #ffffff;
+                margin: 0;
+                height: rem(44);
+            }
+            .con{
+                ion-item:last-child{
+                    .item-inner{
+                        border: 0;
+                    }
+                }
+                ion-list{
+                    margin: 0;
+                    ion-item{
+                        padding: 0 16px;
+                        &.item.item .checkbox{
+                            margin-right: rem(18);
+                        }
+                        ion-thumbnail{
+                            width: rem(50);
+                            height: rem(50);
+                            min-width: rem(50);
+                            min-height: rem(50);
+                            img{
+                                width: rem(50);
+                                height: rem(50);
+                                min-width: rem(50);
+                                min-height: rem(50);
+                            }
+                        }
+                        ion-label{
+                            h2{
+                                font-size: rem(15);
+                                color: #333333;
+                                font-weight: bold;
+                            }
+                            p{
+                                font-size: rem(12);
+                                color: #999999;
+                                margin-top: rem(8);
+                            }
+                        }
+                        .checkbox .checkbox-icon{
+                            width: rem(18);
+                            height: rem(18);
+                            border-radius: 50%;
+                        }
+
+                        .checkbox .checkbox-checked .checkbox-inner{
+                            left: rem(4);
+                            top: rem(1);
+                            width: rem(6);
+                            height: rem(10);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+    .type-list {
+        .divider{
+            padding-left: rem(16);
+        }
+
+        ion-item{
+            padding: 0 16px;
+            &.item.item .checkbox{
+                margin-right: rem(18);
+            }
+            ion-thumbnail{
+                width: rem(50);
+                height: rem(50);
+                min-width: rem(50);
+                min-height: rem(50);
+                img{
+                    width: rem(50);
+                    height: rem(50);
+                    min-width: rem(50);
+                    min-height: rem(50);
+                }
+            }
+            ion-label{
+                h2{
+                    font-size: rem(15);
+                    color: #333333;
+                    font-weight: bold;
+                }
+                p{
+                    font-size: rem(12);
+                    color: #999999;
+                    margin-top: rem(8);
+                }
+            }
+            .checkbox .checkbox-icon{
+                width: rem(18);
+                height: rem(18);
+                border-radius: 50%;
+            }
+
+            .checkbox .checkbox-checked .checkbox-inner{
+                left: rem(4);
+                top: rem(1);
+                width: rem(6);
+                height: rem(10);
+            }
+        }
+    }
+
+    .button:hover:not(.disable-hover){
+        background-color: #ffffff;
+    }
+}

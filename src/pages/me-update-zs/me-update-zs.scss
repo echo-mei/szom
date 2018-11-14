@@ -12,28 +12,39 @@ page-me-update-zs {
     }
     .bar-button {
       font-size: rem(17)!important;
-      color: #545454;
+      color: #4D74EB !important;
       letter-spacing: 0;
     }
   }
   form {
     position: relative;
-    ion-textarea {
-      overflow: auto!important;
-      textarea {
+    ion-item {
+      .item-inner {
+        padding: 0!important;
+      }
+      border-bottom: rem(0.5) solid #F1F1F1;
+      ion-label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
         margin: 0!important;
-        width: 100%!important;
-        max-height: rem(200);
+        font-size: rem(14);
+
+        &.error {
+          color: red!important;
+        }
       }
-      .input-cover {
-        display: none;
+      textarea.text-input {
+        max-height: rem(100);
+        width: 100%;
+        margin: 0;
+        margin-bottom: rem(20);
       }
-    }
-    ion-label {
-      position: absolute;
-      bottom: rem(-12);
-      right: 0;
-      margin: 0!important;
+      &.item-input {
+        border: 0!important;
+        box-shadow: initial!important;
+      }
     }
   }
+
 }

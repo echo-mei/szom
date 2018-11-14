@@ -1,0 +1,48 @@
+<!--
+  Generated template for the HeavyFocusPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>重点关注</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="onClickAdd()">
+        <img src="assets/imgs/add@3x.png">
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content #content content-shadow>
+  <div class="szom-search-wrap search-header">
+    <div class="szom-search">
+      <ion-searchbar placeholder="请输入用户名/用户职务搜索..." [(ngModel)]="selectString" (ionInput)="ionInputSearch()"></ion-searchbar>
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <img class="search-clear-icon" *ngIf="selectString" (click)="selectString='';ionInputSearch()" src="assets/imgs/delete@3x.png">
+    </div>
+  </div>
+
+  <ng-container *ngFor="let key of heavyFcocusKeyList;let i = index;">
+    <div class="divider" [id]="key">{{key}}</div>
+    <ion-list class="type-list">
+      <ion-item *ngFor="let user of heavyFcocusValueList[i];" (click)="onClickUser(user)">
+        <ion-avatar item-start *ngIf="user.userType!='02'">
+          <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+        </ion-avatar>
+        <ion-avatar item-start *ngIf="user.userType=='02'">
+          <img src="assets/imgs/banzi-user.png">
+        </ion-avatar>
+        <h2>{{user.name}}</h2>
+        <ion-note>{{user.dutyName}}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  <div class="group-selector">
+    <div *ngFor="let key of groups" (click)="onClickGroup(key)">{{key}}</div>
+  </div>
+</ion-content>

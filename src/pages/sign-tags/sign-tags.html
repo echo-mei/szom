@@ -1,6 +1,9 @@
-<ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
-<h2>{{ date | date:'yyyy年MM月dd日' }}</h2>
-<div class="impression">
-  <ion-badge *ngFor="let tag of tags" (click)="selectTag(tag)" [class]="selectedTag&&selectedTag.dicItemCode==tag.dicItemCode?'selected':''">{{tag.dicItemName}}</ion-badge>
+<div class="sign-tag-wrapper animated bounceInUp" #wrapper (click)="close()">
+  <div class="sign-tag-container" (click)="$event.stopPropagation();">
+    <ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
+    <h2>{{ date | date:'yyyy年MM月dd日' }}</h2>
+    <div class="impression">
+      <ion-badge *ngFor="let tag of tags" (click)="selectTag(tag)" [class]="selectedTag&&selectedTag.dicItemCode==tag.dicItemCode?'selected':''">{{tag.dicItemName}}</ion-badge>
+    </div>
+  </div>
 </div>
-<!-- <button (click)="sign()">确定</button> -->

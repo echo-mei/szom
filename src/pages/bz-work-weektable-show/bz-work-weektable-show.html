@@ -1,0 +1,40 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>工作周表详情</ion-title>
+    <ion-buttons right *ngIf="user.userCode==me.userCode">
+      <button ion-button (click)="popover();" class="searchBtn">
+        <ion-icon class="szom" name="md-gengduo"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <div class="separate"></div>
+
+  <ion-list *ngIf="weektable">
+    <ion-item>
+      <ion-label>日期</ion-label>
+      <ion-note item-end>{{weektable.workDateStr | date:'yyyy.MM.dd'}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>时间</ion-label>
+      <ion-note item-end>{{weektable.dayPeriodName}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>人员</ion-label>
+      <ion-note item-end>{{weektable.userName}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>类型</ion-label>
+      <ion-note item-end>{{weektable.typeName}}</ion-note>
+    </ion-item>
+    <h2>{{weektable.content}}</h2>
+
+  </ion-list>
+
+</ion-content>

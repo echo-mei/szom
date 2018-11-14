@@ -14,19 +14,19 @@
     </ion-item> -->
     <ion-item>
       <ion-note>性别</ion-note>
-      <h4>{{user.sexName}}</h4>
+      <h4>{{user.sexName?user.sexName:"-"}}</h4>
     </ion-item>
     <ion-item>
       <ion-note>民族</ion-note>
-      <h4>{{user.nationalityName}}</h4>
+      <h4>{{user.nationalityName?user.nationalityName:"-"}}</h4>
     </ion-item>
     <ion-item>
       <ion-note>籍贯</ion-note>
-      <h4>{{user.nativePlaceName}}</h4>
+      <h4>{{user.nativePlaceName?user.nativePlaceName:"-"}}</h4>
     </ion-item>
     <ion-item>
       <ion-note>政治面貌</ion-note>
-      <h4>{{user.politicStatusName}}</h4>
+      <h4>{{user.politicStatusName?user.politicStatusName:"-"}}</h4>
     </ion-item>
     <!-- <ion-item>
       <ion-note>入党时间</ion-note>

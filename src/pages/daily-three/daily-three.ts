@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, Events, LoadingController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams, InfiniteScroll, Events } from 'ionic-angular';
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -7,6 +7,8 @@ import { BASE_URL } from '../../config';
 import { DailyThreeCreatePage } from '../daily-three-create/daily-three-create';
 import { DailyThreeShowPage } from '../daily-three-show/daily-three-show';
 import { DailyThreeSearchPage } from '../daily-three-search/daily-three-search';
+import { Observable } from 'rxjs';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'page-daily-three',
@@ -14,28 +16,28 @@ import { DailyThreeSearchPage } from '../daily-three-search/daily-three-search';
 })
 export class DailyThreePage {
 
-  canCreate: boolean;
-  user: any;
-  newFlag:any;
-  size:number = 10;
-  dailyThreeList: any[] = []; // 每季三励列表
-  year: number;  // 当前年
-  count:number; //每周日志数配置
-  quarter: {
-    index?: number,
-    quarter?: {
-      firstDate: Date,
-      lastDate: Date
-    }
-  } = {};  // 当前季
-  boolShow = {};
-  dataLoadOver = false; //数据加载完成标志
-  loading = this.loadingCtrl.create({
-    content: '处理中...',
-    // showBackdrop:false,
-    cssClass: 'loading-new'
-  });
+  // 用户
+  @Input() user: any = {};
 
+  // 当前用户
+  me: any;
+  // 每页显示条数
+  size: number = 10;
+  // 每季三励列表
+  dailyThreeList: any[] = [];
+  // 每周日志数配置
+  count: number;
+  // 当前季
+  quarter: any = {};
+  // 当前序号
+  currentNumber: number;
+  // 是否能创建当前季
+  canCreate: boolean = false;
+  // 是否正在加载数据
+  isLoading = false;
+  // 是否还有更多数据
+  hasMore: boolean = true;
+  // 服务器时间
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -43,152 +45,140 @@ export class DailyThreePage {
     public dateUtil: DateUtilProvider,
     public events: Events,
     public storage: StorageProvider,
-    public loadingCtrl:LoadingController
   ) {
-    this.user = this.navParams.get('user');
-    this.newFlag = this.navParams.get('newFlag');
-    let date = new Date();
-    this.year = date.getFullYear();
-    this.quarter = this.dateUtil.getQuarterOfDay(date);
-    this.initList();
+    this.me = this.storage.me;
   }
 
-  initList() {
-    this.dailyThreeList = [];
-    this.more();
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
+    this.resetLogDailyList();
   }
 
-  load() {
-    let params = {
+  // =================== Public Methods =====================
+
+  // 获取列表数据
+  _getLogDailyList(params?) {
+    params = {
       size: this.size,
-      userCode: this.user.userCode
+      userCode: this.user.userCode,
+      ...params
     };
-    if(this.dailyThreeList.length) {
-      params['startTime'] = this.dailyThreeList[0]['publishTime'];
-    }
-    this.dailyProvider.getDailyThreeList(params).subscribe(
+    return this.dailyProvider.getDailyThreeList(params).mergeMap(
       (data) => {
-        if(data.list.length) {
-          for(let i = data.list.length-1; i >= 0; i--) {
-            this.dailyThreeList.unshift(data.list[i]);
-          }
-        }
-        this.resetCanCreate();
-      }
-    );
-  }
-
-  showTopTime(list) {
-    for(var i=list.length-1; i>=0; i--){
-      if((i-1<0?true: list[i].quarterNums != list[i-1].quarterNums)){
-        this.boolShow[i] = true;
-      }else{
-        this.boolShow[i] = false;
-      }
-    }
-  }
-
-  more(infinite?: InfiniteScroll) {
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode
-    };
-    if(this.dailyThreeList.length) {
-      params['endTime'] = this.dailyThreeList[this.dailyThreeList.length-1].publishTime;
-    }
-    if (!infinite) {
-      this.loading.present();
-    }
-    this.dailyProvider.getDailyThreeList(params).subscribe(
-      (data) => {
-        if (!infinite) {
-          this.dataLoadOver = true;
-          this.loading.dismiss();
-        }
         this.count = data.count;
-        infinite && infinite.complete();
-        if(data.list.length) {
-          infinite && infinite.enable(true);
-          this.dailyThreeList = this.dailyThreeList.concat(data.list);
-        }else {
-          infinite && infinite.enable(false);
-        }
-        this.showTopTime(this.dailyThreeList);
-        this.resetCanCreate();
+        this.quarter = this.dateUtil.getQuarterOfDay(new Date(data.serverTime));
+        return Observable.create(observer => observer.next(data));
+      }
+    ).do(
+      (data: any) => {
+        this.hasMore = data.list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
       }
     );
   }
 
-  getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
-  }
-
-  getCurrentIndex() {
-    let index = 1;
-    this.dailyThreeList.forEach((daily) => {
-      if(daily.year==this.year&&daily.quarterNums==this.quarter.index) {
-        index++;
-      }
+  // 重置列表
+  resetLogDailyList() {
+    this.isLoading = true;
+    this.dailyThreeList = [];
+    this._getLogDailyList().subscribe((data: any) => {
+      this.formateList(data.list);
+      this.checkCanCreate();
     });
-    return index;
   }
 
-  getIndex(log) {
-    let index = 1;
-    for(let i=this.dailyThreeList.length-1; i>=0; i--) {
-      let daily = this.dailyThreeList[i];
-      if(log==daily) {
-        return index;
+  // 数据列表的格式变换
+  formateList(list) {
+    list = _.groupBy(list, function(item) {
+      return `${item.year}-${item.quarterNums}`;
+    });
+    for(let key in list) {
+      let quarterList = this.dailyThreeList.find((item) => {
+        return item.quarter.year == key.split('-')[0] && item.quarter.index == key.split('-')[1];
+      });
+      if(quarterList) {
+        quarterList.list.concat(list[key]);
       }
-      if(daily.year==log.year&&daily.quarterNums==log.quarterNums) {
-        index++;
-      }
+      this.dailyThreeList.push({
+        quarter: {
+          year: key.split('-')[0],
+          index: key.split('-')[1]
+        },
+        list: list[key]
+      });
     }
-    return index;
   }
 
-  resetCanCreate() {
-    let count = 0;
-    this.dailyThreeList.forEach((daily) => {
-      if(daily.year==this.year&&daily.quarterNums==this.quarter.index) {
-        count++;
-      }
+  // 检查是否可以创建当前季的记录
+  checkCanCreate() {
+    const currentQuarterList = this.dailyThreeList.find((item) => {
+      return item.quarter.year == this.quarter.year && item.quarter.index == this.quarter.index;
     });
-    this.canCreate = count>=this.count ? false : true;
+    if(!currentQuarterList) {
+      this.currentNumber = 1;
+      this.canCreate = true;
+      return;
+    }
+    this.currentNumber = currentQuarterList.list.length + 1;
+    this.canCreate = currentQuarterList && currentQuarterList.list.length >= this.count ? false : true;
   }
 
-  goDailyCreate() {
+  // 判断记录是否为本季
+  isCurrentQuarter(log) {
+    return this.quarter.year == log.year && this.quarter.index == log.quarterNums;
+  }
+
+  // 获取图片地址
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  //================= Events =======================
+
+  // 滚动加载
+  onScrollDailyList(infinite?: InfiniteScroll) {
+    let params = {};
+    if(this.dailyThreeList.length) {
+      const list = this.dailyThreeList[this.dailyThreeList.length - 1].list;
+      params['endTime'] = list[list.length - 1]['publishTime'];
+    }
+    this._getLogDailyList(params).subscribe((data) => {
+      this.formateList(data.list);
+      infinite.complete();
+    });
+  }
+
+  // 点击创建
+  onClickCreate() {
     this.navCtrl.push(DailyThreeCreatePage, {
-      year: this.year,
+      year: this.quarter.year,
       quarter: this.quarter,
       user: this.user,
       count: this.count,
-      onCreate: this.initList.bind(this)
+      onCreate: this.resetLogDailyList.bind(this)
     });
   }
 
-  goDailyShow(daily) {
+  // 点击记录
+  onClickDaily(daily) {
     this.navCtrl.push(DailyThreeShowPage, {
+      user:this.user,
       dailyThree: daily,
       count: this.count,
-      onUpdate: this.initList.bind(this),
-      onDelete: this.initList.bind(this)
+      onUpdate: this.resetLogDailyList.bind(this),
+      onDelete: this.resetLogDailyList.bind(this)
     });
   }
 
-  goDailySearch(){
-    this.navCtrl.push(DailyThreeSearchPage,{
+  // 点击搜索
+  onClickSearch(){
+    this.navCtrl.push(DailyThreeSearchPage, {
       user: this.user,
+      year: this.quarter.year
     });
   }
 
-  dateFormat(date):string{
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    month<10?month = '0' + month:month;
-    let day = date.getDate();
-    day<10?day = '0' + day:day;
-    date = year + '.' + month + '.' +day;
-    return date;
-  }
 }

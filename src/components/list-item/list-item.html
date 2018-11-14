@@ -3,15 +3,25 @@
     <h3 class="oneThreeTen">
       <p [innerHTML]="log.content | highLight:selectString"></p>
       <div class="bottom">
-        <span>{{log.createdDate | date:'yyyy.MM.dd'}}</span>
+        <span>{{log.publishTime | date:'yyyy.MM.dd'}}</span>
         <span class="icons">
-          <span *ngIf="log.countStLike>0">
-            <ion-icon class="szom" name="md-dianzandianji"></ion-icon> {{log.countStLike}}</span>
-          <span *ngIf="log.countStComment>0">
-            <ion-icon class="szom" name="md-xiaoxi1"></ion-icon> {{log.countStComment}}</span>
+          <span class="leftIcon">
+            <img class="show-icon" src="assets/imgs/dianzan-show@3x.png">
+            <span class="likeNum">
+              <span *ngIf="log.countStLike>0">{{log.countStLike}}</span>
+            </span>
+          </span>
+          <span>
+            <img class="show-icon" src="assets/imgs/message-show@3x.png">
+            <span class="likeNum">
+              <span *ngIf="log.countStComment>0">{{log.countStComment}}</span>
+            </span>
+          </span>
         </span>
       </div>
     </h3>
-    <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.src='assets/imgs/no-img.png'">
+    <div *ngIf="log.uploadFileDetailDTOList.length" class="img-container">
+      <img [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.classList.add('fail');this.src='assets/imgs/default-img@3x.png'">
+    </div>
   </div>
 </div>

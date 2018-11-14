@@ -15,7 +15,8 @@ page-user-baseinfo {
       padding-left: rem(15);
       .item-inner {
         padding: rem(7) 0;
-        border-bottom: .5px solid color($colors,boderColor);
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
 
         .label{
           margin: 0;

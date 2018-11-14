@@ -1,46 +1,49 @@
 <ion-header no-border>
   <ion-navbar>
-    <ion-title text-center>详细资料</ion-title>
+    <ion-title text-center>个人信息</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-item class="user-info">
-    <img [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
-    <h2>
-      {{me.name}}
-      <ion-badge (click)="goMeSign()">签到历史<ion-icon class="szom" name="you"></ion-icon></ion-badge>
-    </h2>
-    <ion-note>{{me.unitName}} | {{me.dutyName}}</ion-note>
+  <ion-item class="info-title">
+    <ion-avatar item-start (click)="goMeInfo()">
+      <img [src]="userProvider.getHeadImageUrl(me.personId)" onerror="this.src='assets/imgs/user.png'">
+    </ion-avatar>
+    <h2>{{me.name}}</h2>
+    <ion-note>{{me.dutyName}}</ion-note>
+    <ion-badge item-end (click)="goMeSign()">签到历史
+      <ion-icon class="szom" name="you"></ion-icon>
+    </ion-badge>
   </ion-item>
   <ion-buttons class="sildes-btns">
     <button ion-button clear (click)="goInfoList(0)" [class.active]="isActive === 0">基本信息</button>
     <button ion-button clear (click)="goInfoList(1)" [class.active]="isActive === 1">个人自述</button>
     <button ion-button clear (click)="goInfoList(2)" [class.active]="isActive === 2">印象标签</button>
   </ion-buttons>
+  <div class="divider h4"></div>
   <ion-slides #mySlider (ionSlideDidChange)="onSlideChanged($event)">
     <ion-slide>
-      <ion-list no-lines class="type-list">
-        <ion-item>
+      <ion-list class="type-list">
+        <!-- <ion-item>
           <ion-note>出生年月</ion-note>
           <h4><span *ngIf="me.birthday">{{me.birthday.time | date:'yyyy-MM-dd'}}({{me.age}}岁)</span></h4>
-        </ion-item>
+        </ion-item> -->
         <ion-item>
           <ion-note>性别</ion-note>
-          <h4>{{me.sexName}}</h4>
+          <h4>{{me.sexName?me.sexName:"-"}}</h4>
         </ion-item>
         <ion-item>
           <ion-note>民族</ion-note>
-          <h4>{{me.nationalityName}}</h4>
+          <h4>{{me.nationalityName?me.nationalityName:"-"}}</h4>
         </ion-item>
         <ion-item>
           <ion-note>籍贯</ion-note>
-          <h4>{{me.nativePlaceName}}</h4>
+          <h4>{{me.nativePlaceName?me.nativePlaceName:"-"}}</h4>
         </ion-item>
         <ion-item>
           <ion-note>政治面貌</ion-note>
-          <h4>{{me.politicStatusName}}</h4>
+          <h4>{{me.politicStatusName?me.politicStatusName:"-"}}</h4>
         </ion-item>
-        <ion-item>
+        <!-- <ion-item>
           <ion-note>入党时间</ion-note>
           <h4>{{me.partyTime | date: 'yyyy-MM-dd'}}</h4>
         </ion-item>
@@ -59,72 +62,69 @@
         <ion-item>
           <ion-note>在职毕业院校及专业</ion-note>
           <h4>{{me.onJobEducationMojor}}</h4>
-        </ion-item>
+        </ion-item> -->
       </ion-list>
     </ion-slide>
     <ion-slide>
-      <ion-list no-lines class="type-list">
+      <ion-list class="type-list">
         <ion-item (click)="goMeUpdateZS('座右铭', 'motto', 42)">
           <ion-note>座右铭</ion-note>
-          <h4>{{selfInfo.motto}}</h4>
+          <h4>{{selfInfo.motto?selfInfo.motto:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
         <ion-item (click)="goMeUpdateZS('工作特长', 'jobSkills', 42)">
           <ion-note>工作特长</ion-note>
-          <h4>{{selfInfo.jobSkills}}</h4>
+          <h4>{{selfInfo.jobSkills?selfInfo.jobSkills:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
         <ion-item (click)="goMeUpdateZS('兴趣爱好', 'interests', 42)">
           <ion-note>兴趣爱好</ion-note>
-          <h4>{{selfInfo.interests}}</h4>
+          <h4>{{selfInfo.interests?selfInfo.interests:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
-        <ion-item (click)="goMeUpdateZS('人生感悟', 'lifeInspiration', 42)">
+        <ion-item (click)="goMeUpdateZS('人生感悟', 'lifeInspiration', 98)">
           <ion-note>人生感悟</ion-note>
-          <h4>{{selfInfo.lifeInspiration}}</h4>
+          <h4>{{selfInfo.lifeInspiration?selfInfo.lifeInspiration:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
-        <ion-item (click)="goMeUpdateZS('岗位描述', 'positionDesc', 196)">
+        <div class="divider h10"></div>
+        <ion-item (click)="goMeUpdateZS('岗位描述', 'positionDesc', 98)" class="large-item">
           <ion-note>岗位描述</ion-note>
-          <h4>{{selfInfo.positionDesc}}</h4>
+          <h4>{{selfInfo.positionDesc?selfInfo.positionDesc:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
       </ion-list>
-      <ion-list no-lines class="type-list">
-        <ion-item (click)="goMeUpdateZS('做过什么', 'mainJobs', 196)">
+      <div class="divider h10"></div>
+      <ion-list class="type-list">
+        <ion-item (click)="goMeUpdateZS('做过什么', 'mainJobs', 98)" class="large-item">
           <ion-note>做过什么</ion-note>
-          <h4>{{selfInfo.mainJobs}}</h4>
+          <h4>{{selfInfo.mainJobs?selfInfo.mainJobs:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
       </ion-list>
-      <ion-list no-lines class="type-list">
-        <ion-item (click)="goMeUpdateZS('做成过什么', 'mainAchievements', 196)">
+      <div class="divider h10"></div>
+      <ion-list class="type-list">
+        <ion-item (click)="goMeUpdateZS('做成过什么', 'mainAchievements', 98)" class="large-item">
           <ion-note>做成过什么</ion-note>
-          <h4>{{selfInfo.mainAchievements}}</h4>
+          <h4>{{selfInfo.mainAchievements?selfInfo.mainAchievements:"-"}}</h4>
           <ion-icon item-end class="szom" name="you"></ion-icon>
         </ion-item>
       </ion-list>
     </ion-slide>
     <ion-slide>
-      <ion-list>
-        <div class="twoTime">
-          <ion-item class="selectTime selectTime1">
-            <ion-icon class="szom" name="md-yanjing" item-start></ion-icon>
-            <ion-datetime displayFormat="YYYY.MM,DD" pickerFormat="YYYY M D" placeholder="请选择" cancelText="取消" doneText="确定"
-              [(ngModel)]="startTime" (ngModelChange)="getImpressionList()"></ion-datetime>
-          </ion-item>
-          <div class="guodu"></div>
-          <ion-item class="selectTime selectTime2">
-            <ion-icon class="szom" name="md-yanjing" item-start></ion-icon>
-            <ion-datetime displayFormat="YYYY.MM,DD" pickerFormat="YYYY M D" placeholder="请选择" cancelText="取消" doneText="确定"
-              [(ngModel)]="endTime" (ngModelChange)="getImpressionList()"></ion-datetime>
-          </ion-item>
+      <!-- <ion-list> -->
+      <div class="conditions">
+        <div class="select-btn" (click)="goSelectDate()">
+          <img class="filter-icon" *ngIf="!startTime && !endTime" src="assets/imgs/filter@3x.png" />
+          <img class="filter-icon" *ngIf="startTime || endTime" src="assets/imgs/filter-active@3x.png" />
+          <span class="title">筛选:</span>
+          <span class="color-blue" *ngIf="startTime || endTime">{{startTime}}至{{endTime}}</span>
         </div>
-
-        <div class="impression">
-          <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count>999 ? '999+' : tag.count}}</ion-badge>
-        </div>
-      </ion-list>
+      </div>
+      <div class="impression" (click)="goDetail()">
+        <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count>999 ? '999+' : tag.count}}</ion-badge>
+      </div>
+      <!-- </ion-list> -->
     </ion-slide>
   </ion-slides>
 </ion-content>

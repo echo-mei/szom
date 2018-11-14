@@ -14,13 +14,20 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { PhotoLibrary } from '@ionic-native/photo-library';
+import { FileOpener } from '@ionic-native/file-opener';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { AppVersion } from '@ionic-native/app-version';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { IonicImageLoader } from 'ionic-image-loader';
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { MultiPickerModule } from 'ion-multi-picker';
-import { CalendarModule } from '../../node_modules/ion2-calendar';
+import { CalendarModule } from 'ion2-calendar';
+import { SuperTabsModule } from 'ionic2-super-tabs';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 import { DirectivesModule } from '../directives/directives.module';
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -47,6 +54,9 @@ import { WebsocketProvider } from '../providers/websocket/websocket';
 import { EmojiProvider } from '../providers/emoji/emoji';
 import { DicProvider } from '../providers/dic/dic';
 import { BzWeektableProvider } from '../providers/bz-weektable/bz-weektable';
+import { BzDailyProvider } from '../providers/bz-daily/bz-daily';
+import { BzInfoLibProvider } from '../providers/bz-info-lib/bz-info-lib';
+import { HeavyFocusProvider } from '../providers/heavy-focus/heavy-focus';
 
 import { ImagePickerComponent } from '../components/image-picker/image-picker';
 import { TimeSelectComponent } from '../components/time-select/time-select';
@@ -55,9 +65,11 @@ import { NotFoundComponent } from '../components/not-found/not-found';
 import { ImgShowComponent } from '../components/img-show/img-show';
 import { ListItemComponent } from '../components/list-item/list-item';
 import { BetweenDatePickerComponent } from '../components/between-date-picker/between-date-picker';
+import { CommentInputComponent } from '../components/comment-input/comment-input';
+import { NotFoundPersonComponent } from '../components/not-found-person/not-found-person';
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 
 import { AddresslistPage } from '../pages/addresslist/addresslist';
-import { AddresslistMinePage } from '../pages/addresslist-mine/addresslist-mine';
 import { AddresslistNewPage } from '../pages/addresslist-new/addresslist-new';
 import { AddresslistOtherPage } from '../pages/addresslist-other/addresslist-other';
 import { AddresslistSearchPage } from '../pages/addresslist-search/addresslist-search';
@@ -72,7 +84,6 @@ import { DailyOnePage } from '../pages/daily-one/daily-one';
 import { DailyOneCreatePage } from '../pages/daily-one-create/daily-one-create';
 import { DailyOneSearchPage } from '../pages/daily-one-search/daily-one-search';
 import { DailyOneUpdatePage } from '../pages/daily-one-update/daily-one-update';
-import { DailySearchPage } from '../pages/daily-search/daily-search';
 import { DailyTenPage } from '../pages/daily-ten/daily-ten';
 import { DailyTenCreatePage } from '../pages/daily-ten-create/daily-ten-create';
 import { DailyTenSearchPage } from '../pages/daily-ten-search/daily-ten-search';
@@ -136,6 +147,7 @@ import { AddresslistOtherSearchPage } from '../pages/addresslist-other-search/ad
 import { AddresslistUnitSearchPage } from '../pages/addresslist-unit-search/addresslist-unit-search';
 import { BzInfoPage } from '../pages/bz-info/bz-info';
 import { BzInfoAddUserPage } from '../pages/bz-info-add-user/bz-info-add-user';
+import { BzInfoDelUserPage } from '../pages/bz-info-del-user/bz-info-del-user';
 import { BzInfoUpdateIntroPage } from '../pages/bz-info-update-intro/bz-info-update-intro';
 import { BzInfoUserInfoPage } from '../pages/bz-info-user-info/bz-info-user-info';
 import { BzInfoUserUpdateWorkPage } from '../pages/bz-info-user-update-work/bz-info-user-update-work';
@@ -144,15 +156,51 @@ import { LeaderInfoLibUnitPage } from '../pages/leader-info-lib-unit/leader-info
 import { LeaderInfoLibSearchPage } from '../pages/leader-info-lib-search/leader-info-lib-search';
 import { LeaderInfoPage } from '../pages/leader-info/leader-info';
 import { UserSignPage } from '../pages/user-sign/user-sign';
+import { BzDailyMePage } from '../pages/bz-daily-me/bz-daily-me';
+import { BzDailyMeShowPage } from '../pages/bz-daily-me-show/bz-daily-me-show';
+import { BzDailyMeCreatePage } from '../pages/bz-daily-me-create/bz-daily-me-create';
+import { BzDailyMeSearchPage } from '../pages/bz-daily-me-search/bz-daily-me-search';
+import { BzInfoProvider } from '../providers/bz-info/bz-info';
+import { BzWorkWeektableShowPage } from '../pages/bz-work-weektable-show/bz-work-weektable-show';
+import { BzWorkWeektableUpdatePage } from '../pages/bz-work-weektable-update/bz-work-weektable-update';
+import { BzInfoLibPage } from  '../pages/bz-info-lib/bz-info-lib';
+import { BzInfoLibShowPage } from '../pages/bz-info-lib-show/bz-info-lib-show';
+import { HeavyFocusPage } from '../pages/heavy-focus/heavy-focus';
+import { BzWeavePage } from '../pages/bz-weave/bz-weave';
+import { BzPositionPage } from '../pages/bz-position/bz-position';
+import { BzPositionAddPage } from '../pages/bz-position-add/bz-position-add';
+import { BzWeaveAddPage } from '../pages/bz-weave-add/bz-weave-add';
+import { BzInfoFengongPage } from '../pages/bz-info-fengong/bz-info-fengong';
+import { BzInfoLookPage } from '../pages/bz-info-look/bz-info-look';
+import { BzPositionLookPage } from '../pages/bz-position-look/bz-position-look';
+import { BzWeaveLookPage } from '../pages/bz-weave-look/bz-weave-look';
+import { HeavyFocusAddPage } from '../pages/heavy-focus-add/heavy-focus-add';
+import { HeavyFocusAddSearchPage } from '../pages/heavy-focus-add-search/heavy-focus-add-search';
+import { HeavyFocusUnitPage } from '../pages/heavy-focus-unit/heavy-focus-unit';
+import { ImpresionDetailPage } from '../pages/impresion-detail/impresion-detail';
+import { BzInfoAddSearchPage } from '../pages/bz-info-add-search/bz-info-add-search';
+import { BzInfoDelSearchPage } from '../pages/bz-info-del-search/bz-info-del-search';
+import { MessageInfoPage } from '../pages/message-info/message-info';
+import { MessageInfoShowPage } from '../pages/message-info-show/message-info-show';
+import { BzUserInfoPage } from '../pages/bz-user-info/bz-user-info';
+import { BzUserInfoIntroPage } from '../pages/bz-user-info-intro/bz-user-info-intro';
+import { BzInfoSortUserPage } from '../pages/bz-info-sort-user/bz-info-sort-user';
+import { MeHelpFeedbackPage  } from '../pages/me-help-feedback/me-help-feedback';
+import { MeHelpFeedbackDetailPage } from '../pages/me-help-feedback-detail/me-help-feedback-detail';
 
 import * as VConsole from 'vconsole';
+import { ErrorPage } from '../pages/error/error';
+import { EventProvider } from '../providers/event/event';
+import { BetweenDatePickerProvider } from '../providers/between-date-picker/between-date-picker';
+import { LeaderInfoSlidesPage } from '../pages/leader-info-slides/leader-info-slides';
+import { SortablejsModule } from 'angular-sortablejs';
+
 new VConsole();
 
 @NgModule({
   declarations: [
     MyApp,
     AddresslistPage,
-    AddresslistMinePage,
     AddresslistNewPage,
     AddresslistNewSearchPage,
     AddresslistOtherPage,
@@ -172,7 +220,6 @@ new VConsole();
     DailyOneSearchPage,
     DailyOneShowPage,
     DailyOneUpdatePage,
-    DailySearchPage,
     DailyTenPage,
     DailyTenCreatePage,
     DailyTenSearchPage,
@@ -231,6 +278,7 @@ new VConsole();
     BzWorkWeektableStatisticPage,
     BzInfoPage,
     BzInfoAddUserPage,
+    BzInfoDelUserPage,
     BzInfoUpdateIntroPage,
     BzInfoUserInfoPage,
     BzInfoUserUpdateWorkPage,
@@ -239,6 +287,38 @@ new VConsole();
     LeaderInfoLibSearchPage,
     LeaderInfoPage,
     UserSignPage,
+    BzDailyMePage,
+    BzDailyMeShowPage,
+    BzDailyMeCreatePage,
+    BzDailyMeSearchPage,
+    BzWorkWeektableShowPage,
+    BzWorkWeektableUpdatePage,
+    ErrorPage,
+    BzInfoLibPage,
+    BzInfoLibShowPage,
+    HeavyFocusPage,
+    BzWeavePage,
+    BzPositionPage,
+    BzPositionAddPage,
+    BzWeaveAddPage,
+    BzInfoFengongPage,
+    BzInfoLookPage,
+    BzPositionLookPage,
+    BzWeaveLookPage,
+    HeavyFocusAddPage,
+    HeavyFocusAddSearchPage,
+    HeavyFocusUnitPage,
+    ImpresionDetailPage,
+    BzInfoAddSearchPage,
+    BzInfoDelSearchPage,
+    MessageInfoPage,
+    MessageInfoShowPage,
+    LeaderInfoSlidesPage,
+    BzUserInfoPage,
+    BzUserInfoIntroPage,
+    BzInfoSortUserPage,
+    MeHelpFeedbackPage,
+    MeHelpFeedbackDetailPage,
 
     ImagePickerComponent,
     NotFoundComponent,
@@ -246,7 +326,10 @@ new VConsole();
     PopSelectComponent,
     TimeSelectComponent,
     ListItemComponent,
-    BetweenDatePickerComponent
+    BetweenDatePickerComponent,
+    CommentInputComponent,
+    NotFoundPersonComponent,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -263,12 +346,21 @@ new VConsole();
     PipesModule,
     IonicImageViewerModule,
     ionicGalleryModal.GalleryModalModule,
+    SuperTabsModule.forRoot(),
+    SortablejsModule.forRoot({ animation: 10 }),
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     AddresslistPage,
-    AddresslistMinePage,
     AddresslistNewPage,
     AddresslistNewSearchPage,
     AddresslistOtherPage,
@@ -288,7 +380,6 @@ new VConsole();
     DailyOneSearchPage,
     DailyOneShowPage,
     DailyOneUpdatePage,
-    DailySearchPage,
     DailyTenPage,
     DailyTenCreatePage,
     DailyTenSearchPage,
@@ -349,12 +440,45 @@ new VConsole();
     BzInfoAddUserPage,
     BzInfoUpdateIntroPage,
     BzInfoUserInfoPage,
+    BzInfoDelUserPage,
     BzInfoUserUpdateWorkPage,
     LeaderInfoLibPage,
     LeaderInfoLibUnitPage,
     LeaderInfoLibSearchPage,
     LeaderInfoPage,
     UserSignPage,
+    BzDailyMePage,
+    BzDailyMeShowPage,
+    BzDailyMeCreatePage,
+    BzDailyMeSearchPage,
+    BzWorkWeektableShowPage,
+    BzWorkWeektableUpdatePage,
+    ErrorPage,
+    BzInfoLibPage,
+    BzInfoLibShowPage,
+    HeavyFocusPage,
+    BzWeavePage,
+    BzPositionPage,
+    BzPositionAddPage,
+    BzWeaveAddPage,
+    BzInfoFengongPage,
+    BzInfoLookPage,
+    BzPositionLookPage,
+    BzWeaveLookPage,
+    HeavyFocusAddPage,
+    HeavyFocusAddSearchPage,
+    HeavyFocusUnitPage,
+    ImpresionDetailPage,
+    BzInfoAddSearchPage,
+    BzInfoDelSearchPage,
+    MessageInfoPage,
+    MessageInfoShowPage,
+    LeaderInfoSlidesPage,
+    BzUserInfoPage,
+    BzUserInfoIntroPage,
+    BzInfoSortUserPage,
+    MeHelpFeedbackPage,
+    MeHelpFeedbackDetailPage,
 
     ImagePickerComponent,
     NotFoundComponent,
@@ -362,8 +486,10 @@ new VConsole();
     PopSelectComponent,
     TimeSelectComponent,
     ListItemComponent,
-    BetweenDatePickerComponent
-
+    BetweenDatePickerComponent,
+    CommentInputComponent,
+    NotFoundPersonComponent,
+    ProgressBarComponent
   ],
   providers: [
     File,
@@ -376,6 +502,11 @@ new VConsole();
     Keyboard,
     MobileAccessibility,
     ScreenOrientation,
+    PhotoLibrary,
+    FileOpener,
+    FileTransfer,
+    AppVersion,
+    AndroidPermissions,
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig},
     // {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorProvider, multi: true},
@@ -398,7 +529,14 @@ new VConsole();
     WebsocketProvider,
     EmojiProvider,
     DicProvider,
-    BzWeektableProvider
+    BzWeektableProvider,
+    BzDailyProvider,
+    BzInfoProvider,
+    BzWeektableProvider,
+    BzInfoLibProvider,
+    HeavyFocusProvider,
+    EventProvider,
+    BetweenDatePickerProvider
   ]
 })
 export class AppModule {

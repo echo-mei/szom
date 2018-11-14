@@ -1,0 +1,46 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>工作日志</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="onClickSearch()">
+        <img src="assets/imgs/search@3x.png" />
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content content-shadow>
+  <div class="add-new" (click)="onClikeCreate()" *ngIf="user.userCode==me.userCode">
+    <img src="assets/imgs/xierizhi.png" />
+  </div>
+  <div class="noDailyList" *ngIf="!isLoading && !logDataList.length && user.userCode==me.userCode">
+    <img src="assets/imgs/nolog.png">
+    <p>您还没有发布过日志
+      <br>快去<a (click)="onClikeCreate()">发布</a>吧~</p>
+  </div>
+  <div class="noDailyList" *ngIf="!isLoading && !logDataList.length && user.userCode!=me.userCode">
+    <img src="assets/imgs/nolog.png">
+    <p>没有发布过日志</p>
+  </div>
+  <div style="text-align:center;" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="like-main" *ngIf="logDataList.length>0" (click)="onClickLike()" style="background-image: url(assets/imgs/daily-bg.png);background-size: 100% 100%;">
+    <h1>{{stlikeSum}}</h1>
+    <span class="des">总赞数
+      <ion-icon class="szom" name="md-right"></ion-icon>
+    </span>
+  </div>
+  <ion-list *ngIf="logDataList.length>0" class="daily-list">
+    <ion-item *ngFor="let log of logDataList;let i=index;" tappable (click)="onClikeDaily(log)">
+      <list-item [log]="log" [getImageUrl] = "getImageUrl"></list-item>
+    </ion-item>
+  </ion-list>
+  <div class="no-more-tip" *ngIf="!hasMore && logDataList.length"><span></span>没有更多内容<span></span></div>
+  <ion-infinite-scroll *ngIf="!isLoading && hasMore" (ionInfinite)="onScrollDailyList($event)">
+    <ion-infinite-scroll-content loadingText=""></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

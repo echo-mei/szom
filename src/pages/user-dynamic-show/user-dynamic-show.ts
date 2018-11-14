@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { DynamicProvider } from '../../providers/dynamic/dynamic';
 import { StorageProvider } from '../../providers/storage/storage';
 import { BASE_URL } from '../../config';
+import { MeInfoPage } from '../me-info/me-info';
+import { UserInfoPage } from '../user-info/user-info';
+import { LikeListPage } from '../like-list/like-list';
+import { Footer } from 'ionic-angular/navigation/nav-interfaces';
+import { Keyboard } from '@ionic-native/keyboard';
+import { BzInfoPage } from '../bz-info/bz-info';
+import { BzUserInfoPage } from '../bz-user-info/bz-user-info';
 
 @Component({
   selector: 'page-user-dynamic-show',
@@ -10,8 +17,14 @@ import { BASE_URL } from '../../config';
 })
 export class UserDynamicShowPage {
 
+  @ViewChild('footer') footer: Footer;
+
+  // 当前用户
+  me: any;
   dynamic: any;
-  comment: any; // 评论
+  comment: String = ""; // 评论
+  // 评论最多字数
+  maxLength = 98;
 
   onUpdate: (dynamic) => {};
 
@@ -28,44 +41,55 @@ export class UserDynamicShowPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public dynamicProvider: DynamicProvider,
-    public storage: StorageProvider
+    public storage: StorageProvider,
+    public keyboard: Keyboard
   ) {
     this.placeholder = this.originalPlaceholder;
+    this.me = this.storage.me;
     this.dynamic = this.navParams.get('dynamic');
     this.onUpdate = this.navParams.get('onUpdate');
-    this.getDynamic();
+    this.getDynamic().subscribe();
+    this.keyboard.onKeyboardShow().subscribe(
+      (e) => {
+        this.footer['nativeElement'].style.bottom = e.keyboardHeight + 'px';
+      }
+    );
+    this.keyboard.onKeyboardHide().subscribe(
+      (e) => {
+        this.footer['nativeElement'].style.bottom = '0px';
+      }
+    );
   }
 
   getDynamic(isUpdate?: boolean) {
-    this.dynamicProvider.getDynamicDetail({ dynamicId: this.dynamic.dynamicId }).subscribe(
+    return this.dynamicProvider.getDynamicDetail({ dynamicId: this.dynamic.dynamicId }).do(
       (dynamic) => {
         this.dynamic = dynamic;
         isUpdate && this.onUpdate && this.onUpdate(dynamic);
+        this.hasMeLike();
       }
     );
   }
 
   getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
   }
 
-  hasMeLike(): boolean {
-    return false;
-    // let me = JSON.parse(this.storage.get('user'));
-    // return this.dynamic && this.dynamic.soaPersonInfoDTO && this.dynamic.soaPersonInfoDTO.find((user) => {
-    //   return user.userCode == me.userCode;
-    // }) ? true : false;
+  hasMeLike() {
+    this.dynamic.hasMeLike = this.dynamic && this.dynamic.sbLikeList && this.dynamic.sbLikeList.find((user) => {
+      return user.userCode == this.me.userCode;
+    }) ? true : false;
   }
 
   goLikeList() {
-    // this.navCtrl.push("LikeListPage", {
-    //   likerList: this.dynamic.soaPersonInfoDTO
-    // });
+    this.navCtrl.push(LikeListPage, {
+      likerList: this.dynamic.sbLikePersonInfoDTO
+    });
   }
 
   replyComment(commentId, placeholder) {
     this.commentId = commentId;
-    this.placeholder = "回复" + placeholder+":";
+    this.placeholder = "回复" + placeholder + ":";
     this.commentObjectType = 6;
   }
 
@@ -79,7 +103,7 @@ export class UserDynamicShowPage {
         () => {
           this.comment = '';
           this.placeholder = '';
-          this.getDynamic(true);
+          this.getDynamic(true).subscribe();
         }
       );
     }
@@ -88,9 +112,52 @@ export class UserDynamicShowPage {
   sendLike() {
     this.dynamicProvider.likeDaily({ dynamicId: this.dynamic.dynamicId }).subscribe(
       () => {
-        this.getDynamic(true);
+        this.getDynamic(true).subscribe(() => {
+          this.dynamic.hasClicked = true;
+        });
       }
     );
+  }
+
+  // 点击取消点赞
+  onClickCancelLikeIcon() {
+    this.dynamicProvider.cancelLikeDaily({ dynamicId: this.dynamic.dynamicId }).subscribe(
+      () => {
+        this.getDynamic(true).subscribe(() => {
+          this.dynamic.hasClicked = true;
+        });
+      }
+    );
+  }
+
+  // 点击评论人姓名
+  onClickCommentName(userCode, userType) {
+    let user = {
+      userCode: userCode,
+      userType: userType
+    };
+    if (user.userType === "02") {//班子信息
+      if (user.userCode == this.storage.me.userCode) {
+        this.navCtrl.push(BzInfoPage);
+      } else {
+        this.navCtrl.push(BzUserInfoPage, {
+          user: user,
+          followOrCancel: true
+        });
+      }
+    } else {
+      if (userCode == this.storage.me.userCode) {
+        this.navCtrl.push(MeInfoPage);
+      } else {
+        this.navCtrl.push(UserInfoPage, {
+          user: { userCode: userCode },
+          showSelfInfo: true,
+          showDaily: true,
+          showTags: true,
+          followOrCancel: true
+        });
+      }
+    }
   }
 
 }

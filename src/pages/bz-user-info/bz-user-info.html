@@ -1,0 +1,45 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>详细资料</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="bz-user-info-main">
+    <ion-item class="info-title">
+      <h2>{{user.userName}}<span>{{user.isAttention?"(已关注)":"(未关注)"}}</span></h2>
+    </ion-item>
+    <ion-list class="type-list" (click)="goBzUserInfoIntro(user.teamDesc)">
+      <ion-item class="item-title">
+        <h2>班子概述</h2>
+        <ion-icon item-end class="szom" name="you"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <h4 class="bz-intro">{{user.teamDesc}}</h4>
+      </ion-item>
+    </ion-list>
+    <ion-list class="type-list">
+      <div (click)="(this.user.isAttention||this.user.isInMyUnit)&&goUserDailyList()">
+        <ion-item class="item-title">
+          <h2>工作日志</h2>
+          <ion-icon *ngIf="this.user.isAttention||this.user.isInMyUnit" item-end class="szom" name="you"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <h4 class="two-line">{{daily.content}}</h4>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+
+
+  <div class="footer-buttons" *ngIf="agreeOrRefuse">
+    <ion-row>
+      <ion-col><button ion-button block (click)="onClickRefuse()" color="white">拒绝</button></ion-col>
+      <ion-col><button ion-button block (click)="onClickAgree()">同意</button></ion-col>
+    </ion-row>
+  </div>
+  <div class="footer-buttons {{ user.isAttention ? 'cancel-follow' : 'follow' }}" *ngIf="!isLoading && followOrCancel">
+    <button ion-button block id="follow" *ngIf="!user.isAttention" (click)="onClickfollow()">关注</button>
+    <button ion-button block id="cancel-follow" color="white" *ngIf="user.isAttention" (click)="onClickUnfollow()">取消关注</button>
+  </div>
+</ion-content>

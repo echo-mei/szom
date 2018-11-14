@@ -2,83 +2,42 @@ page-addresslist {
   .scroll-content {
     background: #fafafa;
   }
-  .searcher {
-    position: relative;
-    background: #FFFFFF;
-    height: rem(42);
-    width: rem(360);
-    padding: rem(4) rem(15) rem(6) rem(15);
-    .szom {
-      position: absolute;
-      left: rem(27);
-      top: rem(14);
-      z-index: 1;
-      font-size: rem(13);
-      color: #AFAFAF;
-    }
-    .searchbar {
-      padding: 0;
-      margin: 0;
-      background: #F4F4F4;
-      border-radius: 2px;
-      height: rem(32);
-      width: rem(330);
-      .searchbar-search-icon {
-        display: none;
-      }
-      .searchbar-input {
-        padding-left: rem(35);
-      }
-    }
-  }
 
+  .divider {
+    font-size: rem(12);
+    color: #666666;
+    letter-spacing: rem(-0.42);
+    line-height: rem(12);
+    padding: rem(6) rem(15);
+  }
   .type-list {
     margin:0;
-    .divider {
-      font-size: rem(12);
-      color: #666666;
-      letter-spacing: rem(-0.42);
-      line-height: rem(12);
-      padding: rem(6) rem(15);
+    ion-item:last-child{
+      .item-inner{
+        border: 0 !important;
+      }
     }
     .item {
       width: rem(360);
       height: rem(75);
       background: #FFFFFF;
       padding-left: rem(15);
-      ion-icon.szom {
-        width: rem(50);
-        height: rem(50);
-        line-height: rem(50);
-        text-align: center;
-        font-size: rem(24);
-        background: #F5A623;
-        color: #fff;
-        border-radius: 2px;
-        margin: 0;
-
-        &.ion-md-xindeguanzhu{
-          background: #F5A623;
-        }
-        &.ion-md-bendanwei{
-          background: #24C2C2;
-        }
-        &.ion-md-qitazuzhi{
-          background: #40A9FF;
-        }
-      }
       ion-avatar{
+        background-color: #f0f0f0;
         margin: 0!important;
         width: rem(50);
         height: rem(50);
+        min-width: rem(50);
+        min-height: rem(50);
         img {
           width: 100%;
-          height: 100%;
+          height: auto;
         }
       }
       .item-inner {
-        padding-right: 0!important;
-        border-bottom: .5px solid color($colors,boderColor)!important;
+        padding-right: rem(15);
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
         margin-left: rem(10)!important;
         ion-label.label {
           margin: 0;
@@ -86,8 +45,11 @@ page-addresslist {
             font-size: rem(15);
             color: #333333;
             letter-spacing: rem(0.52);
-            line-height: rem(21);
-            font-weight: bold;
+            // line-height: rem(20);
+            // font-weight: bold;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
           }
           ion-note {
             opacity: 0.99;
@@ -95,26 +57,49 @@ page-addresslist {
             color: #999999;
             letter-spacing: rem(-0.42);
             line-height: rem(17);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
           }
         }
         ion-badge {
-          position: absolute;
-          right: rem(20);
-          display: block;
-          width: rem(8);
-          height: rem(8);
-          background: #F5222D;
-          border-radius: rem(100);
-          margin: 0;
-          padding: 0;
-          min-width: initial;
+          width: rem(30);
+          height: rem(16);
+          padding: 0px 0;
+          line-height: rem(16);
+          &.red-dot {
+            position: absolute;
+            right: rem(20);
+            display: block;
+            width: rem(8);
+            height: rem(8);
+            background: #F5222D;
+            border-radius: rem(100);
+            margin: 0;
+            padding: 0;
+            min-width: initial;
+          }
+          &.sign-tag {
+            border-radius: 0;
+            font-size: rem(10);
+            color: #FFFFFF;
+            background: #4A4A4A;
+            opacity: 0.3;
+            // height: rem(16);
+            font-weight: normal;
+            padding: rem(2) 0 rem(2);
+            margin: 0 rem(10);
+          }
         }
       }
     }
   }
   .group-selector {
     position: fixed;
-    top: rem(120);
+    top: rem(130);
     right: rem(8);
     width: rem(10);
     font-size: rem(10);

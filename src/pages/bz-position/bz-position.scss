@@ -1,0 +1,56 @@
+page-bz-position {
+    .add-new{
+      position: fixed;
+      right: rem(20);
+      bottom: rem(45);
+      width: rem(50);
+      height: rem(50);
+      line-height: rem(50);
+      background-color:color($colors,mainBlueColor);
+      border-radius: 50%;
+      text-align: center;
+      z-index: 3;
+      box-shadow: 0 rem(2) rem(4) rgba(77, 116, 235, 50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        height: rem(24);
+      }
+    }
+  .scroll-content{
+    background-color: #fafafa;
+    ion-grid{
+      margin-top: rem(4);
+      background: #fff;
+      padding: 0;
+      ion-row{
+        position: relative;
+        font-size: rem(14);
+        padding: 0 rem(18) 0 rem(15);
+        color: #000;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+
+        &.header{
+          font-size: rem(12);
+          color: #999999;
+        }
+
+        .col{
+          padding: rem(8) rem(4) rem(8) 0;
+          line-height: rem(20);
+        }
+
+        .szom{
+          position: absolute;
+          right: rem(10);
+          top: 50%;
+          margin-top: rem(-7);
+          color: #afafaf;
+          font-size: rem(14);
+        }
+      }
+    }
+  }
+}

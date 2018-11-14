@@ -1,0 +1,45 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>修改工作周表</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div class="separate"></div>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item>
+        <ion-label ion-start>日期</ion-label>
+        <ion-datetime displayFormat="YYYY年MM月DD日 DDD" pickerFormat="YYYY MM DD/DDD" [max]="timeMax" placeholder="请选择" cancelText="取消" doneText="确认"
+          dayShortNames="星期日, 星期一, 星期二, 星期三, 星期四, 星期五, 星期六" formControlName="workDateStr"></ion-datetime>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label ion-start>时间</ion-label>
+        <ion-multi-picker item-content [multiPickerColumns]="timeColumns" placeholder="请选择" cancelText="取消" doneText="确定" formControlName="dayPeriod"></ion-multi-picker>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label ion-start>人员</ion-label>
+        <ion-multi-picker item-content [multiPickerColumns]="userColums" placeholder="请选择" cancelText="取消" doneText="确定" formControlName="userCode"></ion-multi-picker>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label ion-start>类型</ion-label>
+        <ion-multi-picker item-content [multiPickerColumns]="typeColumns" placeholder="请选择" cancelText="取消" doneText="确定" formControlName="weektableTypeCode"></ion-multi-picker>
+        <ion-icon item-end class="szom" name="md-you"></ion-icon>
+      </ion-item>
+      <ion-item class="w-textarea">
+        <ion-label *ngIf="!form.hasError('maxlength', 'content')">{{form.controls['content'].value.length}}</ion-label>
+        <ion-label class="error" *ngIf="form.hasError('maxlength', 'content')">超出{{form.controls['content'].value.length-maxLength}}字</ion-label>
+        <ion-textarea autosize formControlName="content" name="content" placeholder="请输入您的工作内容..."></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+<ion-footer no-border>
+  <button ion-button block (click)="saveWeektable()" [disabled]="form.invalid|| form.controls['content'].value.length>maxLength
+    || (form.controls['content'].value&&form.controls['content'].value.trim()==='')">保存</button>
+</ion-footer>

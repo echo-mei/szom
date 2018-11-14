@@ -1,9 +1,9 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar>
     <ion-title>印象标签</ion-title>
-    <ion-buttons end *ngIf="!newFlag">
-      <button ion-button clear (click)="goAddImpression()">添加</button>
+    <ion-buttons end>
+      <button ion-button clear (click)="goAddImpressionCreate()">添加</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -11,7 +11,15 @@
 
 
 <ion-content>
-  <time-select #timeSelect (onChange)="getImpressionList()"></time-select>
+  <div class="conditions">
+    <div class="select-btn" (click)="goSelectDate()">
+      <img class="filter-icon" *ngIf="!startDate && !endDate" src="assets/imgs/filter@3x.png" />
+      <img class="filter-icon" *ngIf="startDate || endDate" src="assets/imgs/filter-active@3x.png" />
+      <span class="title">筛选:</span>
+      <span class="color-blue" *ngIf="startDate || endDate">{{startDate}}至{{endDate}}</span>
+      <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
+    </div>
+  </div>
   <div class="impression">
     <ion-badge *ngFor="let tag of tagList">{{tag.tagName}} {{tag.count>999 ? '999+' : tag.count}}</ion-badge>
   </div>

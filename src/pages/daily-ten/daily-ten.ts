@@ -1,5 +1,5 @@
-import { Component} from '@angular/core';
-import { NavController, NavParams, Events, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { Component, Input} from '@angular/core';
+import { NavController, NavParams, Events, InfiniteScroll } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { DateUtilProvider } from '../../providers/date-util/date-util';
@@ -8,26 +8,37 @@ import { StorageProvider } from '../../providers/storage/storage';
 import { DailyTenCreatePage } from '../daily-ten-create/daily-ten-create';
 import { DailyTenShowPage } from '../daily-ten-show/daily-ten-show';
 import { DailyTenSearchPage } from '../daily-ten-search/daily-ten-search';
+import { Observable } from 'rxjs';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'page-daily-ten',
   templateUrl: 'daily-ten.html',
 })
 export class DailyTenPage {
-  canCreate: boolean;
-  user: any;
-  newFlag:any;
+
+  // 用户
+  @Input() user: any = {};
+
+  // 当前用户
+  me: any;
+  // 每页显示条数
   size:number = 10;
-  dailyTenList: any[] = []; // 每年十励列表
-  year:number;  // 当前年
-  count:number; //每周日志数配置
-  boolShow = {};
-  dataLoadOver = false; //数据加载完成标志
-  loading = this.loadingCtrl.create({
-    content: '处理中...',
-    // showBackdrop:false,
-    cssClass: 'loading-new'
-  });
+  // 每年十励列表
+  dailyTenList: any[] = [];
+  // 当前年
+  year:number;
+  // 当前序号
+  currentNumber: number;
+  // 是否可以创建本年
+  canCreate: boolean = false;
+  // 每年日志数配置
+  count:number;
+  // 是否正在加载数据
+  isLoading = false;
+  // 是否还有更多数据
+  hasMore: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,134 +46,133 @@ export class DailyTenPage {
     public dateUtil: DateUtilProvider,
     public events: Events,
     public storage: StorageProvider,
-    public loadingCtrl:LoadingController
   ) {
-    this.user = this.navParams.get('user');
-    this.newFlag = this.navParams.get('newFlag');
-    let date = new Date();
-    this.year = date.getFullYear();
-    this.initList();
+    this.me = this.storage.me;
   }
 
-  initList() {
-    this.dailyTenList = [];
-    this.more();
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
+    this.resetDailyList();
   }
 
-  load() {
-    let params = {
+  // =================== Public Methods =====================
+
+  // 获取列表数据
+  _getLogDailyList(params?) {
+    params = {
       size: this.size,
-      userCode: this.user.userCode
+      userCode: this.user.userCode,
+      ...params
     };
-    if(this.dailyTenList.length) {
-      params['startTime'] = this.dailyTenList[0]['publishTime'];
-    }
-    this.dailyProvider.getDailyTenList(params).subscribe(
+    return this.dailyProvider.getDailyTenList(params).mergeMap(
       (data) => {
-        if(data.list.length) {
-          for(let i = data.list.length-1; i >= 0; i--) {
-            this.dailyTenList.unshift(data.list[i]);
-          }
-        }
-        this.resetCanCreate();
-      }
-    );
-  }
-
-  showTopTime(list) {
-    for(var i=list.length-1; i>=0; i--){
-      if((i-1<0?true: list[i].year != list[i-1].year)){
-        this.boolShow[i] = true;
-      }else{
-        this.boolShow[i] = false;
-      }
-    }
-  }
-
-  more(infinite?: InfiniteScroll) {
-    let params = {
-      size: this.size,
-      userCode: this.user.userCode
-    };
-    if(this.dailyTenList.length) {
-      params['endTime'] = this.dailyTenList[this.dailyTenList.length-1].publishTime;
-    }
-    if (!infinite) {
-      this.loading.present();
-    }
-    this.dailyProvider.getDailyTenList(params).subscribe(
-      (data) => {
-        if (!infinite) {
-          this.dataLoadOver = true;
-          this.loading.dismiss();
-        }
         this.count = data.count;
-        infinite && infinite.complete();
-        if(data.list.length) {
-          infinite && infinite.enable(true);
-          this.dailyTenList = this.dailyTenList.concat(data.list);
-        }else {
-          infinite && infinite.enable(false);
-        }
-        this.showTopTime(this.dailyTenList);
-        this.resetCanCreate();
+        this.year = new Date(data.serverTime).getFullYear();
+        return Observable.create(observer => observer.next(data));
+      }
+    ).do(
+      (data: any) => {
+        this.hasMore = data.list.length ? true : false;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
       }
     );
   }
 
-  getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
-  }
-
-  resetCanCreate() {
-    let count = 0;
-    this.dailyTenList.forEach((daily) => {
-      if(daily.year==this.year) {
-        count++;
-      }
+  // 重置列表数据
+  resetDailyList() {
+    this.isLoading = true;
+    this.dailyTenList = [];
+    this._getLogDailyList().subscribe((data: any) => {
+      this.formateList(data.list);
     });
-    this.canCreate = count>=this.count ? false : true;
   }
 
-  getCurrentIndex() {
-    let index = 1;
-    this.dailyTenList.forEach((daily) => {
-      index++;
+  // 数据列表的格式变换
+  formateList(list) {
+    list = _.groupBy(list, function(item) {
+      return item.year;
     });
-    return index;
-  }
-
-  getIndex(log) {
-    let index = 1;
-    for(let i=this.dailyTenList.length-1; i>=0; i--) {
-      let daily = this.dailyTenList[i];
-      if(log==daily) {
-        return index;
+    for(let key in list) {
+      let yearList = this.dailyTenList.find((item) => {
+        return item.year == key;
+      });
+      if(yearList) {
+        yearList.list.concat(list[key]);
       }
-      index++;
+      this.dailyTenList.push({
+        year: key,
+        list: list[key]
+      });
     }
+    this.checkCanCreate();
   }
 
-  goDailyCreate() {
+  // 检查是否可以创建当前周的记录
+  checkCanCreate() {
+    const currentYearList = this.dailyTenList.find((item) => {
+      return item.year == this.year;
+    });
+    if(!currentYearList) {
+      this.currentNumber = 1;
+      this.canCreate = true;
+      return;
+    }
+    this.currentNumber = currentYearList.list.length + 1;
+    this.canCreate = currentYearList && currentYearList.list.length >= this.count ? false : true;
+  }
+
+  // 判断记录是否为本年
+  isCurrentYear(log) {
+    return this.year == log.year;
+  }
+
+  // 获取图片地址
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  //================= Events =======================
+
+  // 滚动加载
+  onScrollDailyList(infinite?: InfiniteScroll) {
+    let params = {};
+    if(this.dailyTenList.length) {
+      const list = this.dailyTenList[this.dailyTenList.length - 1].list;
+      params['endTime'] = list[list.length - 1]['publishTime'];
+    }
+    this._getLogDailyList(params).subscribe((data) => {
+      this.formateList(data.list);
+      infinite.complete();
+    });
+  }
+
+  // 点击创建
+  onClickCreate() {
     this.navCtrl.push(DailyTenCreatePage, {
       year: this.year,
       user:this.user,
       count: this.count,
-      onCreate: this.initList.bind(this)
+      onCreate: this.resetDailyList.bind(this)
     });
   }
 
-  goDailyShow(log) {
+  // 点击记录
+  onClickDailly(log) {
     this.navCtrl.push(DailyTenShowPage, {
+      user:this.user,
       dailyTen: log,
       count: this.count,
-      onDelete: this.initList.bind(this),
-      onUpdate: this.initList.bind(this)
+      onDelete: this.resetDailyList.bind(this),
+      onUpdate: this.resetDailyList.bind(this)
     });
   }
 
-  goDailySearch(){
-    this.navCtrl.push(DailyTenSearchPage,{
+  // 点击搜索
+  onClickSearch(){
+    this.navCtrl.push(DailyTenSearchPage, {
       user:this.user
     });
   }

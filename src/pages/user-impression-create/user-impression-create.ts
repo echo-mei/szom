@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { ImpressionProvider } from '../../providers/impression/impression';
 import { UserImpressionAddPage } from '../user-impression-add/user-impression-add';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   selector: 'page-user-impression-create',
@@ -20,11 +21,20 @@ export class UserImpressionCreatePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public impressionProvider: ImpressionProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public statusBar: StatusBar
   ) {
     this.user = this.navParams.get('user');
     this.onCreate = this.navParams.get('onCreate');
     this.getTagList();
+  }
+
+  ionViewWillEnter() {
+    this.statusBar.styleLightContent();
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
   }
 
   getTagList() {

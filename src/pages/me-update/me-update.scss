@@ -1,44 +1,30 @@
 page-me-update {
-    .toolbar .back-button ion-icon{
-        color: #4D74EB;
-    }
-    .toolbar-background{
-        background-color: #ffffff;
-    }
-    .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
-        background-image: none;
-    }
-    .scroll-content{
-        .list{
-            .item{
-                height: rem(44);
-                .label{
-                    margin: 0;
-                    padding-left: rem(10);
 
-                    display: flex;
-                    justify-content: space-between;
-                    
-                    font-family: PingFangSC-Regular;
-                    font-size: rem(16);
-                    color: #000000;
-                    letter-spacing: 0;
-                    text-align: left;
-                }
-            }
-        }
+  .info-content{
+    margin-bottom: rem(10);
 
-        .p{
-            text-align: center;
-            font-size: rem(14);
-            color: #cccccc;
-        }
-        p{
-            height: rem(10);
-            background-color: #fafafa;
+    .item{
+      padding-left: rem(15);
+
+      .item-inner{
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+        .label{
+          margin: 0;
+          position: relative;
+          h2{
             margin: 0;
-            width: 100%;
+            font-size: rem(16);
+            color: #333333;
+            line-height: rem(44);
+          }
         }
-
+      }
+      ion-icon{
+        margin: 0;
+        color: #afafaf;
+        font-size: rem(14);
+      }
     }
+  }
 }

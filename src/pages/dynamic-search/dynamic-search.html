@@ -1,12 +1,11 @@
 <ion-header no-border>
-
-  <ion-toolbar color="white">
+  <ion-toolbar color="white" class="search-header">
     <div class="szom-search">
-      <ion-icon class="szom" name="md-sousuo"></ion-icon>
-      <ion-searchbar [(ngModel)]="selectString" (ionInput)="search()" placeholder="" #searchbar></ion-searchbar>
-      <ion-icon *ngIf="selectString" class="szom" name="md-guanbi" (click)="selectString='';search()"></ion-icon>
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <ion-searchbar #searchEle [(ngModel)]="selectString" (ionInput)="search()" placeholder=""></ion-searchbar>
+      <img class="search-clear-icon" src="assets/imgs/delete@3x.png" *ngIf="selectString" (click)="selectString='';search();">
     </div>
-    <button class="cancel-btn" ion-button (click)="goBack()" clear float-right>取消</button>
+    <button class="cancel-btn" (click)="goBack()" ion-button clear float-right>取消</button>
   </ion-toolbar>
 
 </ion-header>
@@ -15,7 +14,8 @@
 <ion-content overflow-scroll="false">
   <div class="conditions">
     <div class="select-btn" (click)="goSelectDate()">
-      <ion-icon [class.color-blue]="timeStarts" class="szom" name="md-shaixuan"></ion-icon>
+      <img class="filter-icon" *ngIf="!timeStarts && !timeEnd" src="assets/imgs/filter@3x.png" />
+      <img class="filter-icon" *ngIf="timeStarts || timeEnd" src="assets/imgs/filter-active@3x.png" />
       <span class="title">筛选:</span>
       <span class="color-blue" *ngIf="timeStarts || timeEnd">{{timeStarts}}至{{timeEnd}}</span>
       <ion-icon float-right class="szom" [name]="selectTimeShowFlag?'md-shang':'md-xia'"></ion-icon>
@@ -26,7 +26,7 @@
   </div>
   <div class="main-content">
     <div style="text-align:center;" *ngIf="isLoading">
-      <ion-spinner name="bubbles"></ion-spinner>
+      <ion-spinner name="crescent"></ion-spinner>
     </div>
     <ion-list *ngIf="dynamicList" class="daily-list" [class.listDiv]="dynamicList.length">
       <ion-item *ngFor="let log of dynamicList;let i=index;" tappable (click)="goDynamicShow(log)">
@@ -34,17 +34,18 @@
         <div class="other">
           <ion-note class="date">{{log.publishTime | date:'yyyy-MM-dd'}}</ion-note>
           <ion-note>
-            <ion-icon class="szom" name="md-dianzanmoren"></ion-icon> {{log.sbLikeList.length}}</ion-note>
+            <ion-icon class="szom" name="md-dianzandianji"></ion-icon> <span class="numWidth"><span *ngIf="log.sbLikeList.length>0">{{log.sbLikeList.length}}</span></span></ion-note>
           <ion-note>
-            <ion-icon class="szom" name="md-xiaoxi"></ion-icon> {{log.sbCommentList.length}}</ion-note>
+            <ion-icon class="szom" name="md-xiaoxi1"></ion-icon> <span class="numWidth"><span *ngIf="log.sbCommentList.length>0">{{log.sbCommentList.length}}</span></span></ion-note>
         </div>
         <ion-thumbnail item-end *ngIf="log.uploadFileDetailDTOList&&log.uploadFileDetailDTOList.length">
-          <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.src='assets/imgs/no-img.png'">
+          <img *ngIf="log.uploadFileDetailDTOList.length" [src]="getImageUrl(log.uploadFileDetailDTOList[0])" onerror="this.src='assets/imgs/default-img@3x.png'">
         </ion-thumbnail>
       </ion-item>
     </ion-list>
   </div>
-  <ion-infinite-scroll *ngIf="hasMore" (ionInfinite)="more($event)">
-    <ion-infinite-scroll-content loadingText="正在加载..."></ion-infinite-scroll-content>
+  <div class="no-more-tip" *ngIf="!hasMore && dynamicList.length"><span></span>没有更多内容<span></span></div>
+  <ion-infinite-scroll *ngIf="!isLoading && hasMore" (ionInfinite)="more($event)">
+    <ion-infinite-scroll-content loadingText=""></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

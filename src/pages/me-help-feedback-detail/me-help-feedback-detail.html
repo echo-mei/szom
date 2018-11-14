@@ -1,0 +1,25 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>帮助与反馈</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <div class="con">
+      <ion-item>
+        <h3>{{ item.question }}</h3>
+      </ion-item>
+      <h4>
+        <div *ngIf="item.answer1"><span class="title">{{ item.answer1.title }}</span><span *ngIf="item.answer1.content1"><br></span><span>{{ item.answer1.content }}</span><span *ngIf="item.answer1.content1"><br>{{ item.answer1.content1 }}</span></div>
+        <div *ngIf="item.answer2"><span class="title">{{ item.answer2.title }}</span><span>{{ item.answer2.content }}</span></div>
+        <div *ngIf="item.answer3"><span class="title">{{ item.answer3.title }}</span><span>{{ item.answer3.content }}</span></div>
+        <div *ngIf="item.answer4"><span class="title">{{ item.answer4.title }}</span><span>{{ item.answer4.content }}</span></div>
+      </h4>
+      <div class="bottom"></div>
+    </div>
+  </ion-list>
+</ion-content>

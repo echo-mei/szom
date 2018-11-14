@@ -80,15 +80,15 @@ export class DailyTenCreatePage {
       writeThing: this.dailyTenForm.value['content'],
       user: this.user,
       witch: this.ten,
+      minDate: new Date(this.year, 0, 1),
+      maxDate: new Date(this.year, 11, 31),
       onDone: (daily) => {
-        console.log(daily)
         this.dailyTenForm.controls['content'].setValue(daily.content);
         this.imagePicker.images = [];
-        
-        daily.uploadFileDetailDTOList.forEach((img) => {
+        daily.uploadFileDetailDTOList && daily.uploadFileDetailDTOList.forEach((img) => {
           this.imagePicker.images.push({
-            img: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`,
-            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`
+            img: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`,
+            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`
           });
         });
       }

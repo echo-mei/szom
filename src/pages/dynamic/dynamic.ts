@@ -1,227 +1,148 @@
-import { Component, ViewChild, ViewChildren } from '@angular/core';
-import { NavController, PopoverController, Events, Slides, ModalController } from 'ionic-angular';
-import { UserProvider } from '../../providers/user/user';
-import { StorageProvider } from '../../providers/storage/storage';
-import { DynamicProvider } from '../../providers/dynamic/dynamic';
-import { DynamicListPage } from '../dynamic-list/dynamic-list';
-import { MenuProvider } from '../../providers/menu/menu';
-import { DynamicSearchPage } from '../dynamic-search/dynamic-search';
-import { DailyMePage } from '../daily-me/daily-me';
-import { PopSelectComponent } from '../../components/pop-select/pop-select';
+import { Component, EventEmitter, ViewChild, Input } from "@angular/core";
+import { NavController } from "ionic-angular/navigation/nav-controller";
+import { UserProvider } from "../../providers/user/user";
+import { StorageProvider } from "../../providers/storage/storage";
+import { DynamicProvider } from "../../providers/dynamic/dynamic";
+import { MenuProvider } from "../../providers/menu/menu";
+import { ModalController, Slides, NavParams } from "ionic-angular";
+import { DailyMeCreatePage } from "../daily-me-create/daily-me-create";
+import { DynamicSearchPage } from "../dynamic-search/dynamic-search";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'page-dynamic',
   templateUrl: 'dynamic.html',
 })
-
 export class DynamicPage {
-  @ViewChild('mySlider') slides: Slides;
-  @ViewChildren(DynamicListPage) children;
 
-  type = "attention";
-  me: any = {};
-  size = 10;
-  isActive = 0;
-  attentionDynamicList: Array<object> = [];
-  unitDynamicList: Array<object> = [];
-  recommendDynamicList: Array<object> = [];
-  leaderlikeDynamicList: Array<object> = [];
-  // 搜索相关
-  selectString: string = '';
-  timeStarts: any = '';
-  timeEnd: any = '';
-  //初始加载数据
-  initLoadFlag = [true,true,true,true];
+  // eventEmitter-用于外部调用内部方法
+  @Input() eve: EventEmitter<any>;
+
+  @ViewChild('slides') slides: Slides;
+
+  tabIndex: number = 0;
+
+  tabs: any[] = [
+    {
+      hasInit: false,
+      hasRefresher: true,
+      hasInfinite: true,
+      getListPromise: this.dynamicProvider.getAttentionDynamicList.bind(this.dynamicProvider),
+      onLoad: () => {
+        this.storage.newDynamicAttention = null;
+      },
+      eventEmitter: new EventEmitter()
+    },
+    {
+      hasInit: false,
+      hasRefresher: true,
+      hasInfinite: true,
+      getListPromise: this.dynamicProvider.getUnityDnamicList.bind(this.dynamicProvider),
+      onLoad: () => {
+        this.storage.newDynamicUnit = null;
+      },
+      eventEmitter: new EventEmitter()
+    },
+    {
+      hasInit: false,
+      hasRefresher: false,
+      hasInfinite: false,
+      getListPromise: this.dynamicProvider.getRecommendDynamicList.bind(this.dynamicProvider),
+      eventEmitter: new EventEmitter()
+    },
+    {
+      hasInit: false,
+      hasRefresher: true,
+      hasInfinite: true,
+      getListPromise: this.dynamicProvider.getLeaderLikeDynamicList.bind(this.dynamicProvider),
+      onLoad: () => {
+        this.storage.newDynamicLeader = null;
+      },
+      eventEmitter: new EventEmitter()
+    }
+  ];
+  // 搜索页缓存数据
+  searchStorage: any;
 
   constructor(
+    public domSanitizer: DomSanitizer,
     public navCtrl: NavController,
-    public popoverCtrl: PopoverController,
-    public events: Events,
     public userProvider: UserProvider,
     public storage: StorageProvider,
     public dynamicProvider: DynamicProvider,
     public menuProvider: MenuProvider,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public navParams: NavParams
   ) {
-
   }
 
-  ionViewDidLoad() {
-    this.getMe();
-  }
-
-  ionViewDidEnter(){
-    this.events.subscribe("dynamicListInit", () => {
-      let index = 0;
-      if(this.storage.get('ws-dynamic-attention')) {
-        index = 0;
-      }else if(this.storage.get('ws-dynamic-unit')) {
-        index = 1;
-      }else if(this.storage.get('ws-dynamic-leader-unit')||this.storage.get('ws-dynamic-leader-all')) {
-        index = 3;
+  ngOnInit() {
+    Object.assign(this, this.navParams.data);
+    this.eve.subscribe((event) => {
+      if(event.name=='load') {  // 加载事件
+        this.tabs[this.tabIndex].eventEmitter.emit({name: this.tabIndex == 2 ? 'refresh' : 'load'});
       }
-      this.initData(index);
     });
   }
 
-  ionViewDidLeave(){
-    this.events.unsubscribe("dynamicListInit");
+  // =================== Public Methods =====================
+
+  // 计算tab头部底线位置
+  styleEffect() {
+    return this.domSanitizer.bypassSecurityTrustStyle(`left: ${this.tabIndex/4*100}%;`);
   }
 
-  initData(index){
-    this.initLoadFlag = [true,true,true,true];
-    this.goDynamicList(index);
-    this.onSlideChanged();
+  // ==================== Events =======================
+
+  // 点击title
+  onClickTop() {
+    this.tabs[this.tabIndex].eventEmitter.emit({name: 'load'});
   }
 
-  getDynamicListData(index){
-    if(this.initLoadFlag[index]){
-      //初始化,没数据才请求
-      this.children._results[index].initDynamicList();
-      this.initLoadFlag[index] = false;
-      switch(index) {
-        case 0:
-          this.storage.remove('ws-dynamic-attention');
-          break;
-        case 1:
-          this.storage.remove('ws-dynamic-unit');
-          break;
-        case 3:
-          this.storage.remove('ws-dynamic-leader-unit');
-          this.storage.remove('ws-dynamic-leader-all');
-          break;
-      }
-    }
-  }
-
-  goDynamicList(index) {
-    // this.events.unsubscribe("attention-dynamicList:change");
-    // this.events.unsubscribe("unit-dynamicList:change");
-    // this.events.unsubscribe("recommend-dynamicList:change");
-    // this.events.unsubscribe("leaderlike-dynamicList:change");
-    this.isActive = index;
-    this.setType(index);
-    this.slides.slideTo(index, 500);
-    this.commentInputHide();
-  }
-
-  setType(index) {
-    switch (index) {
-      case 0:
-        this.type = "attention";
-        break;
-      case 1:
-        this.type = "unit";
-        break;
-      case 2:
-        this.type = "recommend";
-        break;
-      case 3:
-        this.type = "leaderlike";
-        break;
-    }
-  }
-
-  onSlideChanged() {
-    let currentIndex = this.slides.getActiveIndex();
-    this.isActive = currentIndex;
-    this.setType(currentIndex);
-    this.getDynamicListData(currentIndex);
-  }
-
-  //模拟双击事件
-  dbClick: number = 0;
-  goTop() {
-    this.dbClick++;
-    let that = this;
-    setTimeout(function () {
-      that.dbClick = 0;
-    }, 1000);
-    if (this.dbClick > 1) {
-      this.dbClick = 0;
-      this.children._results[this.isActive].goTop();
-    }
-  }
-
-  commentInputHide() {
-    this.children._results[this.isActive].commentInputHide();
-  }
-
-  getMe() {
-    this.userProvider.getUserInfo({ userCode: JSON.parse(this.storage.get('user')).userCode }).subscribe(
-      me => {
-        this.me = me;
-      }
-    );
-  }
-
-  goDynamicSearch() {
-
-    let searchModal = this.modalCtrl.create(DynamicSearchPage, {
-      type: this.type,
-      selectString: this.selectString,
-      timeStarts: this.timeStarts,
-      timeEnd: this.timeEnd
-    });
-
+  // 点击搜索
+  onClickSearch() {
+    let params = {
+      ...this.searchStorage,
+      onUpdate: (dynamic) => {
+        this.tabs[this.tabIndex].eventEmitter.emit({name: 'update', value: { dynamic: dynamic }});
+      },
+      getListPromise: this.tabs[this.tabIndex].getListPromise.bind(this)
+    };
+    let searchModal = this.modalCtrl.create(DynamicSearchPage, params);
     searchModal.onDidDismiss(data => {
       if (data) {
-        this.selectString = data.selectString;
-        this.timeStarts = data.timeStarts;
-        this.timeEnd = data.timeEnd;
+        this.searchStorage = data;
       }
     });
     searchModal.present();
   }
 
-
-  popover(event) {
-    const popover = this.popoverCtrl.create(PopSelectComponent, {
-      buttons: [
-        {
-          icon: 'md-gongzuorizhi',
-          text: '工作日志',
-          handler: () => {
-            this.navCtrl.push(DailyMePage, {
-              user: this.me
-            });
-            popover.dismiss();
-          }
-        },
-        // {
-        //   text: '每周一励',
-        //   handler: () => {
-        //     this.navCtrl.push(DailyOnePage, {
-        //       user: this.me
-        //     });
-        //     popover.dismiss();
-        //   }
-        // },
-        // {
-        //   text: '每季三励',
-        //   handler: () => {
-        //     this.navCtrl.push(DailyThreePage, {
-        //       user: this.me
-        //     });
-        //     popover.dismiss();
-        //   }
-        // },
-        // {
-        //   text: '每年十励',
-        //   handler: () => {
-        //     this.navCtrl.push(DailyTenPage, {
-        //       user: this.me
-        //     });
-        //     popover.dismiss();
-        //   }
-        // }
-      ]
-    }, {
-        cssClass: 'mini'
-      });
-    popover.present({
-      ev: event
+  // 点击新建
+  onClikeCreate() {
+    this.navCtrl.push(DailyMeCreatePage, {
+      onCreate: () => {
+        this.tabs[0].eventEmitter.emit({name: 'load'});
+      }
     });
+  }
+
+  // 点击tab按钮
+  selectTab(index) {
+    this.tabIndex = index;
+    this.slides.slideTo(index);
+    if(index==0 && !this.storage.newDynamicAttention) return;
+    if(index==1 && !this.storage.newDynamicUnit) return;
+    if(index==2) return;
+    if(index==3 && !this.storage.newDynamicLeader) return;
+    !this.tabs[this.tabIndex].hasInit && this.tabs[this.tabIndex].eventEmitter.emit({name: 'load'});
+    this.tabs[index].hasInit = true;
+  }
+
+  // 左右滑动后置
+  onSlideChanged() {
+    this.tabIndex = this.slides.getActiveIndex() > 3 ? 3 : this.slides.getActiveIndex();
+    !this.tabs[this.tabIndex].hasInit && this.tabs[this.tabIndex].eventEmitter.emit({name: 'load'});
+    this.tabs[this.tabIndex].hasInit = true;
   }
 
 }

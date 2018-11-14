@@ -1,0 +1,27 @@
+page-bz-weave-look {
+  .scroll-content{
+    background-color: #fafafa;
+    ion-grid{
+      margin-top: rem(4);
+      background: #fff;
+      padding: 0;
+      ion-row{
+        font-size: rem(14);
+        padding: 0 rem(15);
+        color: #000;
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+
+        &.header{
+          font-size: rem(12);
+          color: #999999;
+        }
+
+        .col{
+          padding: rem(8) rem(4) rem(8) 0;
+          line-height: rem(20);
+        }
+      }
+    }
+  }
+}

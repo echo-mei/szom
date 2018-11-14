@@ -4,7 +4,11 @@ import { StorageProvider } from '../../providers/storage/storage';
 import { UserProvider } from '../../providers/user/user';
 import { MenuProvider } from '../../providers/menu/menu';
 import { LoginPage } from '../login/login';
-import { MeSafePage } from '../me-safe/me-safe';
+import { MeInfoPage } from '../me-info/me-info';
+import { WebsocketProvider } from '../../providers/websocket/websocket';
+import { MessageInfoPage } from '../message-info/message-info';
+import { MeUpdatePage } from '../me-update/me-update';
+import { MeHelpFeedbackPage } from '../me-help-feedback/me-help-feedback';
 
 @Component({
   selector: 'page-me',
@@ -22,9 +26,10 @@ export class MePage {
     public navCtrl: NavController,
     public menuProvider: MenuProvider,
     public app: App,
-    public actionSheetCtrl: ActionSheetController
+    public actionSheetCtrl: ActionSheetController,
+    public ws: WebsocketProvider
   ) {
-    this.getMe();
+    this.me = this.storage.me;
   }
 
   logout() {
@@ -33,24 +38,30 @@ export class MePage {
       buttons: [
         {
           text: '确定', handler: () => {
-            this.app.getRootNav().setRoot(LoginPage);
-            this.storage.remove('user', 'menuList', 'token');
-            this.events.publish('logout');
+            this.userProvider.logout().subscribe(() => {
+              this.app.getRootNav().setRoot(LoginPage);
+              setTimeout(() => {
+                this.storage.resetStorage();
+                this.ws.close();
+              }, 500);
+            });
           }
         },
-        { text: '取消', role: 'cancel' }
+        { text: '取消', role: 'cancel',cssClass: 'color: #000',}
       ]
     }).present();
   }
 
-  getMe() {
-    this.userProvider.getUserInfo({userCode: JSON.parse(this.storage.get('user')).userCode}).subscribe(
-      me => {
-        this.me = me;
-      }
-    );
-  }
   meSafe() {
-    this.navCtrl.push(MeSafePage);
+    this.navCtrl.push(MeUpdatePage);
+  }
+  goMeInfo() {
+    this.navCtrl.push(MeInfoPage);
+  }
+  goMessageInfo() {
+    this.navCtrl.push(MessageInfoPage);
+  }
+  goHelpFeedback() {
+    this.navCtrl.push(MeHelpFeedbackPage);
   }
 }

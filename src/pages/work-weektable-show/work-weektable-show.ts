@@ -1,16 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, PopoverController } from 'ionic-angular';
 import { WorkProvider } from '../../providers/work/work';
 import { WorkWeektableUpdatePage } from '../work-weektable-update/work-weektable-update';
-import { WorkWeektableCreatePage } from '../work-weektable-create/work-weektable-create';
 import { PopSelectComponent } from '../../components/pop-select/pop-select';
-
-/**
- * Generated class for the WorkWeektableShowPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StorageProvider } from '../../providers/storage/storage';
 
 @Component({
   selector: 'page-work-weektable-show',
@@ -18,24 +11,31 @@ import { PopSelectComponent } from '../../components/pop-select/pop-select';
 })
 export class WorkWeektableShowPage {
 
+  // 用户
+  user: any;
+  // 当前用户
+  me: any;
+  // 工作周表数据
   weektable: any;
-  onUpdate: () => {};
+
+  onUpdate: (date:Date) => {};
+  onDelete: () => {};
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public workProvider: WorkProvider,
     public popoverCtrl: PopoverController,
+    public storage: StorageProvider,
     public alertCtrl: AlertController) {
+    this.user = this.navParams.get('user');
+    this.me = this.storage.me;
     this.weektable = this.navParams.get("weektable");
     this.onUpdate = this.navParams.get('onUpdate');
+    this.onDelete = this.navParams.get('onDelete');
     this.getWeektable();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WorkWeektableShowPage');
-  }
-
-  getWeektable(){
+  getWeektable() {
     this.workProvider.getWork(this.weektable.weektableId).subscribe(
       (data) => {
         this.weektable = data;
@@ -43,9 +43,13 @@ export class WorkWeektableShowPage {
     )
   }
 
-  onUpdateNew(){
-    this.onUpdate && this.onUpdate();
+  onUpdateNew(date:Date) {
     this.getWeektable();
+    this.onUpdate && this.onUpdate(date);
+  }
+
+  canShow() {
+    return this.user.userCode === this.me.userCode;
   }
 
   popover() {
@@ -54,7 +58,7 @@ export class WorkWeektableShowPage {
         {
           text: '修改',
           handler: () => {
-            this.navCtrl.push(WorkWeektableUpdatePage,{
+            this.navCtrl.push(WorkWeektableUpdatePage, {
               weektable: this.weektable,
               onUpdate: this.onUpdateNew.bind(this)
             });
@@ -67,15 +71,17 @@ export class WorkWeektableShowPage {
             let alert = this.alertCtrl.create({
               message: '确认删除当前记录吗？',
               buttons: [
-                {text: '取消', role: 'cancel'},
-                {text: '确认', handler: () => {
-                  this.workProvider.deleteWeektable(this.weektable.weektableId).subscribe(
-                    () => {
-                      this.navCtrl.pop();
-                      this.onUpdate && this.onUpdate();
-                    }
-                  );
-                }}
+                { text: '取消', role: 'cancel' },
+                {
+                  text: '确认', handler: () => {
+                    this.workProvider.deleteWeektable(this.weektable.weektableId).subscribe(
+                      () => {
+                        this.navCtrl.pop();
+                        this.onDelete && this.onDelete();
+                      }
+                    );
+                  }
+                }
               ]
             });
             alert.present();
@@ -84,8 +90,8 @@ export class WorkWeektableShowPage {
         }
       ]
     }, {
-      cssClass: 'mini'
-    });
+        cssClass: 'mini'
+      });
     popover.present({
       ev: event
     });

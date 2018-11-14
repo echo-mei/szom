@@ -1,0 +1,60 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>消息详情</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="daily-detail-main">
+    <!-- <h2 class="title">《{{dailyTen.title}}》</h2> -->
+    <pre class="content">content</pre>
+    <!-- <img-show></img-show> -->
+    <div class="other">
+      <ion-note class="pubTime">2018-01-01</ion-note>
+      <button class="delete" ion-button clear (click)="popover()">删除</button>
+      <button class="dianzan" ion-button clear float-right>
+        <ion-icon name="md-dianzanmoren" class="szom"></ion-icon>
+      </button>
+      <button class="dianzan dianji" ion-button clear float-right>
+        <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      </button>
+    </div>
+    <div class="line"></div>
+    <ion-row class="like-wrap">
+      <ion-icon name="md-dianzandianji" class="szom"></ion-icon>
+      <ion-note class="like-names">
+        <span class="zanName">
+          <a class="zan-name">张三</a><span class="zan-name">、</span>
+        </span>
+      </ion-note>
+      <ion-note class="like-names">
+        <span class="zanName">
+          <a class="zan-name">无敌1</a><span class="zan-name">、</span>
+        </span>
+        <span>等11人觉得很赞</span>
+      </ion-note>
+    </ion-row>
+    <ion-list class="comment-list">
+      <p class="comment-item">
+        <a class="commentPeople">操作人</a>
+        <span >
+          回复
+          <a class="commentPeople">被操作人啊</a>
+        </span>
+        :
+        <ion-note class="commentCon">评论内容昂</ion-note>
+      </p>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer no-border #footer>
+  <ion-item class="publish-comment" no-lines>
+    <ion-label>评论长度</ion-label>
+    <ion-label class="error">超出1字</ion-label>
+    <ion-textarea #commentTextarea rows=1 autosize placeholder="来评论OK不" ></ion-textarea>
+    <button item-end ion-button (click)="sendComment()">发送</button>
+  </ion-item>
+</ion-footer>

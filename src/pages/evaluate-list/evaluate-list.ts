@@ -33,7 +33,6 @@ export class EvaluateListPage {
   getEvaluate() {
     this.EvaluateProvider.getEvaluateList().subscribe(
       (data) => {
-        console.log(data);
         this.zzbmEvaluateLists = data;
         this.sjldEvaluateLists = data;
 

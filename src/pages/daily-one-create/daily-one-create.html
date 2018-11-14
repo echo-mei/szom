@@ -4,7 +4,7 @@
     <ion-title>创建每周{{ count | digitalChineseConversion }}励</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goDailyList()">
-        <ion-icon class="szom" name="md-daoru"></ion-icon>
+        <img src="assets/imgs/export@3x.png" />
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -15,9 +15,6 @@
 <ion-content padding>
   <form [formGroup]="dailyOneForm">
     <ion-list no-lines>
-      <!-- <ion-item>
-        <ion-input formControlName="title" name="title" placeholder="标题"></ion-input>
-      </ion-item> -->
       <ion-item>
         <ion-label *ngIf="dailyOneForm.controls['content'].value.length <= maxLength">{{dailyOneForm.controls['content'].value.length}}</ion-label>
         <ion-label class="error" *ngIf="dailyOneForm.controls['content'].value.length > maxLength">超出{{dailyOneForm.controls['content'].value.length-maxLength}}字</ion-label>

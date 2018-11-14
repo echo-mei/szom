@@ -1,0 +1,64 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title text-center>工作日志详情</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="daily" class="daily-detail-main" (click)="placeholder=originalPlaceholder;commentId='';">
+    <!-- <h2 class="title">《{{daily.title}}》</h2> -->
+    <pre class="content">{{emojiProvider.emojiRecovery(daily.content)}}</pre>
+    <img-show [uploadFileDetailDTOList]="daily.uploadFileDetailDTOList"></img-show>
+    <div class="other">
+      <ion-note class="pubTime">{{daily.publishTime | date:'yyyy-MM-dd HH:mm'}}</ion-note>
+      <button class="delete" *ngIf="daily.isShowDelete && user.userCode==me.userCode" ion-button clear (click)="popover()">删除</button>
+      <button class="dianzan" *ngIf="!daily.hasMeLike" ion-button clear float-right (click)="sendLike()">
+        <img [class.scale-large]="daily.hasClicked" src="assets/imgs/dianzanmoren.png" />
+      </button>
+      <button class="dianzan dianji" *ngIf="daily.hasMeLike" ion-button clear float-right (click)="onClickCancelLikeIcon()">
+        <img [class.scale-small]="daily.hasClicked" src="assets/imgs/dianzan.png" />
+      </button>
+    </div>
+    <ion-row class="like-list" *ngIf="daily.listStLike.length" (click)="goLikeList()">
+      <ion-col col-1  class="zanList-wrap">
+        <img class="zanList" src="assets/imgs/dianzan-num@3x.png" />
+      </ion-col>
+      <ion-col class="zan" *ngIf="daily.listStLike.length<=8">
+        <span *ngFor="let user of daily.listStLike.slice(0, 7);let li=index;">
+          <a class="zanName">{{user.operatorName}}</a>
+          <span class="zanName" *ngIf="li<8&&li<daily.listStLike.length-1">、</span>
+        </span>
+      </ion-col>
+      <ion-col class="zan" *ngIf="daily.listStLike.length>8">
+        <span *ngFor="let user of daily.listStLike.slice(0, 7);let li=index;">
+          <a class="zanName">{{user.likeUserName}}</a>
+          <span class="zanName" *ngIf="li<7&&li<daily.listStLike.length-1">、</span>
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;等{{daily.listStLike.length}}人觉得很赞</span>
+      </ion-col>
+    </ion-row>
+    <div class="line" *ngIf="daily.listStLike && daily.listStLike.length && daily.listStComment && daily.listStComment.length"></div>
+    <ion-list class="comList" *ngIf="daily.listStComment&&daily.listStComment.length">
+      <p *ngFor="let comment of daily.listStComment" (click)="replyComment(comment.stCommentId,comment.operatorName);$event.stopPropagation();">
+        <a (click)="onClickCommentName(comment.operator,comment.operatorUserType);$event.stopPropagation();">{{comment.operatorName}}</a>
+        <span *ngIf="comment.commentObjectName">回复
+          <a (click)="onClickCommentName(comment.commentObjectUserCode,comment.commentObjectUserType);$event.stopPropagation();">{{comment.commentObjectName}}</a>
+        </span>:
+        <span>{{comment.content}}</span>
+      </p>
+    </ion-list>
+    <div class="no-comment" *ngIf="!daily.listStComment || !daily.listStComment.length">快来发表你的见解吧</div>
+  </div>
+</ion-content>
+
+<ion-footer no-border #footer>
+  <ion-item class="publish-comment" no-lines>
+      <ion-label *ngIf="comment.length <= maxLength">{{comment.length}}</ion-label>
+      <ion-label class="error" *ngIf="comment.length > maxLength">超出{{comment.length-maxLength}}字</ion-label>
+    <ion-textarea rows=1 autosize placeholder="{{placeholder}}" [(ngModel)]="comment" [maxlength]="maxLength"></ion-textarea>
+    <button item-end ion-button (click)="sendComment()" [disabled]="!comment || comment.length<1 || comment.length>98">发送</button>
+  </ion-item>
+</ion-footer>

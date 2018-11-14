@@ -57,12 +57,11 @@ export class DailyProvider {
   }
 
   likeDaily(params): Observable<any> {
-    return this.http.post(`${BASE_URL}/dynamicbiz/createStLikeBiz`,params);
+    return this.http.post(`${BASE_URL}/dynamicbiz/createStLikeBiz`, params);
   }
 
   cancelLikeDaily(params): Observable<any> {
-    // TODO: 取消点赞日志
-    return null;
+    return this.http.delete(`${BASE_URL}/dynamicbiz/deleteStLikeBiz`,params);
   }
 
   // 查询每周一励列表

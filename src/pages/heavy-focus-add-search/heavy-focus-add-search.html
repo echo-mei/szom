@@ -1,0 +1,39 @@
+<ion-header no-border>
+  <ion-toolbar color="white" class="search-header">
+    <div class="szom-search">
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <ion-searchbar #searchEle [(ngModel)]="key" (ionInput)="search()" placeholder="请输入用户名/单位名搜索..."></ion-searchbar>
+      <img class="search-clear-icon" src="assets/imgs/delete@3x.png" *ngIf="key" (click)="clear();">
+    </div>
+    <button class="cancel-btn" (click)="goBack()" ion-button clear float-right>取消</button>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content content-shadow>
+  <div style="text-align:center;" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <not-found-person *ngIf="!isLoading&&!organizationlist.length && !personList.length"></not-found-person>
+
+  <ion-list class="type-list">
+    <ion-item *ngFor="let org of organizationlist;" (click)="onClickOrg(org)">
+      <h2>{{org.orgName}}</h2>
+      <ion-icon item-end class="szom" name="you"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="type-list type-list-person" [class.margin-top]="organizationlist.length">
+    <ion-item *ngFor="let user of personList;" (click)="onClickUser(user)">
+      <ion-avatar item-start *ngIf="user.userType!='02'">
+        <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="user.userType=='02'">
+        <img src="assets/imgs/banzi-user.png">
+      </ion-avatar>
+      <h2>{{user.userName}}</h2>
+      <ion-note>{{user.dutyName}}</ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>

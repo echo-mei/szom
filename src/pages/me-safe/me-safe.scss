@@ -1,6 +1,7 @@
 page-me-safe {
 
     .scroll-content{
+      margin-top: rem(62)!important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         ion-list{
@@ -20,11 +21,7 @@ page-me-safe {
             .item{
                 padding: 0 rem(20);
             }
-            .telNum{
-                // width: calc(100% - 200px - 8px) !important;
-                text-align: right;
-                padding-right: rem(10);
-            }
+
             .telFont{
                 font-family: PingFangSC-Regular;
                 font-size: 16px;
@@ -32,12 +29,19 @@ page-me-safe {
                 letter-spacing: 0;
             }
             .text-input{
-                padding-left: rem(20);
-                margin-left: 0;
+                margin: 13px 0 !important;
                 text-align: left;
+                width: 100% !important;
+            }
+            .telNum{
+                // width: calc(100% - 200px - 8px) !important;
+                text-align: right;
+                padding-right: rem(10);
             }
             .item.item-block .item-inner{
                 padding-right: 0px;
+                // border-bottom: 0.5px solid #f1f1f1 !important;
+                @include border-b-1px(color($colors, boderColor));
             }
             .verify{
                 height: rem(50);
@@ -69,6 +73,20 @@ page-me-safe {
         background-color: #fafafa;
         margin: 0;
         width: 100%;
+    }
+    .list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child, .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child, .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner{
+        -webkit-box-shadow: inset 0 -0px 0 0 #488aff;
+        box-shadow: inset 0 0px 0 0 #488aff !important;
+      }
+      .item-md.item-input.item-input-has-focus .item-inner,
+      .item-md.item-input.input-has-focus .item-inner{
+        -webkit-box-shadow: inset 0 -0px 0 0 #488aff;
+        box-shadow: inset 0 -0px 0 0 #488aff;
+      }
+      .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color: #f53d3d;
+        -webkit-box-shadow: inset 0 -0px 0 0 #f53d3d;
+        box-shadow: inset 0 -0px 0 0 #f53d3d;
     }
 
 }

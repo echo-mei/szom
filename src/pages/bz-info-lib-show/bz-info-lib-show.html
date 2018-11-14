@@ -1,0 +1,67 @@
+<!--
+  Generated template for the BzInfoLibShowPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title>详细信息</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item class="info-title">
+    <h2>{{user.userName}}
+      <span *ngIf="followOrCancel">{{user.isAttention?"(已关注)":"(未关注)"}}</span>
+      <img src="assets/imgs/emp-attention@3x.png" *ngIf="user.isEmpAttention && empFollowOrCancel">
+    </h2>
+  </ion-item>
+
+  <div class="bzIntro">
+    <h2>班子概述</h2>
+    <p>{{ user.teamDesc }}</p>
+  </div>
+
+  <ion-list class="info-content">
+    <ion-item (click)="onClickBzInfo()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/i-base-info@3x.png">
+      </ion-avatar>
+      <h2>基本信息</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="onClickBzFg()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/i-banzi-fg@3x.png">
+      </ion-avatar>
+      <h2>班子分工</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="onClickWeektable()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/i-worktable@3x.png">
+      </ion-avatar>
+      <h2>班子工作周表</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-list class="info-content">
+    <ion-item (click)="onClickDaily()">
+      <ion-avatar item-start>
+        <img src="assets/imgs/i-daily@3x.png">
+      </ion-avatar>
+      <h2>工作日志</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer no-border>
+  <div class="footer-buttons" *ngIf="empFollowOrCancel">
+    <button ion-button block id="follow" *ngIf="!user.isEmpAttention" (click)="onClickEmpfollow()">重点关注</button>
+    <button ion-button block id="cancel-follow" color="white" *ngIf="user.isEmpAttention" (click)="onClickUnEmpfollow()">取消重点关注</button>
+  </div>
+</ion-footer>

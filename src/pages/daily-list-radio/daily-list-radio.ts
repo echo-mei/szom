@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, InfiniteScroll, AlertController, LoadingCmp, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, InfiniteScroll, AlertController, ToastController, ModalController } from 'ionic-angular';
 
 import { DailyProvider } from '../../providers/daily/daily';
 import { BASE_URL } from '../../config';
 import { StorageProvider } from '../../providers/storage/storage';
+import { BetweenDatePickerComponent } from '../../components/between-date-picker/between-date-picker';
+import { DateUtilProvider } from '../../providers/date-util/date-util';
 
 @Component({
   selector: 'page-daily-list-radio',
@@ -11,10 +13,19 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class DailyListRadioPage {
 
-  @ViewChild('infinite') infinite: InfiniteScroll;
-  @ViewChild('searchbar') searchbar;
   // 当前用户
   user: any;
+  // 点击“导入”按钮后事件
+  onDone: (daily) => {};
+  // 是否在点击“导入”按钮时提示信息
+  writeThing: any;
+  // 每周一励|每季三励|每年十励
+  witch: any;
+  // 最小时间
+  minDate: any;
+  // 最大时间
+  maxDate: any;
+
   // 列表条数
   size = 10;
   // 搜索关键字
@@ -23,18 +34,10 @@ export class DailyListRadioPage {
   timeStarts: string = "";
   // 结束时间
   timeEnd: string = "";
-  // 展示时间选择
-  selectTimeShowFlag = false;
   // 日志列表
   logDataList: Array<object>;
   // 选中日志
   selectDaily: object;
-  // 是否在点击“导入”按钮时提示信息
-  writeThing: any;
-  // 点击“导入”按钮后事件
-  onDone: (daily) => {};
-  // 每周一励|每季三励|每年十励
-  witch: any;
   // 是否还有更多数据
   hasMore: boolean = true;
   // 是否正在加载
@@ -46,13 +49,25 @@ export class DailyListRadioPage {
     public dailyProvider: DailyProvider,
     public alertCtrl: AlertController,
     public storage: StorageProvider,
-    public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
+    public dateUtil: DateUtilProvider
   ) {
     this.user = this.navParams.get('user');
     this.onDone = this.navParams.get('onDone');
     this.writeThing = this.navParams.get('writeThing');
     this.witch = this.navParams.get('witch');
+    this.minDate = this.navParams.get('minDate');
+    this.maxDate = this.navParams.get('maxDate');
+    this.minDate && (this.timeStarts = this.dateUtil.format(this.minDate, 'yyyy-MM-dd'));
+    this.maxDate && (this.timeEnd = this.dateUtil.format(this.maxDate, 'yyyy-MM-dd'));
+    this.resetList();
+  }
+
+  // ======================= Public Method ===========================
+
+  // 重置列表
+  resetList() {
     this.getList().subscribe((list) => {
       this.logDataList = list;
     });
@@ -75,31 +90,49 @@ export class DailyListRadioPage {
     });
   }
 
+  // 获取图片地址
+  getImageUrl(img) {
+    return `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`;
+  }
+
+  // ======================= Events ===========================
+
+  // 点击筛选
+  onClickFilter() {
+    this.modalCtrl.create(BetweenDatePickerComponent, {
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      afterSure: (start, end) => {
+        this.timeStarts = this.dateUtil.format(start, 'yyyy-MM-dd');
+        this.timeEnd = this.dateUtil.format(end, 'yyyy-MM-dd');
+        this.resetList();
+      }
+    }).present();
+  }
+
+  // 点击一条记录
+  onClickItem(item) {
+    this.selectDaily = item;
+  }
+
   // 搜索
-  search() {
+  onClickSearch() {
     this.selectDaily = undefined;
-    this.selectTimeShowFlag = false;
     this.getList().subscribe((list) => {
       this.logDataList = list;
     });
   }
 
-  // 重置时间
-  reset(){
-    this.timeStarts = '';
-    this.timeEnd = '';
-    this.selectTimeShowFlag = true;
-  }
-
-  // 加载更多
-  more(infinite: InfiniteScroll) {
+  // 滚动加载
+  onScrollList(infinite: InfiniteScroll) {
     this.getList({endTime: this.logDataList[this.logDataList.length - 1]['publishTime']}).subscribe((list) => {
       this.logDataList = this.logDataList.concat(list);
       infinite.complete();
     });
   }
 
-  backCreateDaily(){
+  // 点击导入
+  onClickImport(){
     if(this.writeThing){
       let alert = this.alertCtrl.create({
         message: `引用工作日志后，将清空之前已填写的${this.witch}所有内容，确认吗？`,
@@ -128,13 +161,5 @@ export class DailyListRadioPage {
       }
     }
 
-  }
-
-  selectItem(item) {
-    this.selectDaily = item;
-  }
-
-  getImageUrl(img) {
-    return `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`;
   }
 }

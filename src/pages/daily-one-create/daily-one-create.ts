@@ -22,8 +22,8 @@ export class DailyOneCreatePage {
   one = '每周一励';
   maxLength: number = 196;
 
-  year: number; // 当前年
-  week:{
+  week: {
+    year?: number,
     index?: number,
     week?: {
       firstDate: Date,
@@ -45,23 +45,20 @@ export class DailyOneCreatePage {
     public toastCtrl: ToastController,
     public storage: StorageProvider
   ) {
-    this.year = this.navParams.get('year');
     this.week = this.navParams.get('week');
     this.user = this.navParams.get('user');
     this.onCreate = this.navParams.get('onCreate');
     this.count = this.navParams.get('count');
     this.dailyOneForm = formBuilder.group({
-      // title: ['', Validators.compose([Validators.required])],
       content: ['', Validators.compose([Validators.required])]
     });
-    // console.log(this.user)
   }
 
   postDailyCreate(){
     let params = {
       ...this.dailyOneForm.value,
-      year: this.year,
-      weekNums: this.week.index,
+      year: this.week.year,
+      weekNums: this.week.index + 1,
       startDateStr: this.dateUtil.format(this.week.week.firstDate, 'yyyy-MM-dd'),
       endDateStr: this.dateUtil.format(this.week.week.lastDate, 'yyyy-MM-dd')
     };
@@ -86,18 +83,19 @@ export class DailyOneCreatePage {
   }
 
   goDailyList() {
-
     this.navCtrl.push(DailyListRadioPage, {
       writeThing: this.dailyOneForm.value['content'],
       user: this.user,
       witch: this.one,
+      minDate: this.week.week.firstDate,
+      maxDate: this.week.week.lastDate,
       onDone: (daily) => {
         this.dailyOneForm.controls['content'].setValue(daily.content);
         this.imagePicker.images = [];
-        daily.uploadFileDetailDTOList.forEach((img) => {
+        daily.uploadFileDetailDTOList && daily.uploadFileDetailDTOList.forEach((img) => {
           this.imagePicker.images.push({
-            img: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`,
-            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.get('token')}&filePath=${img.filePath}`
+            img: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`,
+            safeUrl: `${BASE_URL}/upload?Authorization=${this.storage.token}&filePath=${img.filePath}`
           });
         });
       }

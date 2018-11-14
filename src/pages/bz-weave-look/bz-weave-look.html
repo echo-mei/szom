@@ -1,0 +1,23 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>班子编制</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="header">
+      <ion-col col-5>编制类型</ion-col>
+      <ion-col col-5>经费形式</ion-col>
+      <ion-col col-2>数量</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let weave of bzWeaveList; let i=index; ">
+      <ion-col col-5>{{weave.hcCode}}</ion-col>
+      <ion-col col-5>{{weave.budgetFromCode}}</ion-col>
+      <ion-col col-2>{{weave.verifiedNum}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

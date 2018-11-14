@@ -1,4 +1,5 @@
 page-daily-me {
+
   .add-new{
     position: fixed;
     right: rem(20);
@@ -10,12 +11,12 @@ page-daily-me {
     border-radius: 50%;
     text-align: center;
     z-index: 3;
-
-    ion-icon{
-      color:#fff;
-      height: rem(50);
-      line-height: rem(50);
-      font-size: rem(22);
+    box-shadow: 0 rem(2) rem(4) rgba(77, 116, 235, 50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      height: rem(24);
     }
   }
   .bottom{
@@ -43,13 +44,17 @@ page-daily-me {
       height: rem(46);
       width: rem(208);
     }
+    a{
+      text-decoration: underline;
+    }
   }
   .like-main {
-    background: linear-gradient(to right, #3555DE, #628FF7);
+    background-size: 100%;
     margin: rem(8) rem(15);
     position: relative;
     text-align: center;
     overflow: hidden;
+    height: rem(92);
     h1{
       font-size: rem(36);
       color: #FFFFFF;
@@ -79,13 +84,11 @@ page-daily-me {
       }
     }
   }
-  .list {
-    .item:last-child{
-      border: 0;
-    }
+  .daily-list {
+    margin-bottom: rem(10);
     .item{
-      padding: rem(16) rem(15);
-      border-bottom: .5px solid color($colors,boderColor);
+      padding: rem(19) rem(15) rem(17);
+      @include border-b-1px(color($colors,boderColor));
       .item-inner{
         border-bottom: 0;
         padding-right: 0;

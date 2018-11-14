@@ -1,7 +1,7 @@
 page-leader-info {
   ion-navbar {
     .toolbar-background {
-      background: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+      background: linear-gradient(to right, #3555DE, #628FF7);
     }
     .toolbar-title, ion-icon {
       color: #fff;
@@ -11,11 +11,10 @@ page-leader-info {
     background: #fafafa;
   }
   ion-item.info-title {
-    width: rem(360);
-    height: rem(70);
-    padding: rem(15);
+    align-items: flex-start;
+    padding: rem(4) rem(15) rem(15);
     margin-bottom: rem(4);
-    background: linear-gradient(to right, #628FF7 0%, #3555DE 100%);
+    background: linear-gradient(to right, #3555DE, #628FF7);
     ion-avatar{
       margin: 0 rem(12) 0 0!important;
       width: rem(50);
@@ -28,15 +27,33 @@ page-leader-info {
     }
     .item-inner {
       border-bottom: none!important;
+      padding: 0!important;
+      align-items: flex-start;
+      ion-badge {
+        padding: rem(5) rem(4) rem(5) rem(8);
+        font-size: rem(12);
+        color: #FFFFFF;
+        text-align: center;
+        float: right;
+        border-radius: 0;
+        background: #7CCAFF;
+        font-weight: normal;
+        margin: 0;
+        ion-icon {
+          font-size: rem(12);
+        }
+      }
       ion-label.label {
         margin: 0;
         h2 {
+          margin:0;
           font-size: rem(18);
           color: #FFFFFF;
-          .szom{
-            font-size: rem(14);
-            margin-left: rem(7);
-            color:#f8e71c;
+          line-height: rem(25);
+          img{
+            position: relative;
+            width:rem(20);
+            top: rem(2);
           }
         }
         ion-note {
@@ -44,6 +61,7 @@ page-leader-info {
           font-size: rem(12);
           color: #FFFFFF;
           line-height: rem(18);
+          white-space: pre-wrap;
         }
       }
     }
@@ -60,14 +78,16 @@ page-leader-info {
         line-height: rem(44);
         text-align: center;
 
-        ion-icon{
-          color: #afafaf;
-          font-size: rem(18);
+        img{
+          width: rem(20);
+          height: auto;
+          margin:rem(11) rem(11) rem(11) rem(15);
         }
       }
 
       .item-inner{
-        border-bottom: .5px solid color($colors,boderColor);
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
         .label{
           margin: 0;
           position: relative;

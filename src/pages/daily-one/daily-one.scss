@@ -1,24 +1,8 @@
 page-daily-one {
-  ion-content{
-    background-color: #fafafa !important;
+  .scroll-content{
+    background-color: #fafafa;
   }
-  // .scroll-content{
-  //   margin-top: rem(70) !important;
-  //   padding-top: 0 !important;
-  // }
-  .addItemInput{
-    display: flex;
-    align-items: inherit !important;
-      ion-note{
-        margin: 0 !important;
-        margin-left: rem(20) !important;
-      }
-      .oneInput{
-        flex: 1;
-        padding-left: rem(20);
-        margin-right: rem(20);
-      }
-  }
+
   .noDailyList{
     position: relative;
     text-align: center;
@@ -36,60 +20,54 @@ page-daily-one {
       color: #999999;
     }
   }
-  ion-list {
-    // margin-top: rem(18) !important;
-    .yearWeek{
-      padding-left: rem(20) !important;
+  .daily-list {
+    .quaterWeek{
+      padding-left: rem(15);
       background-color: #fafafa;
       font-size: rem(12);
       color: #999999;
       height: rem(25);
       line-height: rem(26);
     }
-    ion-item.item {
-      border-bottom: rem(1) solid #F1F1F1;
-      height: rem(121);
-      padding: rem(18) 0;
-      align-items: center;
-      ion-note {
+    .item {
+      align-items: flex-start;
+      padding: rem(18) rem(15);
+      &:not(last-of-type){
+        @include border-b-1px(color($colors,boderColor));
+      }
+      &.addItemInput{
+        @include border-none;
+        .oneInput{
+          flex: 1;
+          padding-left: rem(20);
+          margin-right: rem(20);
+        }
+      }
+      ion-note{
         margin: 0;
         width: rem(26);
         height: rem(26);
         line-height: rem(26);
         text-align: center;
         background: #666666;
-        color: #fff;
-        font-size: rem(18);
+        color: #fff !important;
         &.now-daily{
           background: #4D74EB;
         }
       }
-      .inaa{
-        display: flex;
-        padding-left: rem(20);
-      }
       .item-inner {
-        // padding-left: rem(20);
         ion-label{
           margin: 0;
           div {
             &.text {
               background: #F4F4F4;
-              border-radius: 1px !important;
-              padding: rem(9) rem(7) !important;
-              height: rem(64) !important;
-              font-size: rem(15) !important;
-              color: #AFAFAF !important;
-              letter-spacing: rem(-0.15) !important;
-              line-height: rem(16) !important;
-            }
-
-            img {
-              width: rem(36);
-              height: rem(36);
-              min-width: rem(36);
-              min-height: rem(36);
-              border-radius: rem(5);
+              border-radius: 1px;
+              padding: rem(9) rem(7);
+              height: rem(64);
+              font-size: rem(15);
+              color: #AFAFAF;
+              letter-spacing: rem(-0.15);
+              line-height: rem(16);
             }
             span {
               font-size: rem(13);
@@ -108,5 +86,6 @@ page-daily-one {
       }
     }
   }
+
 }
 

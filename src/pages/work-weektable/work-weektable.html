@@ -19,57 +19,56 @@
     </button>
     <ion-multi-picker class="time" [(ngModel)]="weekdate" item-content [multiPickerColumns]="dateControls" doneText="确定" cancelText="取消"
       (ionChange)="updateList(0);"></ion-multi-picker>
-    <label class="time-show" *ngIf="weekdate">第{{weekdate.split(" ")[0]}}年 第{{weekdate.split(" ")[1]}}周</label>
+    <!-- <label class="time-show" *ngIf="weekdate">第{{weekdate.split(" ")[0]}}年 第{{weekdate.split(" ")[1]}}周</label> -->
     <button ion-button color="dark" clear (click)="updateList(1)">
       <ion-icon name="md-arrow-dropright"></ion-icon>
     </button>
   </div>
 
   <div class="time-tabs">
-    <a ion-button clear [class.active]="anchorFlag === 1" (click)="goAnchor(1)">周一</a>
-    <a ion-button clear [class.active]="anchorFlag === 2" (click)="goAnchor(2)">周二</a>
-    <a ion-button clear [class.active]="anchorFlag === 3" (click)="goAnchor(3)">周三</a>
-    <a ion-button clear [class.active]="anchorFlag === 4" (click)="goAnchor(4)">周四</a>
-    <a ion-button clear [class.active]="anchorFlag === 5" (click)="goAnchor(5)">周五</a>
-    <a ion-button clear [class.active]="anchorFlag === 6" (click)="goAnchor(6)">周六</a>
-    <a ion-button clear [class.active]="anchorFlag === 7" (click)="goAnchor(7)">周日</a>
+    <button ion-button clear *ngFor="let week of weektableList" [class.active]="selectedWeekDay==week.key" (click)="goWeekDay(week.key)">{{week.name}}</button>
   </div>
 </ion-header>
 
-<ion-content #content>
-  <div class="add-new" (click)="goCreate()" *ngIf="!newFlag">
-    <ion-icon class="szom" name="md-bianjixian"></ion-icon>
+<ion-content #content content-shadow>
+  <div class="add-new" (click)="goCreate()" *ngIf="user.userCode == me.userCode">
+    <img src="assets/imgs/xierizhi.png" />
   </div>
 
-  <!-- <div class="noDailyList" *ngIf="weektableList.length<=0 && showOneFlag && !newFlag">
-    <embed src="../../assets/imgs/nolog.svg" type="image/svg+xml" />
-    <p>您还没有发布周表
-      <br>快去
-      <a (click)="goCreate()">发布</a>吧~</p>
+  <!-- <div *ngIf="weektableListAll.length<=0">
+    <not-found></not-found>
   </div> -->
-  <div *ngIf="weektableList.length<=0 && newFlag">
-    <not-found></not-found>
-  </div>
-  <div *ngIf="weektableList.length<=0">
-    <not-found></not-found>
+
+  <div class="noDailyList" *ngIf="weektableListAll.length<=0 && user.userCode == me.userCode">
+    <img src="assets/imgs/nolog.png">
+    <p>您该周还没有发布过内容
+      <br>快去<a (click)="goCreate()">创建</a>吧~</p>
   </div>
 
-  <ion-list class="weektable-list" *ngIf="weektableList.length>0">
+  <div class="noDailyList" *ngIf="weektableListAll.length<=0 && user.userCode != me.userCode">
+    <img src="assets/imgs/nolog.png">
+    <p>您该周还没有发布过内容</p>
+  </div>
+
+  <ng-container *ngIf="weektableListAll.length>0">
     <ng-container *ngFor="let weektable of weektableList;let i = index">
-      <div id="{{weektable.week}}" class="title" *ngIf="i===0 || (i>0 && weektableList[i].week != weektableList[i-1].week)">
-        {{weekName[weektable.week-1]}}
+      <div [id]="weektable.key" class="w-title" *ngIf="weektable.children">
+        {{weektable.name}}
       </div>
-      <ion-item (click)="goWeektableShow(weektable)">
-        <div item-start class="type" [class]="'type type'+weektable.weektableTypeId"><span class="text">{{weektable.typeName}}</span></div>
-        <div class="content">
-          <p class="text">{{weektable.content}}</p>
-          <div class="time">
-            <ion-note>{{weektable.workDateStr | date:'yyyy.MM.dd'}}</ion-note>
-            <ion-note>{{weekName[weektable.week-1]}}</ion-note>
-            <ion-note>{{weektable.dayPeriodName}}</ion-note>
+      <ion-list class="weektable-list" *ngIf="weektable.children">
+        <ion-item *ngFor="let w of weektable.children" (click)="goWeektableShow(w)">
+          <div item-start class="type" [class]="'type type'+w.weektableTypeCode"><span class="text">{{w.typeName}}</span></div>
+          <div class="content">
+            <p class="text">{{w.content}}</p>
+            <div class="time">
+              <ion-note>{{w.workDateStr | date:'yyyy.MM.dd'}}</ion-note>
+              <ion-note>{{weekName[w.week-1]}}</ion-note>
+              <ion-note>{{w.dayPeriodName}}</ion-note>
+            </div>
           </div>
-        </div>
-      </ion-item>
+        </ion-item>
+      </ion-list>
     </ng-container>
-  </ion-list>
+  </ng-container>
+  <div class="blank" *ngIf="weektableListAll.length>0"></div>
 </ion-content>

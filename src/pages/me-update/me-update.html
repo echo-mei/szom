@@ -1,6 +1,6 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar color="white">
     <ion-title>账户安全</ion-title>
   </ion-navbar>
 
@@ -8,21 +8,18 @@
 
 
 <ion-content>
-  <p></p>
-  <form><!--  (ngSubmit)="login()" -->
-    <ion-list no-lines>
-      <button ion-item (click)="goUpdateUser()">
-        修改用户名
-        <i class="szom ion-md-you" style="color: #999;"></i>
-      </button>
-      <button ion-item (click)="goUpdatePassword()">
-        修改密码
-        <i class="szom ion-md-you" style="color: #999;"></i>
-      </button>
-      <button ion-item (click)="goUpdatePhone()">
-        修改手机号
-        <i class="szom ion-md-you" style="color: #999;"></i>
-      </button>
-    </ion-list>
-  </form>
+  <div class="info-content">
+    <ion-item (click)="goUpdateUser()">
+      <h2>修改用户名</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goUpdatePassword()">
+      <h2>修改密码</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+    <ion-item (click)="goUpdatePhone()">
+      <h2>修改手机号</h2>
+      <ion-icon item-end class="szom" name="md-you"></ion-icon>
+    </ion-item>
+  </div>
 </ion-content>

@@ -4,15 +4,15 @@
     <div class="img-wrap">
         <img
         [src]="getImageUrl(uploadFileDetailDTOList[0])"
-        onerror="this.src='assets/imgs/no-img.png'"
+        onerror="this.src='assets/imgs/default-img@3x.png'"
         (click)="viewImages(0)">
     </div>
   </div>
   <ul class="squared" no-padding *ngIf="uploadFileDetailDTOList.length>1">
     <li *ngFor="let img of uploadFileDetailDTOList;let imgIndex = index;">
-      <div>
-        <img [src]="getImageUrl(img)" onerror="this.src='assets/imgs/no-img.png'"
-          (click)="viewImages(imgIndex)">
+      <div [style]="generateBackground(img)" (click)="viewImages(imgIndex)">
+        <!-- <img [src]="getImageUrl(img)" style="display:none;" onerror="this.src='assets/imgs/default-img@3x.png'"
+          (click)="viewImages(imgIndex)"> -->
       </div>
     </li>
   </ul>

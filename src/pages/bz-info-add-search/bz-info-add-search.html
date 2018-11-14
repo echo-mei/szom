@@ -1,0 +1,47 @@
+<ion-header no-border>
+
+  <ion-navbar color="white">
+    <ion-title>{{ teamName }}</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="addMember()" *ngIf="userCodes" class="canAdd">添加</button>
+      <button ion-button *ngIf="!userCodes" class="cantAdd">添加</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="szom-search-wrap search-header">
+    <div class="szom-search">
+      <ion-searchbar placeholder="搜索单位与成员..." [(ngModel)]="selectString" (ionInput)="onClickSearch()"></ion-searchbar>
+      <img class="search-icon" src="assets/imgs/search-gray@3x.png">
+      <img class="search-clear-icon" *ngIf="selectString" (click)="selectString='';onClickSearch()" src="assets/imgs/delete@3x.png">
+    </div>
+  </div>
+
+  <ion-list>
+    <!-- <div class="con" *ngFor="let item of mylist; let i = index">
+      <button ion-button full (click)="showOrHide(i)">{{ item.unitName }} (15)<ion-icon class="szom" name="md-shang" *ngIf="!boolShow[i]" item-end></ion-icon><ion-icon class="szom" name="md-xia" *ngIf="boolShow[i]" item-end></ion-icon></button>
+    </div> -->
+    <div class="con" *ngFor="let item of unitList; let i = index" (click)="goNextUnit(item)">
+      <button ion-button full>{{ item.orgName }}<ion-icon class="szom" name="md-you" item-end></ion-icon></button>
+    </div>
+    <ion-list class="type-list" no-lines>
+      <div *ngFor="let key of personKeyList;let i = index;">
+        <!-- <div class="divider">{{key}}</div> -->
+        <!-- <ion-item *ngFor="let user of personList[i];" (click)="goUserInfo(user)"> -->
+        <ion-item *ngFor="let user of personList[i];">
+          <ion-checkbox (ionChange)="updateCucumber(user)" item-start></ion-checkbox>
+          <ion-thumbnail item-start>
+            <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{user.name}}</h2>
+            <p>{{user.dutyName}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-list>
+</ion-content>

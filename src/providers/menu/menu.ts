@@ -35,12 +35,12 @@ export class MenuProvider {
       });
     }
     constructMenu(menuList, menus);
-    this.storage.set('menuList', JSON.stringify(menuList));
+    this.storage.menuList = menuList;
   }
 
   hasMenu(menuKey: string): boolean {
-    if(!this.storage.get('menuList')) { return false; }
-    let menuList = JSON.parse(this.storage.get('menuList'));
+    if(!this.storage.menuList) { return false; }
+    let menuList = this.storage.menuList;
     function findMenu(list) {
       return list.find((item) => {
         return item.menuKey == menuKey || findMenu(item.children);
@@ -50,7 +50,7 @@ export class MenuProvider {
   }
 
   getMenu(menuKey: string) {
-    let menuList = JSON.parse(this.storage.get('menuList'));
+    let menuList = this.storage.menuList;
     let menu;
     function findMenu(list) {
       list.find((item) => {

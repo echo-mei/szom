@@ -1,7 +1,9 @@
-<ion-content>
-  <ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
-  <ion-calendar [options]="calendarOptions" (monthChange)="goMonth($event)"></ion-calendar>
-  <div class="impression">
-    <ion-badge *ngFor="let tag of tags" class="tag-{{tag.signInType}}">{{tag.signInTypeName}}  <span>（{{tag.count}}）</span></ion-badge>
+<div class="sign-date-wrapper animated bounceInUp" #wrapper (click)="close()">
+  <div class="sign-date-container" (click)="$event.stopPropagation();">
+      <ion-icon class="szom" name="md-icon_delete" (click)="close()"></ion-icon>
+      <ion-calendar [options]="calendarOptions" (monthChange)="goMonth($event)"></ion-calendar>
+      <div class="impression">
+        <ion-badge *ngFor="let tag of tags" class="tag-{{tag.signInType}}">{{tag.signInTypeName}}  <span>({{tag.count}})</span></ion-badge>
+      </div>
   </div>
-</ion-content>
+</div>

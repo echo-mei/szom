@@ -1,7 +1,26 @@
 page-sign-tags {
+
+  .sign-tag-backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  .sign-tag-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .sign-tag-container {
+      position: relative;
+      width: rem(270);
+      height: rem(270);
+      background: #fff;
+    }
+  }
   ion-icon {
     position: absolute;
-    font-size: rem(12);
+    font-size: rem(12)!important;
     padding: rem(10);
     right: 0;
   }
@@ -15,15 +34,15 @@ page-sign-tags {
     font-weight: bold;
   }
   .impression {
-    padding: rem(10);
+    padding: rem(8) rem(14) rem(30);
     background: #fff;
     ion-badge {
       height: rem(40);
-      width: 46%;
+      width: rem(106);
       border-radius: 1px;
       padding: 0 rem(8);
       line-height: rem(40);
-      margin: rem(8) 2%;
+      margin: rem(8) rem(7);
       color: #545454;
       background: #F4F4F4;
       border-radius: rem(1);

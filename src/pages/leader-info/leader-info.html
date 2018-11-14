@@ -18,42 +18,47 @@
     <ion-avatar item-start>
       <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
     </ion-avatar>
-    <h2>{{user.name}}<ion-icon class="szom" name="md-zdattention" *ngIf="user.isEmpAttention"></ion-icon></h2>
-    <ion-note>{{user.orgName}} | {{user.dutyName}}</ion-note>
+    <h2>{{user.name}}
+      <img src="assets/imgs/emp-attention@3x.png" *ngIf="user.isEmpAttention">
+    </h2>
+    <ion-note>{{user.dutyName}}</ion-note>
+    <ion-badge item-end (click)="goMeSign()">签到历史
+      <ion-icon class="szom" name="you"></ion-icon>
+    </ion-badge>
   </ion-item>
 
   <ion-list class="info-content">
     <ion-item (click)="goBaseInfo()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-baseInfo"></ion-icon>
+        <img src="assets/imgs/i-base-info@3x.png">
       </ion-avatar>
       <h2>基本信息</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
     <ion-item (click)="goUserSelfInfo()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-personInfo"></ion-icon>
+        <img src="assets/imgs/i-my-zs@3x.png">
       </ion-avatar>
       <h2>个人自述</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
     <ion-item (click)="goUserImpression()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-yxtag"></ion-icon>
+        <img src="assets/imgs/i-yxtag@3x.png">
       </ion-avatar>
       <h2>印象标签</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
-    <ion-item (click)="goSign()">
+    <!-- <ion-item (click)="goSign()">
       <ion-avatar item-start>
         <ion-icon class="szom" name="md-qiandao"></ion-icon>
       </ion-avatar>
       <h2>签到</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
-    </ion-item>
+    </ion-item> -->
     <ion-item (click)="goWeektable()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-weektable"></ion-icon>
+        <img src="assets/imgs/i-worktable@3x.png">
       </ion-avatar>
       <h2>工作周表</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
@@ -62,28 +67,28 @@
   <ion-list class="info-content">
     <ion-item (click)="goDaily()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-daily"></ion-icon>
+        <img src="assets/imgs/i-daily@3x.png">
       </ion-avatar>
       <h2>工作日志</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
     <ion-item (click)="goDailyOne()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-dailyOne"></ion-icon>
+        <img src="assets/imgs/i-daily-one@3x.png">
       </ion-avatar>
       <h2>每周一励</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
     <ion-item (click)="goDailyThree()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-dailyThree"></ion-icon>
+        <img src="assets/imgs/i-daily-three@3x.png">
       </ion-avatar>
       <h2>每季三励</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>
     </ion-item>
     <ion-item (click)="goDailyTen()">
       <ion-avatar item-start>
-        <ion-icon class="szom" name="md-dailyTen"></ion-icon>
+        <img src="assets/imgs/i-daily-ten@3x.png">
       </ion-avatar>
       <h2>每年十励</h2>
       <ion-icon item-end class="szom" name="md-you"></ion-icon>

@@ -1,31 +1,30 @@
 <ion-header no-border>
   <ion-navbar color="white">
-    <ion-title>{{this.org.orgName}}</ion-title>
+    <ion-title>{{org.orgName}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content>
-  <div class="searcher" *ngIf="canSearch">
-    <ion-icon class="szom" name="sousuo"></ion-icon>
-    <ion-searchbar (click)="goLeaderInfoLibSearch()" placeholder="搜索"></ion-searchbar>
-  </div>
+<ion-content content-shadow>
+  <not-found-person *ngIf="!unitList.length && !personList.length"></not-found-person>
+
   <ion-list class="type-list">
     <ion-item *ngFor="let unit of unitList;" (click)="goLeaderInfoLibUnit(unit)">
       <h2>{{unit.orgName}}</h2>
       <ion-icon item-end class="szom" name="you"></ion-icon>
     </ion-item>
   </ion-list>
-  <ion-list class="type-list">
-    <div *ngFor="let key of personKeyList;let i = index;">
-      <div class="divider">{{key}}</div>
-      <ion-item *ngFor="let user of personValueList[i];" (click)="goUserInfo(user)">
+
+  <div>
+    <ion-list class="type-list type-list-person" [class.margin-top]="unitList.length">
+      <ion-item *ngFor="let user of personList;" (click)="goUserInfo(user)">
         <ion-avatar item-start>
           <img [src]="userProvider.getHeadImageUrl(user.personId)" onerror="this.src='assets/imgs/user.png'">
         </ion-avatar>
         <h2>{{user.name}}</h2>
-        <ion-note>{{user.deptName}} | {{user.dutyName}}</ion-note>
+        <ion-note>{{user.dutyName}}</ion-note>
       </ion-item>
-    </div>
-  </ion-list>
+    </ion-list>
+  </div>
+
 </ion-content>

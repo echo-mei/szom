@@ -1,0 +1,161 @@
+page-bz-daily-me-show {
+
+  .daily-detail-main{
+    padding: rem(12) rem(15) 0 rem(15);
+
+    .title{
+      font-size: rem(17);
+      font-weight: 600;
+      color: #262626;
+      letter-spacing: 0;
+      line-height: rem(26);
+      margin: 0 0 rem(9) 0;
+    }
+    .content{
+      font-size: rem(15);
+      color: #595959;
+      line-height: rem(22);
+      margin: 0 0 rem(5) 0;
+    }
+    .other{
+      height: rem(25);
+      .pubTime{
+        font-size: rem(13);
+        color: #999999;
+        letter-spacing: -0.08px;
+        text-align: left;
+        line-height: rem(24);
+      }
+      .delete{
+        font-size: rem(13);
+        color: color($colors,subBlueColor);
+        letter-spacing: -0.08px;
+        height: rem(24);
+        line-height: rem(24);
+        margin: 0;
+        vertical-align: middle;
+      }
+      .dianzan{
+        margin: 0;
+        padding-right: 0;
+        vertical-align: middle;
+        line-height: rem(24);
+        height: rem(24);
+        color: #999999;
+        ion-icon{
+          margin-bottom: rem(2);
+        }
+        &.dianji{
+          color: color($colors,subBlueColor);
+        }
+        img {
+          width: rem(23);
+        }
+      }
+    }
+    .like-list {
+      padding: rem(10) rem(10);
+      background: #f4f4f4;
+      width: 100%;
+      .col{
+        padding: 0;
+        white-space: normal;
+        .zanName{
+          color: #5E6999;
+        }
+        &.zanList-wrap{
+          width: rem(21);
+          flex: 0 0 rem(21);
+          .zanList{
+            width: rem(15);
+            margin-top: rem(3);
+            margin-right: rem(6);
+          }
+        }
+      }
+      .zanList{
+        width: rem(20);
+      }
+    }
+    .line{
+      margin:0 rem(10);
+      height: 1px;
+      background: #f4f4f4;
+      @include border-b-1px(#dddddd);
+      z-index: 2;
+    }
+    .comList{
+      position: relative;
+      background: #f4f4f4;
+      padding: rem(10) rem(10);
+      p{
+        margin: 0 0 rem(6) 0;
+        line-height: normal;
+      }
+      a{
+        font-size: rem(14);
+        color: color($colors,subBlueColor);
+      }
+      span{
+        font-size: rem(14);
+        color: #595959;
+        line-height: rem(15);
+      }
+    }
+  }
+  .no-comment{
+    font-size: rem(13);
+    color: #afafaf;
+    margin-top:rem(79);
+    text-align: center;
+  }
+  .item .item-button{
+    margin-top: rem(6);
+  }
+  .publish-comment{
+    @include border-t-1px(color($colors,boderColor));
+    padding: rem(8) rem(15);
+    .item-inner{
+      padding: 0!important;
+      border: none!important;
+      box-shadow: none!important;
+      .input-wrapper{
+        position: relative;
+        ion-label {
+          position: absolute;
+          bottom: rem(2);
+          right: rem(2);
+          margin: 0!important;
+          font-size: rem(12);
+
+          &.error {
+            color: red!important;
+          }
+        }
+        ion-textarea{
+          line-height: rem(16);
+          background: #F4F4F4;
+          border-radius: rem(2);
+          font-size: rem(15);
+          letter-spacing: -0.15px;
+          margin: 0;
+          padding-left: rem(4);
+          .text-input{
+            margin: 11px 0;
+            max-height: rem(100) !important;
+          }
+        }
+      }
+    }
+    [item-end] {
+      height: rem(37);
+      margin: rem(4) 0 0 rem(14);
+      height: rem(28);
+      padding: 0 rem(8);
+      background: color($colors,mainBlueColor);
+      font-size: rem(12);
+      border-radius: rem(1);
+    }
+  }
+
+}

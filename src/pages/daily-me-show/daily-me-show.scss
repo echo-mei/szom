@@ -18,6 +18,7 @@ page-daily-me-show {
       margin: 0 0 rem(5) 0;
     }
     .other{
+      height: rem(25);
       .pubTime{
         font-size: rem(13);
         color: #999999;
@@ -47,66 +48,101 @@ page-daily-me-show {
         &.dianji{
           color: color($colors,subBlueColor);
         }
+        img {
+          width: rem(23);
+        }
+      }
+    }
+    .like-list {
+      padding: rem(10) rem(10);
+      background: #f4f4f4;
+      width: 100%;
+      .col{
+        padding: 0;
+        white-space: normal;
+        .zanName{
+          color: #5E6999;
+        }
+        &.zanList-wrap{
+          width: rem(21);
+          flex: 0 0 rem(21);
+          .zanList{
+            width: rem(15);
+            margin-top: rem(3);
+            margin-right: rem(6);
+          }
+        }
       }
     }
     .line{
-      width: 100%;
+      margin:0 rem(10);
       height: 1px;
-      background: transparent;
-      margin: rem(10) 0 rem(10) 0;
-      border-bottom: .5px solid color($colors,boderColor);
+      background: #f4f4f4;
+      @include border-b-1px(#dddddd);
+      z-index: 2;
     }
-    .like-wrap{
-      display: flex;
-      margin-bottom: rem(13);
-      ion-icon{
-        flex: 0 0 rem(20);
-        width: rem(20);
+    .comList{
+      position: relative;
+      background: #f4f4f4;
+      padding: rem(10) rem(10);
+      p{
+        margin: 0 0 rem(6) 0;
+        line-height: normal;
+      }
+      a{
+        font-size: rem(14);
         color: color($colors,subBlueColor);
-        font-size: rem(12);
-        line-height: rem(20);
       }
-      .like-names{
-        flex: 1;
+      span{
         font-size: rem(14);
-        letter-spacing: 0;
-        line-height: rem(20);
-
-        .zan-name{
-          color: color($colors,subBlueColor);
-        }
-        span{
-          color: #999999;
-        }
+        color: #595959;
+        line-height: rem(15);
       }
     }
-    .comment-list{
-      .comment-item{
-        color: #595959;
-        font-size: rem(14);
-        letter-spacing: 0;
-        line-height: rem(15);
-        margin: rem(8) 0 0 0;
-
-        .commentPeople{
-          color: color($colors,subBlueColor);
-        }
-        .commentCon{
-          color: #595959;
-        }
-      }
-
+    .no-comment{
+      font-size: rem(13);
+      color: #afafaf;
+      margin-top:rem(79);
+      text-align: center;
     }
   }
   .item .item-button{
     margin-top: rem(6);
   }
   .publish-comment{
+    @include border-t-1px(color($colors,boderColor));
     padding: rem(8) rem(15);
     .item-inner{
       padding: 0!important;
       border: none!important;
       box-shadow: none!important;
+      .input-wrapper{
+        position: relative;
+        ion-label {
+          position: absolute;
+          bottom: rem(2);
+          right: rem(2);
+          margin: 0!important;
+          font-size: rem(12);
+
+          &.error {
+            color: red!important;
+          }
+        }
+        ion-textarea{
+          line-height: rem(16);
+          background: #F4F4F4;
+          border-radius: rem(2);
+          font-size: rem(15);
+          letter-spacing: -0.15px;
+          margin: 0;
+          padding-left: rem(4);
+          .text-input{
+            margin: 11px 0;
+            max-height: rem(100) !important;
+          }
+        }
+      }
     }
     [item-end] {
       height: rem(37);
@@ -115,20 +151,7 @@ page-daily-me-show {
       padding: 0 rem(8);
       background: color($colors,mainBlueColor);
       font-size: rem(12);
-      border-radius: rem(2);
-    }
-    ion-textarea{
-      line-height: rem(16);
-      background: #F4F4F4;
-      border-radius: rem(2);
-      font-size: rem(15);
-      letter-spacing: -0.15px;
-      margin: 0;
-      padding-left: rem(4);
-      .text-input{
-        margin: 11px 0;
-        max-height: rem(100) !important;
-      }
+      border-radius: rem(1);
     }
   }
 

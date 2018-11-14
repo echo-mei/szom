@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
 import { DayConfig, CalendarComponent, CalendarComponentOptions } from 'ion2-calendar';
 import { SignProvider } from '../../providers/sign/sign';
@@ -12,6 +12,7 @@ import { DateUtilProvider } from '../../providers/date-util/date-util';
 export class SignDatePage {
 
   @ViewChild('calendar') calendar: CalendarComponent;
+  @ViewChild('wrapper') wrapper: ElementRef;
 
   user:any;
   month: any;
@@ -36,7 +37,9 @@ export class SignDatePage {
     public calendarService: CalendarService,
     public dateUtil: DateUtilProvider,
     public popoverCtrl: PopoverController,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    public renderer2: Renderer2,
+    public elementRef: ElementRef
   ) {
     this.user = this.navParams.get('user');
     this.onSign = this.navParams.get('onSign');
@@ -57,6 +60,13 @@ export class SignDatePage {
     };
     this.signProvider.signInList(params).subscribe(
       data => {
+        this.calendarOptions.daysConfig.forEach((config) => {
+          if(config.date.getMonth() != Number(this.month.split('-')[1])-1) {
+            config.cssClass = 'last-month-day';
+            config.subTitle = ' ';
+            _daysConfig.push(config);
+          }
+        });
         if(data){
           for(let key in data) {
             _daysConfig.push({
@@ -66,6 +76,7 @@ export class SignDatePage {
             });
           }
         };
+        console.log(_daysConfig);
         this.calendarOptions = {
           ...this.calendarOptions,
           daysConfig: _daysConfig
@@ -88,7 +99,14 @@ export class SignDatePage {
   }
 
   close() {
-    this.viewCtrl.dismiss();
+    this.wrapper.nativeElement.classList.add('slideOutDown', 'fast');
+    const modal = this.renderer2.parentNode(this.renderer2.parentNode(this.elementRef.nativeElement));
+    this.renderer2.addClass(modal, 'animated');
+    this.renderer2.addClass(modal, 'fadeOut');
+    this.renderer2.addClass(modal, 'fast');
+    setTimeout(() => {
+      this.viewCtrl.dismiss();
+    }, 250);
   }
 
 }

@@ -1,42 +1,109 @@
 page-me {
-  .item-block {
-    min-height: initial;
-    padding: 0;
-    h4 {
-      font-size: 16px;
+  .scroll-content{
+    background: #fafafa;
+  }
+  .button.activated{
+    background-color: #fff ;
+    box-shadow: none !important;
+  }
+  ion-item.info-title {
+    width: rem(360);
+    height: rem(70);
+    padding: rem(11) rem(15);
+    margin-bottom: rem(10);
+    ion-avatar{
+      margin: 0 rem(12) 0 0!important;
+      width: rem(50);
+      height: rem(50);
+      overflow: hidden;
+      img{
+        border-radius: rem(2);
+        width: 100%;
+        height: auto;
+      }
     }
-    .note {
-      p {
-        font-size: rem(12)
+    .item-inner {
+      border-bottom: none!important;
+      padding-right: 0!important;
+      .input-wrapper {
+        align-items: center;
+      }
+      ion-label.label {
+        margin: 0;
+        h2 {
+          font-size: rem(15);
+          color: #333333;
+          font-weight: bold;
+          margin: 0;
+          white-space:initial;
+          &.big{
+            font-size: rem(24);
+            font-weight: normal;
+          }
+        }
+        ion-note {
+          opacity: 0.99;
+          font-size: rem(12);
+          color: #8C8C8C;
+          line-height: rem(18);
+        }
       }
     }
   }
-  .item ion-thumbnail{
-    min-width: rem(50);
-    min-height: rem(50);
-    img{
-      width: rem(50);
-      height: rem(50);
+
+  .info-content{
+    margin-bottom: rem(10);
+
+    .item{
+      padding: 0;
+      &.lonely{
+        margin-bottom: rem(10);
+        .item-inner{
+          @include border-none();
+        }
+      }
+      ion-avatar{
+        margin: 0;
+        width: rem(44);
+        height: rem(44);
+        line-height: rem(44);
+        text-align: center;
+
+        img{
+          width: rem(20);
+          height: auto;
+          margin:rem(11) rem(11) rem(11) rem(15);
+        }
+      }
+
+      .item-inner{
+        @include border-b-1px(color($colors,boderColor));
+        // border-bottom: .5px solid color($colors,boderColor);
+        .label{
+          margin: 0;
+          position: relative;
+          h2{
+            margin: 0;
+            font-size: rem(16);
+            color: #333333;
+            line-height: rem(44);
+          }
+        }
+      }
+      ion-icon{
+        margin: 0;
+        color: #afafaf;
+        font-size: rem(14);
+      }
     }
   }
-  ion-list{
-    p{
-      font-size: rem(12) !important;
-      color: #8C8C8C;
-    }
-    .helpAndFeedBack{
-      margin-bottom: rem(10);
-    }
-    ion-icon{
-      font-size: rem(15) !important;
-      margin-right: 0px !important;
-    }
-  }
-  .logOut{
+
+  .exit{
     background-color: #ffffff;
     color: #F5222D;
     font-size: rem(16);
     height: rem(44);
+    box-shadow: none;
     .item-inner{
       border: 0 !important;
       text-align: center;
@@ -45,100 +112,40 @@ page-me {
       margin: 0;
     }
   }
-  // 头部
-  
-  .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before{
-    background-image: none;
-  }
-  
-  
-  .scroll-content{
-    margin-top: rem(50);
-    background-color: #fafafa;
-  }
-  .toolbar-background{
-    border-color: transparent!important;
-    background-color: #ffffff;
-  }
-  // 内容
-  .item{
-    padding: 0 rem(12)!important;
-  }
-  .label{
-    font-size: rem(15);
-  }
-  .list .item-block .item-inner{
-    border-bottom: 0.55px solid #e5e5e5;
-  }
-  .list .item-block .item-inner:not(:first-child){
-    border-bottom:none;
-    margin:rem(12) 0;
-  }
-  .item-block:first-child{
-    margin: rem(3) 0 rem(10) 0;
-    border-top:none!important;
-  }
-  .label{
-    margin: rem(15) rem(10) rem(12) 0;
-  }
-  .button-block{
-    width: 95%;
-    margin:0 2%;
-  }
-  .content{
-    background-color: #efeff4;
-    button{
-      .label{
-        font-size: rem(16);
-        display: flex;
-        align-items: center;
-        i{
-          font-size: rem(20);
-          margin-right: 10px;
-        }
-      }
-    }
-    .exit{
-      background-color: #fff;
-      color: red;
-      box-shadow: none;
-    }
-  }
-  .list > .item-block:last-child{
-    border-bottom:none;
-  }
-
 }
+
+
 ion-action-sheet{
   .action-sheet-group-cancel{
-    border-top: 10px solid #F1F1F1; 
+    border-top: 10px solid #F1F1F1;
   }
   .action-sheet-group{
-    
+
     padding: 0!important;
     .action-sheet-title{
       font-size: rem(13)!important;
       text-align: center;
       color: #999;
     }
-    
+
     .action-sheet-button{
       font-size: rem(16);
-      border-top: 2px solid #F1F1F1; 
+      border-top: 2px solid #F1F1F1;
       .button-inner{
         color: red;
         justify-content: center;
-      } 
+      }
     }
-    
+
     .action-sheet-cancel{
       height: 50px!important;
       min-height: auto;
       .button-inner{
-        color: #000;
+        color: #000 !important;
         justify-content: center;
-      } 
+      }
     }
-    
+
   }
 }
+

@@ -45,6 +45,11 @@ export class DynamicProvider {
     return this.http.post(`${BASE_URL}/dynamicbiz/createStLike`,params);
   }
 
+  // 取消点赞动态
+  cancelLikeDaily(params): Observable<any> {
+    return this.http.delete(`${BASE_URL}/dynamicbiz/deleteStLike`, params);
+  }
+
   // 查询个人通讯录动态信息列表
   getPersonDynamicList(params): Observable<any> {
     return this.http.get(`${BASE_URL}/sbDynamic/listAddressBookDynamicMessage`, params);

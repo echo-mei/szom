@@ -19,6 +19,11 @@ export class UnitProvider {
     return this.http.get(`${BASE_URL}/contactList/org/childOrg`, params);
   }
 
+  // 查询其他组织下的机构列表
+  getOtherChildOrgList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/contactList/otherUnit/childOrg`, params);
+  }
+
   // 查询单位|机构下的人员列表
   getOrgPersonList(params?): Observable<any> {
     return this.http.get(`${BASE_URL}/contactList/org/users`, params);
@@ -52,5 +57,15 @@ export class UnitProvider {
   // 查询有权限的机构列表
   getAllUnitOrgsList(params?): Observable<any> {
     return this.http.get(`${BASE_URL}/contactList/allUnit/orgs`, params);
+  }
+
+  // 模糊查询有权限访问的干部信息库中的机构列表
+  getLeaderUnitList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/perosnInfoBank/search/getOrgList`, params);
+  }
+
+  // 模糊查询有权限访问的干部信息库中的人员列表
+  getLeaderUserList(params?): Observable<any> {
+    return this.http.get(`${BASE_URL}/perosnInfoBank/search/getPersonList`, params);
   }
 }

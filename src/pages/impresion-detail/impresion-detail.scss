@@ -1,0 +1,24 @@
+page-impresion-detail {
+
+    .label{
+        margin-right: 0 !important;
+        padding: 0 rem(16);
+    }
+    .item-inner{
+        padding-right: 0px !important;
+    }
+    .detail{
+        color: #000;
+    }
+    .num{
+        color: #999;
+    }
+    .toolbar{
+        .toolbar-background{
+            background-color: #fff;
+        }
+        ion-icon{
+            color: #4D74EB !important;
+        }       
+    }
+}
